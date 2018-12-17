@@ -1,4 +1,4 @@
 .DS_Store
-/Pods
 Podfile.lock
-RallyRoadbookReader.xcworkspace
+/Pods
+/RallyRoadbookReader.xcworkspace
