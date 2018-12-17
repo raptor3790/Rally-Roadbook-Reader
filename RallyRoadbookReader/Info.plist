@@ -72,7 +72,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please allow</string>
+	<string>Device GPS is used to measure Odometer distance and compass heading</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>digital_counter_7.ttf</string>

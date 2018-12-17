@@ -1168,7 +1168,7 @@
 				DEVELOPMENT_TEAM = Z59B6HMSPM;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "/Volumes/RAPTOR/raptor_workspace/Xcode/Roadbook/src/RoadbookReader-master/RallyRoadbookReader/RallyRoadbookReader.pch";
+				GCC_PREFIX_HEADER = "/Volumes/RAPTOR/raptor_workspace/Xcode/Roadbook/src/Rally-Roadbook-Reader/RallyRoadbookReader/RallyRoadbookReader.pch";
 				INFOPLIST_FILE = RallyRoadbookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1197,7 +1197,7 @@
 				DEVELOPMENT_TEAM = Z59B6HMSPM;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "/Volumes/RAPTOR/raptor_workspace/Xcode/Roadbook/src/RoadbookReader-master/RallyRoadbookReader/RallyRoadbookReader.pch";
+				GCC_PREFIX_HEADER = "/Volumes/RAPTOR/raptor_workspace/Xcode/Roadbook/src/Rally-Roadbook-Reader/RallyRoadbookReader/RallyRoadbookReader.pch";
 				INFOPLIST_FILE = RallyRoadbookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
