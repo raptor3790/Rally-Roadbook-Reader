@@ -837,7 +837,7 @@
 					E443112721477E42002CD004 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1000;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -928,7 +928,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
@@ -943,7 +943,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E4151CB2214CD5E300CF7944 /* ShellScript */ = {
@@ -1162,20 +1162,20 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = Z59B6HMSPM;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "/Volumes/RAPTOR/raptor_workspace/Xcode/Roadbook/src/Rally-Roadbook-Reader/RallyRoadbookReader/RallyRoadbookReader.pch";
+				GCC_PREFIX_HEADER = "/Users/kevin/Documents/navigator-ios-mobile/natigator-ios-mobile/Rally-Roadbook-Reader/RallyRoadbookReader/RallyRoadbookReader.pch";
 				INFOPLIST_FILE = RallyRoadbookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RallyRoadbookReader;
 				PRODUCT_NAME = "Rally Navigator Mobile";
-				PROVISIONING_PROFILE = "831d4404-3d4e-47c7-b1cf-1ed014a71707";
-				PROVISIONING_PROFILE_SPECIFIER = RallyReaderDev;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RallyRoadbookReader/Model/Managers/RallyRoadbookReader-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -1190,21 +1190,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = Z59B6HMSPM;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "/Volumes/RAPTOR/raptor_workspace/Xcode/Roadbook/src/Rally-Roadbook-Reader/RallyRoadbookReader/RallyRoadbookReader.pch";
+				GCC_PREFIX_HEADER = "/Users/kevin/Documents/navigator-ios-mobile/natigator-ios-mobile/Rally-Roadbook-Reader/RallyRoadbookReader/RallyRoadbookReader.pch";
 				INFOPLIST_FILE = RallyRoadbookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RallyRoadbookReader;
 				PRODUCT_NAME = "Rally Navigator Mobile";
-				PROVISIONING_PROFILE = "831d4404-3d4e-47c7-b1cf-1ed014a71707";
-				PROVISIONING_PROFILE_SPECIFIER = RallyReaderDis;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RallyRoadbookReader/Model/Managers/RallyRoadbookReader-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
