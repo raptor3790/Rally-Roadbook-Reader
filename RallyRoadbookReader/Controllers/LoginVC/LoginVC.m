@@ -377,7 +377,7 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
                                                      [dicParam setValue:dicAuth forKey:@"auth"];
                                                      [dicParam setValue:@YES forKey:@"send_email"];
                                                      
-                                                     _loginType = LoginTypeFacebook;
+                                                     self->_loginType = LoginTypeFacebook;
                                                      
                                                      [[WebServiceConnector alloc] init:URLSocialLogin
                                                                         withParameters:dicParam

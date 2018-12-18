@@ -1257,6 +1257,11 @@
         }
         
     }
+    
+    CGFloat settingSize = [[UIScreen mainScreen] bounds].size.width > 500 ? 32.0f : 27.0f;
+    _constraintWidthSetting.constant = settingSize;
+    _constraintHeightSetting.constant = settingSize;
+    printf("Screen width: %f, button size: %f\n", [[UIScreen mainScreen] bounds].size.width, settingSize);
 }
 
 -(float)ReturnFontSize:(BOOL)Bigger{
@@ -1895,7 +1900,7 @@
                           withCancelButtonTitle:@"Cancel"
                                    withYesTitle:@"Yes"
                              withExecutionBlock:^{
-                                 totalDistance = 0.0f;
+                                 self->totalDistance = 0.0f;
                                  [[AudioPlayer sharedManager] createAudioPlayer:@"Reset" :@"wav"];
                                  //_lblDistance.text = [NSString stringWithFormat:totalDistance >= 10 ? @"%.2f" : @"0%.2f", totalDistance];
                                  [self InitateTimer];
@@ -1922,19 +1927,19 @@
         
         [NSTimer scheduledTimerWithTimeInterval:2 repeats:NO block:^(NSTimer * _Nonnull timer) {
             
-            isTopSpeedDisplaying = NO;
+            self->isTopSpeedDisplaying = NO;
             
-            switch (objUserConfig.distanceUnit)
+            switch (self->objUserConfig.distanceUnit)
             {
                 case DistanceUnitsTypeMiles:
                 {
-                    _lbldistancePerHour.text = @"MPH";
+                    self->_lbldistancePerHour.text = @"MPH";
                 }
                     break;
                     
                 case DistanceUnitsTypeKilometers:
                 {
-                    _lbldistancePerHour.text = @"KPH";
+                    self->_lbldistancePerHour.text = @"KPH";
                 }
                     break;
                     
@@ -2077,13 +2082,13 @@
         if ((_wView.scrollView.contentOffset.y - scrollDistance) < 0){
             CGPoint Down = CGPointMake(0,0);
             [UIView animateWithDuration:1.0 animations:^{
-                [_wView.scrollView setContentOffset:Down];
+                [self->_wView.scrollView setContentOffset:Down];
             }];
 //            [_wView.scrollView setContentOffset:Down];
         }else{
             CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y - scrollDistance);
             [UIView animateWithDuration:1.0 animations:^{
-                [_wView.scrollView setContentOffset:Down];
+                [self->_wView.scrollView setContentOffset:Down];
             }];
 //            [_wView.scrollView setContentOffset:Down];
         }
@@ -2107,13 +2112,13 @@
             
             
             [UIView animateWithDuration:1.0 animations:^{
-                [_wView.scrollView setContentOffset:Down];
+                [self->_wView.scrollView setContentOffset:Down];
             }];
         }
         else{
             CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y + scrollDistance);
             [UIView animateWithDuration:1.0 animations:^{
-                [_wView.scrollView setContentOffset:Down];
+                [self->_wView.scrollView setContentOffset:Down];
             }];
            // [_wView.scrollView setContentOffset:Down];
         }
@@ -2155,14 +2160,14 @@
             if (((_wView.scrollView.contentOffset.y + _wView.frame.size.height) + 25) > _wView.scrollView.contentSize.height){
                 CGPoint Down = CGPointMake(0, _wView.scrollView.contentSize.height - _wView.frame.size.height);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                 //[_wView.scrollView setContentOffset:Down];
             }
             else{
                 CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y + 25);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                 //[_wView.scrollView setContentOffset:Down];
             }
@@ -2176,14 +2181,14 @@
             if (((_wView.scrollView.contentOffset.y + _wView.frame.size.height) + 5) > _wView.scrollView.contentSize.height){
                 CGPoint Down = CGPointMake(0, _wView.scrollView.contentSize.height - _wView.frame.size.height);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                // [_wView.scrollView setContentOffset:Down];
             }
             else{
                 CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y + 5);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                 //[_wView.scrollView setContentOffset:Down];
             }
@@ -2290,13 +2295,13 @@
             if ((_wView.scrollView.contentOffset.y - 25) < 0){
                 CGPoint Down = CGPointMake(0,0);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                 //[_wView.scrollView setContentOffset:Down];
             }else{
                 CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y - 25);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                 //[_wView.scrollView setContentOffset:Down];
             }
@@ -2307,14 +2312,14 @@
             if ((_wView.scrollView.contentOffset.y - 5) < 0){
                 CGPoint Down = CGPointMake(0,0);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                 //[_wView.scrollView setContentOffset:Down];
                 
             }else{
                 CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y - 5);
                 [UIView animateWithDuration:0.3 animations:^{
-                    [_wView.scrollView setContentOffset:Down];
+                    [self->_wView.scrollView setContentOffset:Down];
                 }];
                 //[_wView.scrollView setContentOffset:Down];
             }

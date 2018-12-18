@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -100,7 +100,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gAD-Nv-sw0" userLabel="View Settings">
-                                                <rect key="frame" x="346" y="9" width="21" height="42"/>
+                                                <rect key="frame" x="336" y="9" width="31" height="42"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mGs-xr-6Ri">
@@ -231,10 +231,10 @@ Tap and Hold for  continous scrolling</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Xop-ye-Mt6">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="125"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qPZ-R4-dv9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="125" height="124.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mu-Rf-0eR">
                                                                     <rect key="frame" x="0.0" y="0.0" width="125" height="35"/>
@@ -246,7 +246,7 @@ Tap and Hold for  continous scrolling</string>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1iv-OP-9gi">
-                                                                    <rect key="frame" x="0.0" y="89.5" width="44" height="35"/>
+                                                                    <rect key="frame" x="0.0" y="90" width="44" height="35"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFG-re-giS">
                                                                             <rect key="frame" x="0.0" y="0.0" width="44" height="35"/>
@@ -265,7 +265,7 @@ Tap and Hold for  continous scrolling</string>
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X7g-SG-O5f">
-                                                                    <rect key="frame" x="44" y="89.5" width="81" height="35"/>
+                                                                    <rect key="frame" x="44" y="90" width="81" height="35"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uM9-GX-VhZ">
                                                                             <rect key="frame" x="0.0" y="0.0" width="81" height="35"/>
@@ -284,7 +284,7 @@ Tap and Hold for  continous scrolling</string>
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="plD-iU-Yjy">
-                                                                    <rect key="frame" x="0.0" y="35" width="125" height="54.5"/>
+                                                                    <rect key="frame" x="0.0" y="35" width="125" height="55"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -307,16 +307,16 @@ Tap and Hold for  continous scrolling</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O9p-u3-Bq1">
-                                                            <rect key="frame" x="125" y="0.0" width="125" height="124.5"/>
+                                                            <rect key="frame" x="125" y="0.0" width="125" height="125"/>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Zu-AB-oyj">
-                                                            <rect key="frame" x="250" y="0.0" width="125" height="124.5"/>
+                                                            <rect key="frame" x="250" y="0.0" width="125" height="125"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gkD-I3-WXW">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="124.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                                                 </imageView>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4MF-oJ-LQH">
-                                                                    <rect key="frame" x="0.0" y="89.5" width="41.5" height="35"/>
+                                                                    <rect key="frame" x="0.0" y="90" width="41.5" height="35"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="---°" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUk-d4-lNk">
                                                                             <rect key="frame" x="0.0" y="0.0" width="41.5" height="35"/>
@@ -335,7 +335,7 @@ Tap and Hold for  continous scrolling</string>
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czx-mV-4yb">
-                                                                    <rect key="frame" x="41.5" y="89.5" width="83.5" height="35"/>
+                                                                    <rect key="frame" x="41.5" y="90" width="83.5" height="35"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="37°42.26'N" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXq-mh-9KR">
                                                                             <rect key="frame" x="3" y="0.0" width="77.5" height="17.5"/>
@@ -363,7 +363,7 @@ Tap and Hold for  continous scrolling</string>
                                                                     </constraints>
                                                                 </view>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Qmd-i9-d5e">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="89.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="90"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -389,7 +389,7 @@ Tap and Hold for  continous scrolling</string>
                                                         </view>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="124.5" id="3PQ-Ni-X8o"/>
+                                                        <constraint firstAttribute="height" priority="999" constant="124.5" id="3PQ-Ni-X8o"/>
                                                     </constraints>
                                                 </stackView>
                                             </subviews>
@@ -922,13 +922,14 @@ Tap and Hold for  continous scrolling</string>
                                     <constraint firstAttribute="width" secondItem="Zz4-GV-dpl" secondAttribute="height" multiplier="320:94" id="cVT-MR-FMj"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cN-fm-Q78">
-                                <rect key="frame" x="348" y="34" width="17" height="27"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cN-fm-Q78">
+                                <rect key="frame" x="338" y="34" width="27" height="27"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="27" id="PlQ-hm-xPf"/>
-                                    <constraint firstAttribute="width" constant="17" id="chc-pr-04R"/>
+                                    <constraint firstAttribute="width" constant="27" id="FfH-vB-1Kk"/>
+                                    <constraint firstAttribute="height" constant="27" id="uGP-am-Swg"/>
                                 </constraints>
-                                <state key="normal" image="menu"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="menu_x"/>
                                 <connections>
                                     <action selector="btnSettingsClicked:" destination="1lz-Yh-F9l" eventType="touchUpInside" id="9JC-UV-LHY"/>
                                 </connections>
@@ -996,12 +997,14 @@ Tap and Hold for  continous scrolling</string>
                         <outlet property="bottomFooter" destination="Dcj-Z6-and" id="8N9-bX-tUV"/>
                         <outlet property="constraintAspectHeader" destination="cVT-MR-FMj" id="30G-Km-xW7"/>
                         <outlet property="constraintHeightDPH" destination="N9k-fk-M9F" id="ejV-mK-5QR"/>
+                        <outlet property="constraintHeightSetting" destination="uGP-am-Swg" id="N8O-M7-pK0"/>
                         <outlet property="constraintHeightTOD" destination="QXP-qh-BJ8" id="fTd-f9-peJ"/>
                         <outlet property="constraintTopDPH" destination="hbY-Z6-4Q2" id="0Ot-jt-IQh"/>
                         <outlet property="constraintTopTOD" destination="6Gy-2o-4as" id="16H-xh-mxr"/>
                         <outlet property="constraintTop_Speed" destination="nbn-sc-o3g" id="tYd-sg-HUf"/>
                         <outlet property="constraintTop_Time" destination="eW3-j2-qlU" id="kyb-VY-3U6"/>
                         <outlet property="constraintWidthOdometer" destination="vdX-mF-Za3" id="XAf-Y9-kiD"/>
+                        <outlet property="constraintWidthSetting" destination="FfH-vB-1Kk" id="NT0-HD-bPM"/>
                         <outlet property="heightVwSpeed" destination="100-F8-Kuz" id="Btg-GA-pLN"/>
                         <outlet property="heightVwTime" destination="BWw-3A-ia4" id="PhV-Ch-V4F"/>
                         <outlet property="labelTOD" destination="sWf-Gf-lb3" id="GfQ-H7-Ado"/>
@@ -1037,12 +1040,12 @@ Tap and Hold for  continous scrolling</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ccq-Fn-hge" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2608.125" y="772.18309859154931"/>
+            <point key="canvasLocation" x="2607.1999999999998" y="771.36431784107947"/>
         </scene>
     </scenes>
     <resources>
-        <image name="AppNameImage" width="250" height="71"/>
+        <image name="AppNameImage" width="501" height="142"/>
         <image name="bgLCD" width="500" height="145"/>
-        <image name="menu" width="17" height="17"/>
+        <image name="menu_x" width="56" height="56"/>
     </resources>
 </document>

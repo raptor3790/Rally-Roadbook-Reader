@@ -21,6 +21,7 @@ typedef enum
 @property (strong, nonatomic) NSMutableArray *arrRoadBooks;
 
 @property (strong, nonatomic) NSString *strFolderId;
+@property (strong, nonatomic) NSString *strFolderType;
 @property (strong, nonatomic) NSString *strRoadbookPageName;
 @property (weak, nonatomic) IBOutlet UITableView *tblRoadbooks;
 

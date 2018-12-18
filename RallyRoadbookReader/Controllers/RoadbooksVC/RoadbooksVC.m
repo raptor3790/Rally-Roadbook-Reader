@@ -584,6 +584,7 @@
             CDFolders *objFolder = arrFolders[indexPath.row];
             vc.strFolderId = [NSString stringWithFormat:@"%ld", (long)[objFolder.foldersIdentifier doubleValue]];
             vc.strRoadbookPageName = objFolder.folderName;
+            vc.strFolderType = objFolder.folderType;
             [self.navigationController pushViewController:vc animated:YES];
         }
             break;
@@ -728,6 +729,8 @@
             break;
     }
     
+    BOOL isSharedPage = [_strFolderType isEqualToString:@"shared_with_me"];
+    [cell.btnShare setHidden:isSharedPage];
     [cell.btnShare setTintColor:[UIColor redColor]];
     [cell.btnShare addTarget:self action:@selector(btnShareClicked:) forControlEvents:UIControlEventTouchUpInside];
 

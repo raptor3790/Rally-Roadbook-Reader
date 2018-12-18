@@ -98,14 +98,14 @@ typedef enum
     CGSize kbSize = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        _bottomTblRegister.constant = kbSize.height;
+        self->_bottomTblRegister.constant = kbSize.height;
         [self.view layoutIfNeeded];
         
-        switch (_currentTextFieldTag)
+        switch (self->_currentTextFieldTag)
         {
             case RegisterCellTypeEmail:
             {
-                [_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypeEmail inSection:0]
+                [self->_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypeEmail inSection:0]
                                     atScrollPosition:UITableViewScrollPositionTop
                                             animated:YES];
             }
@@ -113,7 +113,7 @@ typedef enum
                 
             case RegisterCellTypeUserName:
             {
-                [_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypeUserName inSection:0]
+                [self->_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypeUserName inSection:0]
                                     atScrollPosition:UITableViewScrollPositionTop
                                             animated:YES];
             }
@@ -121,7 +121,7 @@ typedef enum
                 
             case RegisterCellTypePassword:
             {
-                [_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypePassword inSection:0]
+                [self->_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypePassword inSection:0]
                                     atScrollPosition:UITableViewScrollPositionTop
                                             animated:YES];
             }
@@ -129,7 +129,7 @@ typedef enum
                 
             case RegisterCellTypeConfirmPassword:
             {
-                [_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypeConfirmPassword inSection:0]
+                [self->_tblRegister scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:RegisterCellTypeConfirmPassword inSection:0]
                                     atScrollPosition:UITableViewScrollPositionTop
                                             animated:YES];
             }
@@ -416,7 +416,7 @@ typedef enum
                                                      [dicParam setValue:dicAuth forKey:@"auth"];
                                                      [dicParam setValue:@YES forKey:@"send_email"];
                                                      
-                                                     _loginType = LoginTypeFacebook;
+                                                     self->_loginType = LoginTypeFacebook;
                                                      
                                                      [[WebServiceConnector alloc] init:URLSocialLogin
                                                                         withParameters:dicParam

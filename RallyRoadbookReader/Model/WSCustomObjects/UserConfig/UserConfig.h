@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "RallyNavigatorConstants.h"
 
 
 @interface UserConfig : NSObject <NSCoding>

@@ -66,6 +66,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTop_Time;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTop_Speed;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintWidthSetting;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightSetting;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTOD;
 

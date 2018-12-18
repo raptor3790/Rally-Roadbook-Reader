@@ -175,10 +175,12 @@ showDisplayMsg:(NSString *)message
     if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
         User *objUser = GET_USER_OBJ;
 
-        NSDictionary *headers = @{ @"token": objUser.authenticationToken,
-                                   @"email": objUser.email  };
+        if (objUser != nil) {
+            NSDictionary *headers = @{ @"token": objUser.authenticationToken,
+                                       @"email": objUser.email  };
 
-        [request setAllHTTPHeaderFields:headers];
+            [request setAllHTTPHeaderFields:headers];
+        }
     }
 
     return request;

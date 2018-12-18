@@ -229,7 +229,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
         }
             break;
@@ -246,7 +246,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
         }
             break;
@@ -277,7 +277,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
             
             [self.tblSettings beginUpdates];
@@ -301,7 +301,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
             
             [self.tblSettings beginUpdates];
@@ -338,7 +338,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
         }
             break;
@@ -356,7 +356,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
         }
             break;
@@ -385,7 +385,7 @@
         (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
             [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     }
     else
@@ -401,7 +401,7 @@
         (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
             [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-            [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
+            [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     }
     
@@ -427,7 +427,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
 
         }
@@ -447,7 +447,7 @@
             (SettingsCell *)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
+                [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
             });
         }
             break;
@@ -481,14 +481,14 @@
     [self.view endEditing:YES];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([_delegate respondsToSelector:@selector(clickedLogout)])
+        if ([self->_delegate respondsToSelector:@selector(clickedLogout)])
         {
             [self dismissViewControllerAnimated:YES completion:^{
-                [_delegate clickedLogout];
-                if (_strRoadbookId) {
-                    if ([_delegate respondsToSelector:@selector(clickedLogout)])
+                [self->_delegate clickedLogout];
+                if (self->_strRoadbookId) {
+                    if ([self->_delegate respondsToSelector:@selector(clickedLogout)])
                     {
-                        [_delegate odoValueChanged:totalDistance];
+                        [self->_delegate odoValueChanged:self->totalDistance];
                     }
                 }
             }];
@@ -760,15 +760,15 @@
             [self.view endEditing:YES];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                if ([_delegate respondsToSelector:@selector(clickedRoadbooks)])
+                if ([self->_delegate respondsToSelector:@selector(clickedRoadbooks)])
                 {
                     [self dismissViewControllerAnimated:YES completion:^{
-                        [_delegate clickedRoadbooks];
+                        [self->_delegate clickedRoadbooks];
                     }];
-                    if (_strRoadbookId) {
-                        if ([_delegate respondsToSelector:@selector(clickedLogout)])
+                    if (self->_strRoadbookId) {
+                        if ([self->_delegate respondsToSelector:@selector(clickedLogout)])
                         {
-                            [_delegate odoValueChanged:totalDistance];
+                            [self->_delegate odoValueChanged:self->totalDistance];
                             
                         }
                     }
