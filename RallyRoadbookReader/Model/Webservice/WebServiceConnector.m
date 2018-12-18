@@ -91,34 +91,34 @@ showDisplayMsg:(NSString *)message
         
         if (error)
         {
-            responseCode = 101;
+            self->responseCode = 101;
             self.responseError = error.localizedDescription;
         }
         else
         {
             if ([responseString isEqualToString:@"Fail"])
             {
-                responseCode = 102;
+                self->responseCode = 102;
                 self.responseError = @"Response Issue From Server";
             }
             else if ([responseString isEqualToString:@"Not Available"])
             {
-                responseCode = 103;
+                self->responseCode = 103;
                 self.responseError = @"No Data Available";
                 ShowNetworkIndicator(NO);
             }
             else if ([[objects valueForKey:@"status"] isEqualToString:@"failed"])
             {
-                responseCode = 104;
-                responseDict = (NSDictionary *) objects;
+                self->responseCode = 104;
+                self->responseDict = (NSDictionary *) objects;
                 self.responseError = [objects valueForKey:@"message"];
                 ShowNetworkIndicator(NO);
             }
             else
             {
-                responseCode = 100;
-                responseDict = (NSDictionary *) objects;
-                responseArray = [[WebServiceDataAdaptor alloc]autoParse:responseDict forServiceName:WebService];
+                self->responseCode = 100;
+                self->responseDict = (NSDictionary *) objects;
+                self->responseArray = [[WebServiceDataAdaptor alloc]autoParse:self->responseDict forServiceName:WebService];
                 ShowNetworkIndicator(NO);
             }
         }
