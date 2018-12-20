@@ -147,16 +147,18 @@
     [self manageUI];
     
     User *objUser = GET_USER_OBJ;
-    
-    if ([objUser.role isEqualToString:@"user"])
+
+    if ( ([objUser.role isEqualToString:@"user"] == NO) ||
+         ([_objRoute.name isEqualToString:kDefaultRoadPdf]) ||
+         ([_objRoute.name isEqualToString:kDefaultCrossCountryPdf]) )
+    {
+        [self setUpWebView];
+    }
+    else
     {
         _tblRoadbook.hidden = NO;
         [self fetchRouteDetails];
         [self callWebServiceToGetRoute];
-    }
-    else
-    {
-        [self setUpWebView];
     }
     
     [self SetUpTutorial];
@@ -242,7 +244,7 @@
                 {
                     strFileType = objUserConfig.pdfFormat == PdfFormatRoadRally ? @"_Road_Rally" : @"_Cross_Country";
                 }
-                NSString *filePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld%@.pdf", (long)[_objRoute.routesIdentifier doubleValue], strFileType]];
+                NSString *filePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld%@.pdf", (long)_objRoute.routesIdentifier, strFileType]];
                 
                 NSURL *urlPdf = [NSURL fileURLWithPath:filePath];
                 [_wView loadFileURL:urlPdf allowingReadAccessToURL:urlPdf];
@@ -516,7 +518,7 @@
 
 - (void)callWebServiceToGetRoute
 {
-    NSString *strURL = [NSString stringWithFormat:@"%@/%ld", URLGetRouteDetails, (long)[_objRoute.routesIdentifier doubleValue]];
+    NSString *strURL = [NSString stringWithFormat:@"%@/%ld", URLGetRouteDetails, (long)_objRoute.routesIdentifier];
     [[WebServiceConnector alloc] init:strURL
                        withParameters:nil
                            withObject:self
@@ -538,7 +540,7 @@
 
 - (void)fetchRouteDetails
 {
-    NSString *strRoadBookId = [NSString stringWithFormat:@"routeIdentifier = %ld", (long)[_objRoute.routesIdentifier doubleValue]];
+    NSString *strRoadBookId = [NSString stringWithFormat:@"routeIdentifier = %ld", (long)_objRoute.routesIdentifier];
     NSArray *arrSyncedData = [[[CDRoute query] where:[NSPredicate predicateWithFormat:strRoadBookId]] all];
     
     if (arrSyncedData.count > 0)
@@ -711,6 +713,7 @@
 {
     NSInteger degree = (NSInteger)currentDegree < 0 ? 0 : currentDegree;
     _lblDegree.text = [NSString stringWithFormat:degree < 10 ? @"00%ld°" : degree < 100 ? @"0%ld°" : @"%ld°", degree];
+    _lblDegree.attributedText = [self DegreeAttributedText:_lblDegree.text];
 }
 
 - (void)getCurrentDateTime
@@ -753,10 +756,12 @@
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap)
     {
         _lblDegree.text = strCurrentDateTime;
+        _lblDegree.attributedText = [self TimeAttributedText:_lblDegree.text];
     }
     else
     {
         _lblTime.text = strCurrentDateTime;
+        _lblTime.attributedText = [self TimeAttributedText:_lblTime.text];
     }
     
     [self performSelector:@selector(getCurrentDateTime) withObject:nil afterDelay:1];
@@ -843,6 +848,35 @@
     
     return attributeText;
     
+}
+
+-(NSAttributedString *)TimeAttributedText:(NSString *)timeString
+{
+    NSUInteger totalDisplayUnits = 1;
+    totalDisplayUnits += (objUserConfig.isShowCap + objUserConfig.isShowTime + objUserConfig.isShowSpeed);
+    
+    float fontSize = [self TimeSpeedFontSize:(totalDisplayUnits < 4)];
+    
+    UIFont *segment = [UIFont fontWithName:@"Segment7Standard" size:fontSize];
+    UIFont *sep = [UIFont fontWithName:@"CursedTimerULiL" size:fontSize - 6];
+    
+    NSMutableAttributedString *attributeText = [[NSMutableAttributedString alloc] initWithString:timeString];
+    
+    [attributeText addAttribute:NSFontAttributeName value:segment range:[timeString rangeOfString:timeString]];
+    [attributeText setAttributes:@{NSFontAttributeName: sep} range:[timeString rangeOfString:@":"]];
+    
+    return attributeText;
+}
+
+-(NSAttributedString *)DegreeAttributedText:(NSString *)degree
+{
+    UIFont *segment = [UIFont fontWithName:@"Segment7Standard" size:[self CapHeadingFontSize]];
+    
+    NSMutableAttributedString *attributeText = [[NSMutableAttributedString alloc]
+                                                initWithString:degree
+                                                attributes:@{NSFontAttributeName: segment}];
+    
+    return attributeText;
 }
 
 -(NSString *)string:(NSString*)string ByReplacingACharacterAtIndex:(int)i byCharacter:(NSString*)StringContainingAChar{
@@ -934,10 +968,8 @@
                     case 4:
                         return 65;
                         break;
-                    case 5:
-                        return 60;
-                        break;
                     default:
+                        return 60;
                         break;
                 }
                 break;
@@ -948,10 +980,8 @@
                     case 4:
                         return 90;
                         break;
-                    case 5:
-                        return 70;
-                        break;
                     default:
+                        return 70;
                         break;
                 }
                 break;
@@ -978,10 +1008,8 @@
                     case 4:
                         return 130;
                         break;
-                    case 5:
-                        return 110;
-                        break;
                     default:
+                        return 110;
                         break;
                 }
             default:
@@ -997,10 +1025,8 @@
                     case 4:
                         return 35;
                         break;
-                    case 5:
-                        return 30;
-                        break;
                     default:
+                        return 30;
                         break;
                 }
                 break;
@@ -1011,10 +1037,8 @@
                     case 4:
                         return 45;
                         break;
-                    case 5:
-                        return 40;
-                        break;
                     default:
+                        return 40;
                         break;
                 }
                 break;
@@ -1025,10 +1049,8 @@
                     case 4:
                         return 55;
                         break;
-                    case 5:
-                        return 40;
-                        break;
                     default:
+                        return 40;
                         break;
                 }
                 break;
@@ -1041,10 +1063,8 @@
                     case 4:
                         return 90;
                         break;
-                    case 5:
-                        return 80;
-                        break;
                     default:
+                        return 80;
                         break;
                 }
                break;
@@ -1081,12 +1101,12 @@
         else{
             switch (Width) {
                 case 320:
-                    return 30;
+                    return 29;
                 case 375:
-                    return 35;
+                    return 34;
                     break;
                 case 414:
-                    return 40;
+                    return 39;
                     break;
                 case 768:
                 case 834:
@@ -1201,9 +1221,9 @@
     _constraintHeightTOD.constant = 8.0f;
     
     _lblDistance.font = [_lblDistance.font fontWithSize:[self OdometerFontSize:_lblDistance.text.length]];
+    _lblTime.attributedText = [self TimeAttributedText:_lblTime.text];
     if (totalDisplayUnits < 4){
         _lblSpeed.font = [_lblSpeed.font fontWithSize:[self CapHeadingFontSize]];
-        _lblTime.font = [_lblTime.font fontWithSize:[self TimeSpeedFontSize:true]];
         _labelTOD.font = [_labelTOD.font fontWithSize:12.0f];
         _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:12.0f];
         _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12.0f];
@@ -1215,7 +1235,6 @@
     }
     else{
         _lblSpeed.font = [_lblSpeed.font fontWithSize:[self TimeSpeedFontSize:false]];
-        _lblTime.font = [_lblTime.font fontWithSize:[self TimeSpeedFontSize:false]];
         if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
         {
             _labelTOD.font = [_labelTOD.font fontWithSize:8.0f];
@@ -1232,10 +1251,10 @@
         
     }
     if (objUserConfig.isShowCap) {
-        _lblDegree.font = [_lblDegree.font fontWithSize:[self CapHeadingFontSize]];
+        _lblDegree.attributedText = [self DegreeAttributedText:_lblDegree.text];
     }
     else{
-       _lblDegree.font = [_lblDegree.font fontWithSize:[self TimeSpeedFontSize:true]];
+        _lblDegree.attributedText = [self TimeAttributedText:_lblDegree.text];
     }
     
     
@@ -1258,10 +1277,15 @@
         
     }
     
-    CGFloat settingSize = [[UIScreen mainScreen] bounds].size.width > 500 ? 32.0f : 27.0f;
-    _constraintWidthSetting.constant = settingSize;
-    _constraintHeightSetting.constant = settingSize;
-    printf("Screen width: %f, button size: %f\n", [[UIScreen mainScreen] bounds].size.width, settingSize);
+    // Setting button image
+    if ([[UIScreen mainScreen] bounds].size.width > 600)
+    {
+        _settingImage.image = [UIImage imageNamed:@"menu_h"];
+    }
+    else
+    {
+        _settingImage.image = [UIImage imageNamed:@"menu"];
+    }
 }
 
 -(float)ReturnFontSize:(BOOL)Bigger{
@@ -1453,22 +1477,26 @@
         {
             strFileType = objUserConfig.pdfFormat == PdfFormatRoadRally ? @"_Road_Rally" : @"_Cross_Country";
         }
-        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld%@.pdf", (long)[_objRoute.routesIdentifier doubleValue], strFileType]];
+        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld%@.pdf", (long)_objRoute.routesIdentifier, strFileType]];
         
         NSURL *urlPdf = [NSURL fileURLWithPath:filePath];
         [_wView loadFileURL:urlPdf allowingReadAccessToURL:urlPdf];
-        [_wView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:strURL]]];
         
-        urlPdf = [NSURL URLWithString:strURL];
-        NSURLSession *session = [NSURLSession sharedSession];
-        [[session dataTaskWithURL:urlPdf completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            
-            if(!error)
-            {
-                [data writeToFile:filePath atomically:YES];
-            }
-            
-        }] resume];
+        if ([[WebServiceConnector alloc] checkNetConnection])
+        {
+            urlPdf = [NSURL URLWithString:strURL];
+            [_wView loadRequest:[NSURLRequest requestWithURL:urlPdf]];
+
+            NSURLSession *session = [NSURLSession sharedSession];
+            [[session dataTaskWithURL:urlPdf completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+
+                if(!error)
+                {
+                    [data writeToFile:filePath atomically:YES];
+                }
+
+            }] resume];
+        }
     }
 }
 
@@ -2341,13 +2369,6 @@
     {
         CLLocation *location = arrLocations.firstObject;
         
-        if (objUserConfig.isShowCap)
-        {
-            currentDegree = location.course;
-            _lblCAPHeading.text = @"CAP HEADING";
-            [self displayCAPHeading];
-        }
-        
         if (!arrAllLocations)
         {
             arrAllLocations = [[NSMutableArray alloc] init];
@@ -2374,13 +2395,27 @@
         
         [self displayAllUnits];
         
+        
+        if (([self convertDistanceToMiles:currentSpeed] >= 3.0f) && (objUserConfig.isShowCap))
+        {
+            currentDegree = location.course;
+            _lblCAPHeading.text = @"CAP HEADING";
+            [self displayCAPHeading];
+        }
+        
+        
         [arrAllLocations addObject:location];
     }
 }
 
 - (void)didUpdateToHeading:(CLHeading *)heading
 {
-    currentDegree = heading.magneticHeading;
+    if (([self convertDistanceToMiles:currentSpeed] < 3.0f) && (objUserConfig.isShowCap))
+    {
+        currentDegree = heading.magneticHeading;
+        _lblCAPHeading.text = @"CAP HEADING";
+        [self displayCAPHeading];
+    }
 }
 
 #pragma mark - UITableView Delegate Methods
@@ -2450,6 +2485,15 @@
     cell.txtView.layer.shouldRasterize = YES;
     cell.txtView.editable = NO;
     cell.txtView.userInteractionEnabled = YES;
+    
+    if ([[UIScreen mainScreen] bounds].size.width > 500)
+    {
+        cell.lblDistance.font = [UIFont boldSystemFontOfSize:48];
+    }
+    else
+    {
+        cell.lblDistance.font = [UIFont boldSystemFontOfSize:36];
+    }
     
     if (indexPath.row == 0)
     {
@@ -2676,6 +2720,16 @@
         float eY = 15 * sin(DEGREES_TO_RADIANS((A-155))) + y;
         
         [cell drawTriPathIn:cell.contentView startPoint:CGPointMake(x, y) leftPoint:CGPointMake(sX, sY) rightPoint:CGPointMake(eX, eY)];
+    }
+    
+    // Update font size
+    if ([[UIScreen mainScreen] bounds].size.width > 500)
+    {
+        cell.lblDistance.font = [UIFont boldSystemFontOfSize:48];
+    }
+    else
+    {
+        cell.lblDistance.font = [UIFont boldSystemFontOfSize:36];
     }
 }
 

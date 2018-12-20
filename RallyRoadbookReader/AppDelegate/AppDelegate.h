@@ -14,7 +14,7 @@
 @property (strong, nonatomic) UIWindow *window;
 
 @property (assign, nonatomic) double cal;
-@property (strong,nonatomic) LocationManager *locationManager;
+@property (strong, nonatomic) LocationManager *locationManager;
 
 @property (strong, nonatomic) RemoteCommandManager *remoteCommandManager;
 @property (strong, nonatomic) AssetPlaybackManager *assetManager;

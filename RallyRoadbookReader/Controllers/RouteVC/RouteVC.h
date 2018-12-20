@@ -15,12 +15,14 @@
 @interface RouteVC : BaseVC
 
 @property (assign, nonatomic) double calibrate;
-@property (weak, nonatomic) CDRoutes *objRoute;
+@property (weak, nonatomic) Routes *objRoute;
 @property (nonatomic, assign) PdfFormat currentPdfFormat;
 @property (assign, nonatomic) BOOL isHighlight;
 @property (strong, nonatomic) NSString *strRouteName;
 
 @property (weak, nonatomic) IBOutlet UIView *vwHeader;
+
+@property (weak, nonatomic) IBOutlet UIImageView *settingImage;
 
 @property (weak, nonatomic) IBOutlet UIView *vwOdometer;
 @property (weak, nonatomic) IBOutlet UIView *vwSpeed;
@@ -65,9 +67,6 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTop_Time;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTop_Speed;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintWidthSetting;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightSetting;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTOD;
 

@@ -68,4 +68,12 @@
     }
 }
 
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
+{
+    if ([_delegate respondsToSelector:@selector(didUpdateToHeading:)])
+    {
+        [_delegate didUpdateToHeading:(CLHeading *)newHeading];
+    }
+}
+
 @end
