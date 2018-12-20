@@ -28,8 +28,8 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
-//    NSString *strLink = @"https://www.rallynavigator.com/rally-navigator-mobile-application";
-    NSString *strLink = @"https://rallynavigator-staging.herokuapp.com/rally-navigator-mobile-application";
+    NSString *strLink = @"https://www.rallynavigator.com/rally-navigator-mobile-application";
+//    NSString *strLink = @"https://rallynavigator-staging.herokuapp.com/rally-navigator-mobile-application";
     NSURL *urlLink = [NSURL URLWithString:strLink];
     
     [_webView loadRequest:[NSURLRequest requestWithURL:urlLink]];

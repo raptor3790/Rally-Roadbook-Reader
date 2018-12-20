@@ -7,8 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-
-
 @interface Routes : NSObject <NSCoding>
 
 @property (nonatomic, assign) double routesIdentifier;
@@ -26,6 +24,7 @@
 
 + (Routes *)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
+- (instancetype)initWithCDRoutes:(CDRoutes *)routes;
 - (NSDictionary *)dictionaryRepresentation;
 
 @end

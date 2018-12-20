@@ -255,7 +255,18 @@
                                                                       forEntity:NSStringFromClass([CDRoutes class])]];
     
     arrRoadBooks = [[NSMutableArray alloc] init];
-    arrRoadBooks = [arrSyncData mutableCopy];
+    //    arrRoadBooks = [arrSyncData mutableCopy];
+    for (CDRoutes *route in arrSyncData) {
+        Routes *item = [[Routes alloc] initWithCDRoutes:route];
+        [arrRoadBooks addObject:item];
+        if ([objUser.role isEqualToString:@"user"]) {
+            if (([route.name isEqualToString:kDefaultRoadName]) || ([route.name isEqualToString:kDefaultCrossCountryName])) {
+                Routes *itemPdf = [[Routes alloc] initWithCDRoutes:route];
+                itemPdf.name = [route.name isEqualToString:kDefaultRoadName] ? kDefaultRoadPdf : kDefaultCrossCountryPdf;
+                [arrRoadBooks addObject:itemPdf];
+            }
+        }
+    }
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(CDFolders *objFolder, NSDictionary<NSString *,id> * _Nullable bindings) {
         return ![objFolder.folderType isEqualToString:@"default"];
@@ -464,13 +475,11 @@
     
     if (idPath.section == MyRoadbooksSectionRoadbooks)
     {
-        CDRoutes *objRoadbook = [arrRoadBooks objectAtIndex:idPath.row];
+        Routes *objRoadbook = [arrRoadBooks objectAtIndex:idPath.row];
         
-        bool isEditable = [objRoadbook.editable boolValue];
-        
-        if (isEditable)
+        if (objRoadbook.editable)
         {
-            strId = [NSString stringWithFormat:@"%ld", (long)[objRoadbook.routesIdentifier doubleValue]];
+            strId = [NSString stringWithFormat:@"%ld", (long)objRoadbook.routesIdentifier];
         }
         else
         {
@@ -592,7 +601,7 @@
         case MyRoadbooksSectionRoadbooks:
         {
             RouteVC *vc = loadViewController(StoryBoard_Roadbooks, kIDRouteVC);
-            CDRoutes *objRoadbook = arrRoadBooks[indexPath.row];
+            Routes *objRoadbook = arrRoadBooks[indexPath.row];
             vc.objRoute = objRoadbook;
             vc.strRouteName = objRoadbook.name;
             vc.navigationItem.hidesBackButton = YES;
@@ -660,7 +669,7 @@
             
         case MyRoadbooksSectionRoadbooks:
         {
-            CDRoutes *objRoadbook = [arrRoadBooks objectAtIndex:indexPath.row];
+            Routes *objRoadbook = [arrRoadBooks objectAtIndex:indexPath.row];
             cell.lblTitle.text = objRoadbook.name;
             
             NSInteger distance = 0;
@@ -684,11 +693,11 @@
                 
                 if ([objRoadbook.units isEqualToString:@"kilometers"])
                 {
-                    distance = (NSInteger)ceilf([objRoadbook.length doubleValue]);
+                    distance = (NSInteger)ceilf(objRoadbook.length);
                 }
                 else
                 {
-                    distance = (NSInteger)ceilf([objRoadbook.length doubleValue] / 0.62f);
+                    distance = (NSInteger)ceilf(objRoadbook.length / 0.62f);
                 }
             }
             else
@@ -697,15 +706,15 @@
                 
                 if ([objRoadbook.units isEqualToString:@"kilometers"])
                 {
-                    distance = (NSInteger)ceilf([objRoadbook.length doubleValue] * 0.62f);
+                    distance = (NSInteger)ceilf(objRoadbook.length * 0.62f);
                 }
                 else
                 {
-                    distance = (NSInteger)ceilf([objRoadbook.length doubleValue]);
+                    distance = (NSInteger)ceilf(objRoadbook.length);
                 }
             }
 
-            cell.lblDetails.text = [NSString stringWithFormat:@"%ld Way Points | %ld %@", (NSInteger)floorf([objRoadbook.waypointCount doubleValue]), distance, strUnit];
+            cell.lblDetails.text = [NSString stringWithFormat:@"%ld Way Points | %ld %@", (NSInteger)floorf(objRoadbook.waypointCount), distance, strUnit];
             
             NSString *strDate = [self convertDateFormatDate:objRoadbook.updatedAt];
             cell.lblDate.text = strDate;

@@ -64,10 +64,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Wf-xq-i1z" userLabel="View Distance Increase">
-                                                <rect key="frame" x="5" y="14" width="136" height="41"/>
+                                                <rect key="frame" x="5" y="14" width="206.5" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap here to increase the distance manually" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iyr-9U-Df9">
-                                                        <rect key="frame" x="0.0" y="0.0" width="136" height="41"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="206.5" height="41"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -82,10 +82,10 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rMj-PJ-HBK" userLabel="View Distance Decrease">
-                                                <rect key="frame" x="5" y="55" width="136" height="41"/>
+                                                <rect key="frame" x="5" y="55" width="210" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap here to decrease the distance manually" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ord-Nn-1H8">
-                                                        <rect key="frame" x="0.0" y="0.0" width="136" height="41"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="210" height="41"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -100,14 +100,14 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gAD-Nv-sw0" userLabel="View Settings">
-                                                <rect key="frame" x="336" y="9" width="31" height="42"/>
+                                                <rect key="frame" x="232" y="0.0" width="143" height="66"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mGs-xr-6Ri">
-                                                <rect key="frame" x="236" y="51" width="131" height="51"/>
+                                                <rect key="frame" x="244" y="66" width="131" height="36"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap here for more settings" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5F-ZK-nZ7">
-                                                        <rect key="frame" x="0.0" y="0.0" width="131" height="51"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="131" height="36"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -236,12 +236,15 @@ Tap and Hold for  continous scrolling</string>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qPZ-R4-dv9">
                                                             <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mu-Rf-0eR">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="35"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="35" id="4HY-Kb-Eev"/>
-                                                                    </constraints>
-                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="00:10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="28" translatesAutoresizingMaskIntoConstraints="NO" id="2mu-Rf-0eR">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="71.5"/>
+                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="plD-iU-Yjy">
+                                                                    <rect key="frame" x="0.0" y="63.5" width="125" height="26.5"/>
+                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -283,16 +286,10 @@ Tap and Hold for  continous scrolling</string>
                                                                         <constraint firstAttribute="height" constant="35" id="hv5-oJ-ugJ"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="plD-iU-Yjy">
-                                                                    <rect key="frame" x="0.0" y="35" width="125" height="55"/>
-                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="plD-iU-Yjy" firstAttribute="leading" secondItem="qPZ-R4-dv9" secondAttribute="leading" id="3b3-Io-B5u"/>
-                                                                <constraint firstItem="plD-iU-Yjy" firstAttribute="top" secondItem="2mu-Rf-0eR" secondAttribute="bottom" id="A4N-eI-VwY"/>
+                                                                <constraint firstItem="plD-iU-Yjy" firstAttribute="top" secondItem="2mu-Rf-0eR" secondAttribute="bottom" constant="-8" id="A4N-eI-VwY"/>
                                                                 <constraint firstItem="2mu-Rf-0eR" firstAttribute="leading" secondItem="qPZ-R4-dv9" secondAttribute="leading" id="DoC-YZ-hfE"/>
                                                                 <constraint firstAttribute="trailing" secondItem="plD-iU-Yjy" secondAttribute="trailing" id="EtP-kq-UlG"/>
                                                                 <constraint firstAttribute="bottom" secondItem="X7g-SG-O5f" secondAttribute="bottom" id="Oku-cx-Jtq"/>
@@ -472,32 +469,34 @@ Tap and Hold for  continous scrolling</string>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23B-O2-LSb">
-                                                                        <rect key="frame" x="0.0" y="17" width="136" height="65"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="23B-O2-LSb">
+                                                                        <rect key="frame" x="4" y="17" width="128" height="65"/>
                                                                         <fontDescription key="fontDescription" name="Segment7Standard" family="Segment7" pointSize="65"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NcH-Kg-voh">
-                                                                        <rect key="frame" x="0.0" y="41" width="136" height="41"/>
-                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                    </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s3e-OR-6PY">
                                                                         <rect key="frame" x="0.0" y="0.0" width="136" height="41"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                    </view>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NcH-Kg-voh">
+                                                                        <rect key="frame" x="0.0" y="41" width="136" height="41"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                     </view>
                                                                 </subviews>
                                                                 <color key="backgroundColor" red="0.42352941179999998" green="0.41176470590000003" blue="0.33333333329999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstItem="23B-O2-LSb" firstAttribute="top" secondItem="dSk-9q-02V" secondAttribute="bottom" id="7m3-ad-Rp8"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="NcH-Kg-voh" secondAttribute="trailing" id="CRJ-pB-SEz"/>
                                                                     <constraint firstAttribute="bottom" secondItem="TuI-e6-y2H" secondAttribute="bottom" id="DJB-GV-PXp"/>
                                                                     <constraint firstItem="TuI-e6-y2H" firstAttribute="top" secondItem="sWX-HM-2Dp" secondAttribute="top" id="EcE-Ci-Fyc"/>
-                                                                    <constraint firstItem="NcH-Kg-voh" firstAttribute="leading" secondItem="23B-O2-LSb" secondAttribute="leading" id="FvK-2a-8G6"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="s3e-OR-6PY" secondAttribute="trailing" id="GYK-kQ-D3j"/>
+                                                                    <constraint firstItem="s3e-OR-6PY" firstAttribute="leading" secondItem="sWX-HM-2Dp" secondAttribute="leading" id="JED-ZQ-qco"/>
                                                                     <constraint firstItem="dSk-9q-02V" firstAttribute="leading" secondItem="sWX-HM-2Dp" secondAttribute="leading" constant="8" id="Jpv-4r-uwp"/>
                                                                     <constraint firstItem="s3e-OR-6PY" firstAttribute="leading" secondItem="TuI-e6-y2H" secondAttribute="leading" id="M1C-h6-AiK"/>
                                                                     <constraint firstItem="s3e-OR-6PY" firstAttribute="top" secondItem="TuI-e6-y2H" secondAttribute="top" id="OfT-7n-VqM"/>
                                                                     <constraint firstItem="s3e-OR-6PY" firstAttribute="width" secondItem="NcH-Kg-voh" secondAttribute="width" id="Sce-R8-uhn"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="23B-O2-LSb" secondAttribute="trailing" id="YcX-rt-MHw"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="23B-O2-LSb" secondAttribute="trailing" constant="4" id="YcX-rt-MHw"/>
                                                                     <constraint firstItem="TuI-e6-y2H" firstAttribute="leading" secondItem="sWX-HM-2Dp" secondAttribute="leading" id="ZWQ-55-zjX"/>
                                                                     <constraint firstItem="NcH-Kg-voh" firstAttribute="height" secondItem="TuI-e6-y2H" secondAttribute="height" multiplier="0.5" id="edd-VV-m8L"/>
                                                                     <constraint firstItem="NcH-Kg-voh" firstAttribute="width" secondItem="TuI-e6-y2H" secondAttribute="width" id="jW0-Gh-jEj"/>
@@ -505,9 +504,10 @@ Tap and Hold for  continous scrolling</string>
                                                                     <constraint firstAttribute="trailing" secondItem="TuI-e6-y2H" secondAttribute="trailing" id="km3-Q5-tTi"/>
                                                                     <constraint firstItem="s3e-OR-6PY" firstAttribute="height" secondItem="NcH-Kg-voh" secondAttribute="height" id="mso-fs-lUq"/>
                                                                     <constraint firstAttribute="trailing" secondItem="dSk-9q-02V" secondAttribute="trailing" constant="8" id="p2J-Rl-yoU"/>
+                                                                    <constraint firstItem="NcH-Kg-voh" firstAttribute="leading" secondItem="sWX-HM-2Dp" secondAttribute="leading" id="veh-m1-Phd"/>
                                                                     <constraint firstItem="dSk-9q-02V" firstAttribute="top" secondItem="sWX-HM-2Dp" secondAttribute="top" constant="5" id="weS-or-HEo"/>
                                                                     <constraint firstItem="NcH-Kg-voh" firstAttribute="bottom" secondItem="TuI-e6-y2H" secondAttribute="bottom" id="y6i-0n-hHx"/>
-                                                                    <constraint firstItem="23B-O2-LSb" firstAttribute="leading" secondItem="sWX-HM-2Dp" secondAttribute="leading" id="yHx-1L-Z22"/>
+                                                                    <constraint firstItem="23B-O2-LSb" firstAttribute="leading" secondItem="sWX-HM-2Dp" secondAttribute="leading" constant="4" id="yHx-1L-Z22"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
@@ -922,14 +922,13 @@ Tap and Hold for  continous scrolling</string>
                                     <constraint firstAttribute="width" secondItem="Zz4-GV-dpl" secondAttribute="height" multiplier="320:94" id="cVT-MR-FMj"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cN-fm-Q78">
-                                <rect key="frame" x="338" y="34" width="27" height="27"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="27" id="FfH-vB-1Kk"/>
-                                    <constraint firstAttribute="height" constant="27" id="uGP-am-Swg"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu" translatesAutoresizingMaskIntoConstraints="NO" id="NCH-sM-Rpl">
+                                <rect key="frame" x="334" y="36" width="28" height="20"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="topRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cN-fm-Q78">
+                                <rect key="frame" x="302" y="20" width="73" height="55"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="menu_x"/>
+                                <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="0.0" maxY="12"/>
                                 <connections>
                                     <action selector="btnSettingsClicked:" destination="1lz-Yh-F9l" eventType="touchUpInside" id="9JC-UV-LHY"/>
                                 </connections>
@@ -945,46 +944,49 @@ Tap and Hold for  continous scrolling</string>
                         <constraints>
                             <constraint firstItem="0vS-U6-X5l" firstAttribute="centerX" secondItem="3hu-8C-aTM" secondAttribute="centerX" id="06M-Ob-vXg"/>
                             <constraint firstItem="Zmp-Fg-pLi" firstAttribute="top" secondItem="Zz4-GV-dpl" secondAttribute="bottom" constant="10" id="1Nn-id-VpY"/>
+                            <constraint firstItem="NCH-sM-Rpl" firstAttribute="trailing" secondItem="7cN-fm-Q78" secondAttribute="trailing" constant="-13" id="1PY-ki-PyV"/>
+                            <constraint firstItem="7cN-fm-Q78" firstAttribute="leading" secondItem="LzP-61-9Tp" secondAttribute="centerX" id="1ZL-SX-bTk"/>
                             <constraint firstItem="imN-Xt-mhP" firstAttribute="trailing" secondItem="3hu-8C-aTM" secondAttribute="trailing" id="2sB-Hu-NPE"/>
                             <constraint firstItem="imN-Xt-mhP" firstAttribute="bottom" secondItem="3hu-8C-aTM" secondAttribute="bottom" id="6XE-NM-yEO"/>
-                            <constraint firstItem="0JE-qM-xHX" firstAttribute="trailing" secondItem="7cN-fm-Q78" secondAttribute="trailing" constant="10" id="6k3-SV-IOc"/>
                             <constraint firstItem="rMj-PJ-HBK" firstAttribute="bottom" secondItem="NcH-Kg-voh" secondAttribute="bottom" id="6xD-92-eHP"/>
                             <constraint firstItem="OjZ-ue-9Y2" firstAttribute="trailing" secondItem="Zz4-GV-dpl" secondAttribute="trailing" id="9hx-67-x78"/>
                             <constraint firstItem="OjZ-ue-9Y2" firstAttribute="bottom" secondItem="Zz4-GV-dpl" secondAttribute="bottom" id="DFH-Lf-cSH"/>
                             <constraint firstItem="3hu-8C-aTM" firstAttribute="trailing" secondItem="0JE-qM-xHX" secondAttribute="trailing" id="DJp-j9-GKI"/>
+                            <constraint firstItem="7cN-fm-Q78" firstAttribute="bottom" secondItem="LzP-61-9Tp" secondAttribute="centerY" id="Fmd-IO-pts"/>
                             <constraint firstItem="70y-BQ-5Rb" firstAttribute="top" secondItem="Zz4-GV-dpl" secondAttribute="top" id="IGd-Vt-pPP"/>
                             <constraint firstItem="8ce-eb-id6" firstAttribute="leading" secondItem="3hu-8C-aTM" secondAttribute="leading" id="JBC-UK-sOy"/>
                             <constraint firstItem="0JE-qM-xHX" firstAttribute="trailing" secondItem="Dcj-Z6-and" secondAttribute="trailing" id="K6U-Hn-7g6"/>
-                            <constraint firstItem="gAD-Nv-sw0" firstAttribute="trailing" secondItem="7cN-fm-Q78" secondAttribute="trailing" constant="2" id="LTQ-Y8-1cZ"/>
-                            <constraint firstItem="3Wf-xq-i1z" firstAttribute="trailing" secondItem="s3e-OR-6PY" secondAttribute="trailing" id="Lxn-yf-1rv"/>
+                            <constraint firstItem="NCH-sM-Rpl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7cN-fm-Q78" secondAttribute="leading" id="Kg2-KA-dS5"/>
                             <constraint firstItem="3hu-8C-aTM" firstAttribute="top" secondItem="Zmp-Fg-pLi" secondAttribute="bottom" constant="-10" id="LyW-da-8pl"/>
                             <constraint firstItem="0vS-U6-X5l" firstAttribute="centerY" secondItem="3hu-8C-aTM" secondAttribute="centerY" id="NnG-Gh-GW6"/>
+                            <constraint firstItem="7cN-fm-Q78" firstAttribute="trailing" secondItem="0JE-qM-xHX" secondAttribute="trailing" id="O5a-lX-qy3"/>
                             <constraint firstItem="imN-Xt-mhP" firstAttribute="leading" secondItem="3hu-8C-aTM" secondAttribute="leading" id="PLf-2X-QyR"/>
                             <constraint firstItem="3Wf-xq-i1z" firstAttribute="bottom" secondItem="s3e-OR-6PY" secondAttribute="bottom" id="Qyc-or-BGP"/>
                             <constraint firstItem="3hu-8C-aTM" firstAttribute="leading" secondItem="0JE-qM-xHX" secondAttribute="leading" id="RSl-WR-rkk"/>
                             <constraint firstItem="Dcj-Z6-and" firstAttribute="leading" secondItem="0JE-qM-xHX" secondAttribute="leading" id="Rhq-29-cHu"/>
                             <constraint firstItem="imN-Xt-mhP" firstAttribute="top" secondItem="3hu-8C-aTM" secondAttribute="top" id="SBd-yy-3bO"/>
-                            <constraint firstItem="gAD-Nv-sw0" firstAttribute="top" secondItem="7cN-fm-Q78" secondAttribute="top" priority="999" constant="-5" id="Tj9-E7-CzN"/>
-                            <constraint firstItem="gAD-Nv-sw0" firstAttribute="leading" secondItem="7cN-fm-Q78" secondAttribute="leading" constant="-2" id="XWS-02-on2"/>
-                            <constraint firstItem="7cN-fm-Q78" firstAttribute="top" secondItem="dSk-9q-02V" secondAttribute="top" constant="-5" id="Xyg-Ln-S2J"/>
+                            <constraint firstItem="7cN-fm-Q78" firstAttribute="trailing" secondItem="gAD-Nv-sw0" secondAttribute="trailing" id="XwJ-3L-U9V"/>
                             <constraint firstItem="Zmp-Fg-pLi" firstAttribute="leading" secondItem="0JE-qM-xHX" secondAttribute="leading" id="YjV-Hb-wet"/>
-                            <constraint firstItem="3Wf-xq-i1z" firstAttribute="leading" secondItem="s3e-OR-6PY" secondAttribute="leading" id="ZJl-EC-ZuI"/>
                             <constraint firstItem="8ce-eb-id6" firstAttribute="top" secondItem="3hu-8C-aTM" secondAttribute="top" id="ZOU-qg-oXF"/>
                             <constraint firstItem="OjZ-ue-9Y2" firstAttribute="leading" secondItem="Zz4-GV-dpl" secondAttribute="leading" id="ZVG-n1-I47"/>
                             <constraint firstItem="3Wf-xq-i1z" firstAttribute="top" secondItem="s3e-OR-6PY" secondAttribute="top" id="aF9-bb-KCg"/>
+                            <constraint firstItem="eXa-NR-OGp" firstAttribute="top" secondItem="NCH-sM-Rpl" secondAttribute="bottom" constant="-5" id="aKv-GB-pg7"/>
                             <constraint firstItem="Zz4-GV-dpl" firstAttribute="top" secondItem="0JE-qM-xHX" secondAttribute="top" id="ahO-C2-oNC"/>
-                            <constraint firstItem="rMj-PJ-HBK" firstAttribute="trailing" secondItem="NcH-Kg-voh" secondAttribute="trailing" id="cTo-Sg-FFz"/>
+                            <constraint firstItem="7cN-fm-Q78" firstAttribute="top" secondItem="0JE-qM-xHX" secondAttribute="top" id="ajd-1K-Ijm"/>
                             <constraint firstItem="Dcj-Z6-and" firstAttribute="top" secondItem="imN-Xt-mhP" secondAttribute="bottom" id="eaj-5p-8tD"/>
                             <constraint firstItem="70y-BQ-5Rb" firstAttribute="trailing" secondItem="Zz4-GV-dpl" secondAttribute="trailing" id="f9E-Ij-Af6"/>
                             <constraint firstItem="rMj-PJ-HBK" firstAttribute="leading" secondItem="NcH-Kg-voh" secondAttribute="leading" id="hGT-1D-5uz"/>
+                            <constraint firstItem="NCH-sM-Rpl" firstAttribute="top" secondItem="tj0-Hh-eyD" secondAttribute="bottom" constant="4" id="kec-2c-RGK"/>
                             <constraint firstItem="0JE-qM-xHX" firstAttribute="bottom" secondItem="Dcj-Z6-and" secondAttribute="bottom" id="kgS-7f-iCd"/>
                             <constraint firstItem="rMj-PJ-HBK" firstAttribute="top" secondItem="NcH-Kg-voh" secondAttribute="top" id="lKh-z4-NxS"/>
-                            <constraint firstItem="gAD-Nv-sw0" firstAttribute="bottom" secondItem="7cN-fm-Q78" secondAttribute="bottom" priority="999" constant="10" id="lox-3K-eSw"/>
                             <constraint firstItem="0JE-qM-xHX" firstAttribute="trailing" secondItem="Zmp-Fg-pLi" secondAttribute="trailing" id="mGW-hw-pL5"/>
                             <constraint firstItem="0JE-qM-xHX" firstAttribute="bottom" secondItem="70y-BQ-5Rb" secondAttribute="bottom" id="mY0-GW-oo1"/>
+                            <constraint firstItem="LzP-61-9Tp" firstAttribute="leading" secondItem="gAD-Nv-sw0" secondAttribute="leading" id="med-C5-HKv"/>
                             <constraint firstItem="8ce-eb-id6" firstAttribute="trailing" secondItem="3hu-8C-aTM" secondAttribute="trailing" id="nvo-10-qPY"/>
+                            <constraint firstItem="3Wf-xq-i1z" firstAttribute="leading" secondItem="s3e-OR-6PY" secondAttribute="leading" id="oMl-th-AjT"/>
                             <constraint firstItem="70y-BQ-5Rb" firstAttribute="leading" secondItem="Zz4-GV-dpl" secondAttribute="leading" id="ptj-2a-uLC"/>
                             <constraint firstItem="3hu-8C-aTM" firstAttribute="bottom" secondItem="0JE-qM-xHX" secondAttribute="bottom" constant="-60" id="s5M-e1-RQ3"/>
+                            <constraint firstItem="7cN-fm-Q78" firstAttribute="top" secondItem="gAD-Nv-sw0" secondAttribute="top" id="svx-9g-4PO"/>
                             <constraint firstItem="Zz4-GV-dpl" firstAttribute="leading" secondItem="0JE-qM-xHX" secondAttribute="leading" id="uOx-mW-wkQ"/>
                             <constraint firstItem="8ce-eb-id6" firstAttribute="bottom" secondItem="3hu-8C-aTM" secondAttribute="bottom" id="vGi-sW-dXo"/>
                             <constraint firstItem="0JE-qM-xHX" firstAttribute="trailing" secondItem="Zz4-GV-dpl" secondAttribute="trailing" id="xMF-YC-dvI"/>
@@ -997,14 +999,12 @@ Tap and Hold for  continous scrolling</string>
                         <outlet property="bottomFooter" destination="Dcj-Z6-and" id="8N9-bX-tUV"/>
                         <outlet property="constraintAspectHeader" destination="cVT-MR-FMj" id="30G-Km-xW7"/>
                         <outlet property="constraintHeightDPH" destination="N9k-fk-M9F" id="ejV-mK-5QR"/>
-                        <outlet property="constraintHeightSetting" destination="uGP-am-Swg" id="N8O-M7-pK0"/>
                         <outlet property="constraintHeightTOD" destination="QXP-qh-BJ8" id="fTd-f9-peJ"/>
                         <outlet property="constraintTopDPH" destination="hbY-Z6-4Q2" id="0Ot-jt-IQh"/>
                         <outlet property="constraintTopTOD" destination="6Gy-2o-4as" id="16H-xh-mxr"/>
                         <outlet property="constraintTop_Speed" destination="nbn-sc-o3g" id="tYd-sg-HUf"/>
                         <outlet property="constraintTop_Time" destination="eW3-j2-qlU" id="kyb-VY-3U6"/>
                         <outlet property="constraintWidthOdometer" destination="vdX-mF-Za3" id="XAf-Y9-kiD"/>
-                        <outlet property="constraintWidthSetting" destination="FfH-vB-1Kk" id="NT0-HD-bPM"/>
                         <outlet property="heightVwSpeed" destination="100-F8-Kuz" id="Btg-GA-pLN"/>
                         <outlet property="heightVwTime" destination="BWw-3A-ia4" id="PhV-Ch-V4F"/>
                         <outlet property="labelTOD" destination="sWf-Gf-lb3" id="GfQ-H7-Ado"/>
@@ -1015,6 +1015,7 @@ Tap and Hold for  continous scrolling</string>
                         <outlet property="lblSpeed" destination="9z8-bx-jpK" id="k8B-tW-zC8"/>
                         <outlet property="lblTime" destination="ulM-m0-Mwr" id="9QI-HY-o8V"/>
                         <outlet property="lbldistancePerHour" destination="6qD-Vh-DGr" id="Aaf-O6-D1b"/>
+                        <outlet property="settingImage" destination="NCH-sM-Rpl" id="zjI-zW-TKc"/>
                         <outlet property="tViewDistanceDecrease" destination="rMj-PJ-HBK" id="5ZU-N6-pV3"/>
                         <outlet property="tViewDistanceIncrease" destination="3Wf-xq-i1z" id="y1d-s2-W6t"/>
                         <outlet property="tViewScrollDown" destination="cv2-Aj-yhy" id="Dsg-mq-r5t"/>
@@ -1046,6 +1047,6 @@ Tap and Hold for  continous scrolling</string>
     <resources>
         <image name="AppNameImage" width="501" height="142"/>
         <image name="bgLCD" width="500" height="145"/>
-        <image name="menu_x" width="56" height="56"/>
+        <image name="menu" width="28" height="28"/>
     </resources>
 </document>

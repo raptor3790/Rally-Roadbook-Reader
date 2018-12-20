@@ -152,7 +152,6 @@ typedef enum
 extern NSString *kDefaultPhone;
 extern NSString *kStatusMsg;
 
-
 extern int kPasswordLenght;
 extern int kPasswordMaxLenght;
 extern int kNameLenght;

@@ -247,7 +247,6 @@
 NSString *kDefaultPhone = @"+91 123547889";
 NSString *kStatusMsg = @"Test status message";
 
-
 int kPasswordLenght = 6;
 int kPasswordMaxLenght = 32;
 int kNameLenght = 3;

@@ -7,7 +7,6 @@
 
 #import "Routes.h"
 
-
 NSString *const kRoutesId = @"id";
 NSString *const kRoutesLength = @"length";
 NSString *const kRoutesFolderId = @"folder_id";
@@ -55,14 +54,14 @@ NSString *const kRoutesHighlightRoadRally = @"highlight_road_rally";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.routesIdentifier = [[self objectOrNilForKey:kRoutesId fromDictionary:dict] doubleValue];
-            self.length = [[self objectOrNilForKey:kRoutesLength fromDictionary:dict] doubleValue];
+        self.routesIdentifier = [[self objectOrNilForKey:kRoutesId fromDictionary:dict] doubleValue];
+        self.length = [[self objectOrNilForKey:kRoutesLength fromDictionary:dict] doubleValue];
         self.folderId = [[self objectOrNilForKey:kRoutesFolderId fromDictionary:dict] doubleValue];
         self.editable = [[self objectOrNilForKey:kRoutesEditable fromDictionary:dict] boolValue];
-            self.updatedAt = [self objectOrNilForKey:kRoutesUpdatedAt fromDictionary:dict];
-            self.name = [self objectOrNilForKey:kRoutesName fromDictionary:dict];
-            self.units = [self objectOrNilForKey:kRoutesUnits fromDictionary:dict];
-            self.waypointCount = [[self objectOrNilForKey:kRoutesWaypointCount fromDictionary:dict] doubleValue];
+        self.updatedAt = [self objectOrNilForKey:kRoutesUpdatedAt fromDictionary:dict];
+        self.name = [self objectOrNilForKey:kRoutesName fromDictionary:dict];
+        self.units = [self objectOrNilForKey:kRoutesUnits fromDictionary:dict];
+        self.waypointCount = [[self objectOrNilForKey:kRoutesWaypointCount fromDictionary:dict] doubleValue];
         self.pdf = [self objectOrNilForKey:kRoutesPdf fromDictionary:dict];
         self.roadRallyPdf = [self objectOrNilForKey:kRoutesRoadRallyPdf fromDictionary:dict];
         self.crossCountryHighlightPdf = [self objectOrNilForKey:kRoutesCrossCountryHighlightPdf fromDictionary:dict];
@@ -71,6 +70,26 @@ NSString *const kRoutesHighlightRoadRally = @"highlight_road_rally";
     
     return self;
     
+}
+
+- (instancetype)initWithCDRoutes:(CDRoutes *)routes
+{
+    self = [super init];
+    
+    self.routesIdentifier = routes.routesIdentifierValue;
+    self.length = routes.lengthValue;
+    self.folderId = routes.folderIdValue;
+    self.editable = [routes.editable boolValue];
+    self.updatedAt = routes.updatedAt;
+    self.name = routes.name;
+    self.units = routes.units;
+    self.waypointCount = routes.waypointCountValue;
+    self.pdf = routes.pdf;
+    self.roadRallyPdf = routes.roadRallyPdf;
+    self.crossCountryHighlightPdf = routes.crossCountryHighlightPdf;
+    self.highlightRoadRally = routes.highlightRoadRally;
+    
+    return self;
 }
 
 - (NSDictionary *)dictionaryRepresentation

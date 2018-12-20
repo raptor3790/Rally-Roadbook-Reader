@@ -493,6 +493,8 @@ typedef enum
         RoutesVC *vc = [self.storyboard instantiateViewControllerWithIdentifier:kIDRoutesVC];
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:NO];
+        
+        [SyncManager.shared startSync];
     }
     else
     {

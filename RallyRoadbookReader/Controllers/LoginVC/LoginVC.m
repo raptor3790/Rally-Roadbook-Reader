@@ -52,6 +52,8 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:NO];
 //        [self setNeedsStatusBarAppearanceUpdate];
+        
+        [SyncManager.shared startSync];
     }
     else
     {
@@ -465,6 +467,8 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
         RoadbooksVC *vc = loadViewController(StoryBoard_Roadbooks, kIDRoadbooksVC);
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:YES];
+        
+        [SyncManager.shared startSync];
     }
     else
     {
