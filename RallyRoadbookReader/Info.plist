@@ -75,16 +75,8 @@
 	<string>Device GPS is used to measure Odometer distance and compass heading</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>digital_counter_7.ttf</string>
-		<string>Pixel LCD-7.ttf</string>
-		<string>CursedTimerULiL.ttf</string>
-		<string>DS-DIGIB.TTF</string>
-		<string>DS-DIGI.TTF</string>
-		<string>Segment7Standard</string>
-		<string>SG_0.tff</string>
-		<string>SS_0.ttf</string>
-		<string>digital-7.mono.ttf</string>
-		<string>digital-7.monoitalic.ttf</string>
+		<string>Segment7Standard.otf</string>
+		<string>digital-7.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

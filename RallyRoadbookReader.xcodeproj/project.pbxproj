@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4709A0E121689DA7008ADC2A /* Segment7Standard.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4709A0E021689505008ADC2A /* Segment7Standard.otf */; };
 		47E788BC21637CC1008E79DB /* HowToUseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E788BB21637CC1008E79DB /* HowToUseVC.m */; };
 		57424A7993A19F33E4704BF4 /* libPods-RallyRoadbookReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC42849C88ABD512568FD46 /* libPods-RallyRoadbookReader.a */; };
 		6614C61B21CB34CC00A8506D /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6614C61A21CB34CC00A8506D /* SyncManager.swift */; };
 		661FB75521C8A5C500194351 /* BaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 661FB75421C8A5C500194351 /* BaseVC.m */; };
+		66DC638521CC4B6C00BA124A /* Segment7Standard.otf in Resources */ = {isa = PBXBuildFile; fileRef = 66DC638421CC4B6C00BA124A /* Segment7Standard.otf */; };
+		66DC638721CC4BA000BA124A /* digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66DC638621CC4BA000BA124A /* digital-7.ttf */; };
 		E4023F03215B50EA000268E1 /* RoadbooksVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E4023F02215B50EA000268E1 /* RoadbooksVC.m */; };
 		E40619C921AFFA7700E84FD7 /* Song 2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E40619C721AFFA7600E84FD7 /* Song 2.m4a */; };
 		E40619CA21AFFA7700E84FD7 /* Song 3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E40619C821AFFA7700E84FD7 /* Song 3.m4a */; };
@@ -53,15 +54,6 @@
 		E44E25312181A2020081DA70 /* CDFolders.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24AF2181A2010081DA70 /* CDFolders.m */; };
 		E44E25322181A2020081DA70 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24B12181A2010081DA70 /* CDRoute.m */; };
 		E44E25332181A2020081DA70 /* CDRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24B32181A2010081DA70 /* CDRoutes.m */; };
-		E44E25342181A2020081DA70 /* CursedTimerULiL.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E44E24B52181A2010081DA70 /* CursedTimerULiL.ttf */; };
-		E44E25352181A2020081DA70 /* digital-7.mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E44E24B62181A2010081DA70 /* digital-7.mono.ttf */; };
-		E44E25362181A2020081DA70 /* digital-7.monoitalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E44E24B72181A2010081DA70 /* digital-7.monoitalic.ttf */; };
-		E44E25372181A2020081DA70 /* digital_counter_7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E44E24B82181A2010081DA70 /* digital_counter_7.ttf */; };
-		E44E25382181A2020081DA70 /* DS-DIGI.TTF in Resources */ = {isa = PBXBuildFile; fileRef = E44E24B92181A2010081DA70 /* DS-DIGI.TTF */; };
-		E44E25392181A2020081DA70 /* DS-DIGIB.TTF in Resources */ = {isa = PBXBuildFile; fileRef = E44E24BA2181A2010081DA70 /* DS-DIGIB.TTF */; };
-		E44E253A2181A2020081DA70 /* DS-DIGII.TTF in Resources */ = {isa = PBXBuildFile; fileRef = E44E24BB2181A2010081DA70 /* DS-DIGII.TTF */; };
-		E44E253B2181A2020081DA70 /* DS-DIGIT.TTF in Resources */ = {isa = PBXBuildFile; fileRef = E44E24BC2181A2010081DA70 /* DS-DIGIT.TTF */; };
-		E44E253C2181A2020081DA70 /* Pixel LCD-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E44E24BD2181A2010081DA70 /* Pixel LCD-7.ttf */; };
 		E44E253D2181A2020081DA70 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C02181A2010081DA70 /* LocationManager.m */; };
 		E44E253E2181A2020081DA70 /* RegisterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C42181A2010081DA70 /* RegisterCell.m */; };
 		E44E253F2181A2020081DA70 /* RoadbooksCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C72181A2010081DA70 /* RoadbooksCell.m */; };
@@ -109,12 +101,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4709A0E021689505008ADC2A /* Segment7Standard.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Segment7Standard.otf; sourceTree = "<group>"; };
 		47E788BA21637CC1008E79DB /* HowToUseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HowToUseVC.h; sourceTree = "<group>"; };
 		47E788BB21637CC1008E79DB /* HowToUseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HowToUseVC.m; sourceTree = "<group>"; };
 		6614C61A21CB34CC00A8506D /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
 		661FB75421C8A5C500194351 /* BaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseVC.m; sourceTree = "<group>"; };
 		661FB75621C8A63000194351 /* BaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseVC.h; sourceTree = "<group>"; };
+		66DC638421CC4B6C00BA124A /* Segment7Standard.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Segment7Standard.otf; sourceTree = "<group>"; };
+		66DC638621CC4BA000BA124A /* digital-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7.ttf"; sourceTree = "<group>"; };
 		6EC42849C88ABD512568FD46 /* libPods-RallyRoadbookReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RallyRoadbookReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F49403900B7E34DF88D1BDC /* Pods-RallyRoadbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RallyRoadbookReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader.debug.xcconfig"; sourceTree = "<group>"; };
 		E4023F01215B50EA000268E1 /* RoadbooksVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoadbooksVC.h; sourceTree = "<group>"; };
@@ -184,15 +177,6 @@
 		E44E24B12181A2010081DA70 /* CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDRoute.m; sourceTree = "<group>"; };
 		E44E24B22181A2010081DA70 /* CDRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDRoutes.h; sourceTree = "<group>"; };
 		E44E24B32181A2010081DA70 /* CDRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDRoutes.m; sourceTree = "<group>"; };
-		E44E24B52181A2010081DA70 /* CursedTimerULiL.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = CursedTimerULiL.ttf; sourceTree = "<group>"; };
-		E44E24B62181A2010081DA70 /* digital-7.mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7.mono.ttf"; sourceTree = "<group>"; };
-		E44E24B72181A2010081DA70 /* digital-7.monoitalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7.monoitalic.ttf"; sourceTree = "<group>"; };
-		E44E24B82181A2010081DA70 /* digital_counter_7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = digital_counter_7.ttf; sourceTree = "<group>"; };
-		E44E24B92181A2010081DA70 /* DS-DIGI.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DS-DIGI.TTF"; sourceTree = "<group>"; };
-		E44E24BA2181A2010081DA70 /* DS-DIGIB.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DS-DIGIB.TTF"; sourceTree = "<group>"; };
-		E44E24BB2181A2010081DA70 /* DS-DIGII.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DS-DIGII.TTF"; sourceTree = "<group>"; };
-		E44E24BC2181A2010081DA70 /* DS-DIGIT.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DS-DIGIT.TTF"; sourceTree = "<group>"; };
-		E44E24BD2181A2010081DA70 /* Pixel LCD-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pixel LCD-7.ttf"; sourceTree = "<group>"; };
 		E44E24BF2181A2010081DA70 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		E44E24C02181A2010081DA70 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		E44E24C32181A2010081DA70 /* RegisterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterCell.h; sourceTree = "<group>"; };
@@ -355,7 +339,6 @@
 				E44E24852181A2010081DA70 /* Model */,
 				E443114521477FA8002CD004 /* View */,
 				E443113A21477E42002CD004 /* main.m */,
-				4709A0E021689505008ADC2A /* Segment7Standard.otf */,
 				E443114A21478020002CD004 /* RallyRoadbookReader.pch */,
 				E4151CB3214CE81000CF7944 /* GoogleService-Info.plist */,
 				E443113921477E42002CD004 /* Info.plist */,
@@ -377,6 +360,7 @@
 		E443114521477FA8002CD004 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E44E24B42181A2010081DA70 /* Fonts */,
 				E443114621477FA8002CD004 /* LaunchScreen.storyboard */,
 				E443114721477FA8002CD004 /* Main.storyboard */,
 				E432BDEC216718520048D5F4 /* Roadbooks.storyboard */,
@@ -440,7 +424,6 @@
 				E44E24912181A2010081DA70 /* BaseVC */,
 				E44E24942181A2010081DA70 /* Constant */,
 				E44E249F2181A2010081DA70 /* CoredataClasses */,
-				E44E24B42181A2010081DA70 /* Fonts */,
 				E4F9072421A93D1D00C708FD /* JPSVolumeButtonHandler */,
 				E44E24BE2181A2010081DA70 /* LocationManager */,
 				E44E24C12181A2010081DA70 /* TableViewCells */,
@@ -557,15 +540,8 @@
 		E44E24B42181A2010081DA70 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				E44E24B52181A2010081DA70 /* CursedTimerULiL.ttf */,
-				E44E24B62181A2010081DA70 /* digital-7.mono.ttf */,
-				E44E24B72181A2010081DA70 /* digital-7.monoitalic.ttf */,
-				E44E24B82181A2010081DA70 /* digital_counter_7.ttf */,
-				E44E24B92181A2010081DA70 /* DS-DIGI.TTF */,
-				E44E24BA2181A2010081DA70 /* DS-DIGIB.TTF */,
-				E44E24BB2181A2010081DA70 /* DS-DIGII.TTF */,
-				E44E24BC2181A2010081DA70 /* DS-DIGIT.TTF */,
-				E44E24BD2181A2010081DA70 /* Pixel LCD-7.ttf */,
+				66DC638621CC4BA000BA124A /* digital-7.ttf */,
+				66DC638421CC4B6C00BA124A /* Segment7Standard.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -872,34 +848,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E44E253B2181A2020081DA70 /* DS-DIGIT.TTF in Resources */,
 				E44E25252181A2020081DA70 /* Tink.mp3 in Resources */,
-				E44E25392181A2020081DA70 /* DS-DIGIB.TTF in Resources */,
 				E44E25402181A2020081DA70 /* RoadbooksCell.xib in Resources */,
 				E432BDEB2167181E0048D5F4 /* Settings.storyboard in Resources */,
 				E443114921477FA8002CD004 /* Main.storyboard in Resources */,
-				E44E25362181A2020081DA70 /* digital-7.monoitalic.ttf in Resources */,
-				E44E25382181A2020081DA70 /* DS-DIGI.TTF in Resources */,
 				E44E25202181A2020081DA70 /* HoldScrollDown.mp3 in Resources */,
-				E44E25352181A2020081DA70 /* digital-7.mono.ttf in Resources */,
 				E44C56EF21AECE4F000BAE5C /* Song 1.m4a in Resources */,
 				E47D248B2148E67A006A72E1 /* roadbook-name-road-rally-a5.pdf in Resources */,
 				E4151CB4214CE81000CF7944 /* GoogleService-Info.plist in Resources */,
 				E44E25242181A2020081DA70 /* TapScrollUp.mp3 in Resources */,
-				E44E253C2181A2020081DA70 /* Pixel LCD-7.ttf in Resources */,
 				E40619C921AFFA7700E84FD7 /* Song 2.m4a in Resources */,
 				E40619CA21AFFA7700E84FD7 /* Song 3.m4a in Resources */,
-				E44E25372181A2020081DA70 /* digital_counter_7.ttf in Resources */,
-				4709A0E121689DA7008ADC2A /* Segment7Standard.otf in Resources */,
 				E443113521477E42002CD004 /* Assets.xcassets in Resources */,
+				66DC638721CC4BA000BA124A /* digital-7.ttf in Resources */,
 				E44E25212181A2020081DA70 /* HoldScrollUp.mp3 in Resources */,
+				66DC638521CC4B6C00BA124A /* Segment7Standard.otf in Resources */,
 				E443114821477FA8002CD004 /* LaunchScreen.storyboard in Resources */,
 				E432BDED216718520048D5F4 /* Roadbooks.storyboard in Resources */,
-				E44E25342181A2020081DA70 /* CursedTimerULiL.ttf in Resources */,
 				E44E25262181A2020081DA70 /* Tock.mp3 in Resources */,
 				E44E25222181A2020081DA70 /* Reset.wav in Resources */,
 				E493420C218448BC0087D3FC /* ScrollChange.mp3 in Resources */,
-				E44E253A2181A2020081DA70 /* DS-DIGII.TTF in Resources */,
 				E44E25232181A2020081DA70 /* TapScrollDown.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

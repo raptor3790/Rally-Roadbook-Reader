@@ -756,12 +756,12 @@
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap)
     {
         _lblDegree.text = strCurrentDateTime;
-        _lblDegree.attributedText = [self TimeAttributedText:_lblDegree.text];
+        _lblDegree.attributedText = [self TimeAttributedText:@"02:19"];//_lblDegree.text];
     }
     else
     {
         _lblTime.text = strCurrentDateTime;
-        _lblTime.attributedText = [self TimeAttributedText:_lblTime.text];
+        _lblTime.attributedText = [self TimeAttributedText:@"22:18"];//_lblTime.text];
     }
     
     [self performSelector:@selector(getCurrentDateTime) withObject:nil afterDelay:1];
@@ -858,12 +858,17 @@
     float fontSize = [self TimeSpeedFontSize:(totalDisplayUnits < 4)];
     
     UIFont *segment = [UIFont fontWithName:@"Segment7Standard" size:fontSize];
-    UIFont *sep = [UIFont fontWithName:@"CursedTimerULiL" size:fontSize - 6];
+    UIFont *sep = [UIFont fontWithName:@"Digital-7" size:fontSize];
     
     NSMutableAttributedString *attributeText = [[NSMutableAttributedString alloc] initWithString:timeString];
     
     [attributeText addAttribute:NSFontAttributeName value:segment range:[timeString rangeOfString:timeString]];
-    [attributeText setAttributes:@{NSFontAttributeName: sep} range:[timeString rangeOfString:@":"]];
+    NSRange range  = [timeString rangeOfString:@":1"];
+    if (range.location == NSNotFound) {
+        [attributeText setAttributes:@{NSFontAttributeName: sep} range:[timeString rangeOfString:@":"]];
+    } else {
+        [attributeText setAttributes:@{NSFontAttributeName: sep} range:range];
+    }
     
     return attributeText;
 }
