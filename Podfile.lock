@@ -7,6 +7,7 @@ PODS:
   - Bolts/Tasks (1.9.0)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
+  - Digger (0.0.5)
   - Fabric (1.9.0)
   - FBSDKCoreKit (4.39.0):
     - Bolts (~> 1.9)
@@ -30,9 +31,11 @@ PODS:
     - SDWebImage/Core (= 4.4.3)
   - SDWebImage/Core (4.4.3)
   - SVProgressHUD (2.2.5)
+  - SwiftyJSON (4.2.0)
 
 DEPENDENCIES:
   - Crashlytics
+  - Digger
   - Fabric
   - FBSDKCoreKit
   - FBSDKLoginKit
@@ -40,11 +43,13 @@ DEPENDENCIES:
   - MJRefresh
   - SDWebImage
   - SVProgressHUD
+  - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Bolts
     - Crashlytics
+    - Digger
     - Fabric
     - FBSDKCoreKit
     - FBSDKLoginKit
@@ -54,10 +59,12 @@ SPEC REPOS:
     - MJRefresh
     - SDWebImage
     - SVProgressHUD
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
+  Digger: c474bde76a91e0a36f12101c5dfe7e86774b15d3
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   FBSDKCoreKit: 1e3981faefab8c88edfaa9eecd94aab02d99a9bc
   FBSDKLoginKit: 30ba5039a2c53d65a75103889bc2deebdacd5a1f
@@ -67,7 +74,8 @@ SPEC CHECKSUMS:
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: 0c78307a6647d9d77362bd9ed49d3755d8f2467b
+PODFILE CHECKSUM: 2d94eeeb559283e036d4763e62ce1753b7e0b8ca
 
 COCOAPODS: 1.6.0.beta.2
