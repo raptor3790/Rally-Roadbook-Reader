@@ -723,7 +723,7 @@
                 }
             }
 
-            cell.lblDetails.text = [NSString stringWithFormat:@"%ld Way Points | %ld %@", (NSInteger)floorf(objRoadbook.waypointCount), distance, strUnit];
+            cell.lblDetails.text = [NSString stringWithFormat:@"%ld Way Points | %ld %@", (long)floorf(objRoadbook.waypointCount), distance, strUnit];
             
             NSString *strDate = [self convertDateFormatDate:objRoadbook.updatedAt];
             cell.lblDate.text = strDate;

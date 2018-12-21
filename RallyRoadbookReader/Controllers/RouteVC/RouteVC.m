@@ -50,6 +50,8 @@
     NSAttributedString *ResetLabel;
     
     JPSVolumeButtonHandler *volumeButtonHandler;
+    
+    NSPredicate *filterWaypointsPredicate;
 }
 @end
 
@@ -79,10 +81,13 @@
     } downBlock:^{
         [self btnDigitDownClicked:nil];
     }];
-
     [volumeButtonHandler startHandler:YES];
 //    volumeButtonHandler.sessionOptions = AVAudioSessionCategoryOptionAllowBluetooth/*|AVAudioSessionCategoryOptionMixWithOthers*/;
 
+    filterWaypointsPredicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints *objWayPoint, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return objWayPoint.show;
+    }];
+    
     _tblRoadbook.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     //Changes By Harjeet - hka
@@ -569,7 +574,6 @@
     
     if (totalDisplayUnits < 4)
     {
-        //_heightHeader.constant = 101.0f;
         if (totalDisplayUnits == 2) {
             _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer :0.5f];
             //_constraintWidthOdometer.multiplier = 0.5f
@@ -582,7 +586,6 @@
     {
         // 4
         _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer :0.38f];
-        //_heightHeader.constant = 101.0f;
     }
     
     if (SCREEN_WIDTH >= 768) {
@@ -709,14 +712,14 @@
             unit = [self convertDistanceToMiles:unit];
         }
         
-        _lblSpeed.text = [NSString stringWithFormat:unit >= 10 ? @"%ld" : @"%ld", (NSInteger)unit];
+        _lblSpeed.text = [NSString stringWithFormat:unit >= 10 ? @"%ld" : @"%ld", (long)unit];
     }
 }
 
 - (void)displayCAPHeading
 {
     NSInteger degree = (NSInteger)currentDegree < 0 ? 0 : currentDegree;
-    _lblDegree.text = [NSString stringWithFormat:degree < 10 ? @"00%ld°" : degree < 100 ? @"0%ld°" : @"%ld°", degree];
+    _lblDegree.text = [NSString stringWithFormat:degree < 10 ? @"00%ld°" : degree < 100 ? @"0%ld°" : @"%ld°", (long)degree];
     _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
 }
 
@@ -756,7 +759,7 @@
         strAdditionalMinute = @"0";
     }
     
-    strCurrentDateTime = [NSString stringWithFormat:@"%@%ld:%@%ld", strAdditionalHour, hour, strAdditionalMinute, dateComponents.minute];
+    strCurrentDateTime = [NSString stringWithFormat:@"%@%ld:%@%d", strAdditionalHour, (long)hour, strAdditionalMinute, dateComponents.minute];
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap)
     {
         _lblDegree.text = strCurrentDateTime;
@@ -979,92 +982,57 @@
 
 - (void)manageUI
 {
-    _labelTOD.font = [_labelTOD.font fontWithSize:5.0f];
-    _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:5.0f];
-    _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:8.0f];
-    _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:8.0f];
-    _constraintTop_Time.constant = -0.0f;
-    _constraintTop_Speed.constant = -0.0f;
-    _constraintTopDPH.constant = 5.0f;
-    _constraintTopTOD.constant = 5.0f;
-    _constraintHeightDPH.constant = 8.0f;
-    _constraintHeightTOD.constant = 8.0f;
+    int viewCount = (objUserConfig.isShowCap + objUserConfig.isShowSpeed + objUserConfig.isShowTime) + 1;
     
     _lblDistance.font = [_lblDistance.font fontWithSize:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
     _lblSpeed.font = [_lblSpeed.font fontWithSize:[self NormalizedFontSizeIsEdge:NO IsDate:NO]];
     _lblTime.attributedText = [self StyleText:_lblTime.text size:[self NormalizedFontSizeIsEdge:NO IsDate:YES]];
     
-    if (!objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed)
+    BOOL degreeAsDate = !objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed;
+    _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:degreeAsDate]];
+
+    float screenWidth = UIScreen.mainScreen.bounds.size.width;
+    if (viewCount == 4)
     {
-        _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:YES]];
-    }
-    else
-    {
-        _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
-    }
-    
-    _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12.0f];
-    _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:12.0f];
-    
-    // All visible (3 columes and 4 views)
-    if (objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed)
-    {
-        // Landscape 
-        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+        if (screenWidth == 320)
         {
-            _labelTOD.font = [_labelTOD.font fontWithSize:8.0f];
-            _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:8.0f];
+            _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:8];
+            _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:8];
+            _labelTOD.font = [_labelTOD.font fontWithSize:6];
+            _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:6];
+            _constraintTopDPH.constant = 2;
+            _constraintTopTOD.constant = 2;
+            _constraintHeightDPH.constant = 6;
+            _constraintHeightTOD.constant = 6;
         }
-        else{
-            _labelTOD.font = [_labelTOD.font fontWithSize:6.0f];
-            _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:6.0f];
-        }
-        _constraintTopDPH.constant = 2.0f;
-        _constraintTopTOD.constant = 2.0f;
-    }
-    else
-    {
-        _labelTOD.font = [_labelTOD.font fontWithSize:12.0f];
-        _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:12.0f];
-        _constraintTop_Time.constant = 0.0f;
-        _constraintTop_Speed.constant = 0.0f;
-        _constraintHeightTOD.constant = 12.0f;
-        _constraintHeightDPH.constant = 12.0f;
-    }
-    
-    // iPhone 4 & 5 & 6 Portrait
-    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
-    {
-        if (SCREEN_WIDTH == 320)
+        else if (screenWidth == 375)
         {
-            // All visible
-            if (objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed)
-            {
-                _labelTOD.font = [_labelTOD.font fontWithSize:5.0f];
-                _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:5.0f];
-            }
-            else
-            {
-                _labelTOD.font = [_labelTOD.font fontWithSize:8.0f];
-                _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:8.0f];
-            }
-            
-            _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:8.0f];
-            _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:8.0f];
-        }
-        else if (SCREEN_WIDTH == 375)
-        {
-            // All visible
-            if (objUserConfig.isShowCap && (objUserConfig.isShowTime + objUserConfig.isShowSpeed) == 1)
-            {
-                _labelTOD.font = [_labelTOD.font fontWithSize:10.0f];
-                _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:10.0f];
-                _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:10.0f];
-                _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:10.0f];
-            }
+            _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:12];
+            _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12];
+            _labelTOD.font = [_labelTOD.font fontWithSize:8];
+            _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:8];
+            _constraintTopDPH.constant = 5;
+            _constraintTopTOD.constant = 5;
+            _constraintHeightDPH.constant = 8;
+            _constraintHeightTOD.constant = 8;
         }
     }
     
+    if (viewCount < 4 || (viewCount == 4 && screenWidth > 375))
+    {
+        _constraintTopDPH.constant = viewCount == 4 ? 2 : 5;
+        _constraintTopTOD.constant = viewCount == 4 ? 2 : 5;
+        _constraintHeightDPH.constant = 12;
+        _constraintHeightTOD.constant = 12;
+        
+        float fontSize = screenWidth == 320 ? 8 : ((screenWidth == 375 && viewCount == 3 && objUserConfig.isShowCap) ? 10 : 12);
+
+        _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:fontSize];
+        _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:fontSize];
+        _labelTOD.font = [_labelTOD.font fontWithSize:fontSize];
+        _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:fontSize];
+    }
+
     // Setting button image
     if (UIScreen.mainScreen.bounds.size.width > 600)
     {
@@ -1729,97 +1697,19 @@
 {
     CGPoint touchPoint = [sender locationInView: _vwBackground];
     
-//    NSLog(@"%@", NSStringFromCGPoint(touchPoint));
-    
     CGRect upRect = CGRectMake(0, 0, CGRectGetWidth(_tblRoadbook.frame), CGRectGetHeight(_tblRoadbook.frame) / 2);
+    BOOL isUp = !CGRectContainsPoint(upRect, touchPoint);
     
-    if (!CGRectContainsPoint(upRect, touchPoint))
+    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]])
     {
-//        NSLog(@"UP");
-        if ([sender isKindOfClass:[UILongPressGestureRecognizer class]])
-        {
-            UILongPressGestureRecognizer *r = sender;
-            if (r.state == UIGestureRecognizerStateBegan){
-//                [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-                if(!ScrollTimer.isValid){
-                    ScrollCount = 0;
-                    ScrollTimer = [[NSTimer alloc]init];
-                    ScrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(ScrollTableUp) userInfo:nil repeats:YES];
-                }
-            }
-            else if (r.state == UIGestureRecognizerStateEnded){
-                ScrollCount = 0;
-                [ScrollTimer invalidate];
-            }
-        }
-        else{
-//            [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-            NSArray *arrCells = [_tblRoadbook visibleCells];
-            
-            if (arrCells.count > 0)
-            {
-                RouteCell *cell = arrCells.firstObject;
-                
-                NSIndexPath *indexPath = [_tblRoadbook indexPathForCell:cell];
-                
-                NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints *objWayPoint, NSDictionary<NSString *,id> * _Nullable bindings) {
-                    return objWayPoint.show;
-                }];
-                
-                NSMutableArray *arrSearchResults = [[NSMutableArray alloc] init];
-                arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:predicate] mutableCopy];
-                
-                if (indexPath.row != 0)
-                {
-                    [_tblRoadbook scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                }
-            }
-        }
+        // Long press
+        UILongPressGestureRecognizer *r = sender;
+        [self handleLongPressBoardForUp:isUp touchState:r.state];
     }
     else
     {
-//        NSLog(@"DOWN");
-        
-        if ([sender isKindOfClass:[UILongPressGestureRecognizer class]])
-        {
-            UILongPressGestureRecognizer *r = sender;
-            if (r.state == UIGestureRecognizerStateBegan){
-//                [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-                if(!ScrollTimer.isValid){
-                    ScrollCount = 0;
-                    ScrollTimer = [[NSTimer alloc]init];
-                    ScrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(ScrollTableDown) userInfo:nil repeats:YES];
-                }
-            }
-            else if (r.state == UIGestureRecognizerStateEnded){
-                ScrollCount = 0;
-                [ScrollTimer invalidate];
-            }
-        }
-        else{
-//            [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-            NSArray *arrCells = [_tblRoadbook visibleCells];
-            
-            if (arrCells.count > 0)
-            {
-                RouteCell *cell = arrCells.lastObject;
-                
-                NSIndexPath *indexPath = [_tblRoadbook indexPathForCell:cell];
-                
-                NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints *objWayPoint, NSDictionary<NSString *,id> * _Nullable bindings) {
-                    return objWayPoint.show;
-                }];
-                
-                NSMutableArray *arrSearchResults = [[NSMutableArray alloc] init];
-                arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:predicate] mutableCopy];
-                
-                if (arrSearchResults.count - 1 != indexPath.row)
-                {
-                    [_tblRoadbook scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-                }
-            }
-        }
-        
+        // Tap
+        [self handleTapBoardForUp:isUp];
     }
 }
 
@@ -2096,6 +1986,58 @@
     [self.viewOverlay setHidden:true];
 }
 
+- (void)handleLongPressBoardForUp:(BOOL)isUp touchState:(UIGestureRecognizerState)state
+{
+    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
+    if (state == UIGestureRecognizerStateBegan)
+    {
+        [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
+        if (!ScrollTimer.isValid)
+        {
+            ScrollCount = 0;
+            ScrollTimer = [[NSTimer alloc]init];
+            ScrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
+                                                           target:self
+                                                         selector:isUp ? @selector(ScrollTableUp) : @selector(ScrollPDFDown)
+                                                         userInfo:nil repeats:YES];
+        }
+    }
+    else if (state == UIGestureRecognizerStateEnded)
+    {
+        ScrollCount = 0;
+        [ScrollTimer invalidate];
+    }
+}
+
+- (void)handleTapBoardForUp:(BOOL)isUp
+{
+    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
+    
+    // DataSource
+    NSMutableArray *arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate] mutableCopy];
+    if (arrSearchResults.count == 0) { return; }
+    
+    NSArray *arrCells = [_tblRoadbook visibleCells];
+    if (arrCells.count == 0) { return; }
+    
+    // Get indexPath
+    RouteCell *cell = isUp ? arrCells.firstObject : arrCells.lastObject;
+    NSIndexPath *indexPath = [_tblRoadbook indexPathForCell:cell];
+    
+    if (isUp && indexPath.row > 0)
+    {
+        [_tblRoadbook scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]
+                            atScrollPosition:UITableViewScrollPositionTop
+                                    animated:YES];
+    }
+    else if (!isUp && indexPath.row < arrSearchResults.count - 1)
+    {
+        [_tblRoadbook scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]
+                            atScrollPosition:UITableViewScrollPositionBottom
+                                    animated:YES];
+    }
+}
+
 
 #pragma mark - Location Manager Services
 
@@ -2158,13 +2100,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints *objWayPoint, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return objWayPoint.show;
-    }];
-    
-    NSMutableArray *arrSearchResults = [[NSMutableArray alloc] init];
-    arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:predicate] mutableCopy];
-    return arrSearchResults.count;
+    return [objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2176,13 +2112,7 @@
         cell = [self registerCell:cell inTableView:tableView forClassName:NSStringFromClass([RouteCell class]) identifier:@"idRouteCell"];
     }
     
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints *objWayPoint, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return objWayPoint.show;
-    }];
-    
-    NSMutableArray *arrSearchResults = [[NSMutableArray alloc] init];
-    arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:predicate] mutableCopy];
-    
+    NSMutableArray *arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate] mutableCopy];
     Waypoints *objWayPoint = [arrSearchResults objectAtIndex:indexPath.row];
     
     cell.lblRow.text = [NSString stringWithFormat:@"%ld", indexPath.row + 1];
@@ -2355,14 +2285,7 @@
           startPoint:centerPoint
             endPoint:CGPointMake(centerPoint.x, centerPoint.y + /*35*/45)];
     
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints *objWayPoint, NSDictionary<NSString *,id> * _Nullable bindings)
-                              {
-                                  return objWayPoint.show;
-                              }];
-    
-    NSMutableArray *arrWayPoints = [[NSMutableArray alloc] init];
-    arrWayPoints = [[objRouteDetails.waypoints filteredArrayUsingPredicate:predicate] mutableCopy];
-    
+    NSMutableArray *arrWayPoints = [[objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate] mutableCopy];
     Waypoints *objWayPoints = arrWayPoints[indexPath.row];
     
     double curAngle = 0.0;

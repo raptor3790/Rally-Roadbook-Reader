@@ -53,7 +53,6 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightHeader;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightVwSpeed;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightVwTime;
 
@@ -64,9 +63,6 @@
 
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintWidthOdometer;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTop_Time;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTop_Speed;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTOD;
 

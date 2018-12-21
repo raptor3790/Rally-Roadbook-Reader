@@ -592,32 +592,32 @@ Tap and Hold for  continous scrolling</string>
                                                                                 <rect key="frame" x="0.0" y="0.0" width="79" height="28"/>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KPH" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qD-Vh-DGr">
-                                                                                <rect key="frame" x="8" y="2.5" width="63" height="5"/>
+                                                                                <rect key="frame" x="8" y="2.5" width="63" height="6"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="height" constant="5" id="N9k-fk-M9F"/>
+                                                                                    <constraint firstAttribute="height" constant="6" id="N9k-fk-M9F"/>
                                                                                 </constraints>
                                                                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="6"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9z8-bx-jpK">
-                                                                                <rect key="frame" x="0.0" y="7.5" width="79" height="20.5"/>
-                                                                                <fontDescription key="fontDescription" name="DS-Digital-Italic" family="DS-Digital" pointSize="28"/>
+                                                                                <rect key="frame" x="0.0" y="8.5" width="79" height="19.5"/>
+                                                                                <fontDescription key="fontDescription" name="DS-Digital-Italic" family="DS-Digital" pointSize="26"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="hkN-ia-Uqo" firstAttribute="height" secondItem="Nr4-PS-PJ9" secondAttribute="height" id="8Dp-NZ-5zt"/>
+                                                                            <constraint firstItem="hkN-ia-Uqo" firstAttribute="top" secondItem="Nr4-PS-PJ9" secondAttribute="top" id="A75-NY-BxL"/>
                                                                             <constraint firstAttribute="trailing" secondItem="6qD-Vh-DGr" secondAttribute="trailing" constant="8" id="Eck-A5-cXz"/>
-                                                                            <constraint firstItem="hkN-ia-Uqo" firstAttribute="centerY" secondItem="Nr4-PS-PJ9" secondAttribute="centerY" id="F8d-IX-cBq"/>
                                                                             <constraint firstItem="6qD-Vh-DGr" firstAttribute="leading" secondItem="Nr4-PS-PJ9" secondAttribute="leading" constant="8" id="IfU-rD-dTH"/>
                                                                             <constraint firstItem="9z8-bx-jpK" firstAttribute="leading" secondItem="Nr4-PS-PJ9" secondAttribute="leading" id="Mn3-pL-rTw"/>
+                                                                            <constraint firstItem="hkN-ia-Uqo" firstAttribute="leading" secondItem="Nr4-PS-PJ9" secondAttribute="leading" id="NWc-22-TWX"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="hkN-ia-Uqo" secondAttribute="bottom" id="Okv-y5-pyu"/>
                                                                             <constraint firstAttribute="bottom" secondItem="9z8-bx-jpK" secondAttribute="bottom" id="VKq-VZ-9te"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="hkN-ia-Uqo" secondAttribute="trailing" id="cQ1-xi-AeJ"/>
                                                                             <constraint firstItem="6qD-Vh-DGr" firstAttribute="top" secondItem="Nr4-PS-PJ9" secondAttribute="top" constant="2.5" id="hbY-Z6-4Q2"/>
-                                                                            <constraint firstItem="hkN-ia-Uqo" firstAttribute="width" secondItem="Nr4-PS-PJ9" secondAttribute="width" id="jz6-yz-RII"/>
-                                                                            <constraint firstItem="hkN-ia-Uqo" firstAttribute="centerX" secondItem="Nr4-PS-PJ9" secondAttribute="centerX" id="l9S-GB-Y9D"/>
                                                                             <constraint firstItem="9z8-bx-jpK" firstAttribute="top" secondItem="6qD-Vh-DGr" secondAttribute="bottom" id="nbn-sc-o3g"/>
                                                                             <constraint firstAttribute="trailing" secondItem="9z8-bx-jpK" secondAttribute="trailing" id="tdT-wz-ked"/>
                                                                         </constraints>
@@ -709,7 +709,7 @@ Tap and Hold for  continous scrolling</string>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulM-m0-Mwr">
-                                                                                <rect key="frame" x="0.0" y="7.5" width="79" height="18.5"/>
+                                                                                <rect key="frame" x="0.0" y="7.5" width="79" height="20.5"/>
                                                                                 <fontDescription key="fontDescription" name="DS-Digital-Italic" family="DS-Digital" pointSize="26"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -720,14 +720,14 @@ Tap and Hold for  continous scrolling</string>
                                                                             <constraint firstItem="sWf-Gf-lb3" firstAttribute="top" secondItem="X18-0p-YNl" secondAttribute="top" constant="2.5" id="6Gy-2o-4as"/>
                                                                             <constraint firstAttribute="trailing" secondItem="sWf-Gf-lb3" secondAttribute="trailing" constant="8" id="7iX-e4-OPo"/>
                                                                             <constraint firstAttribute="trailing" secondItem="ulM-m0-Mwr" secondAttribute="trailing" id="9Ww-yb-nVX"/>
-                                                                            <constraint firstItem="0O5-aq-PtP" firstAttribute="height" secondItem="X18-0p-YNl" secondAttribute="height" id="Dwz-Zs-Zoe"/>
-                                                                            <constraint firstItem="0O5-aq-PtP" firstAttribute="centerX" secondItem="X18-0p-YNl" secondAttribute="centerX" id="Kmo-JK-fkI"/>
-                                                                            <constraint firstItem="0O5-aq-PtP" firstAttribute="centerY" secondItem="X18-0p-YNl" secondAttribute="centerY" id="csJ-Y4-aAI"/>
+                                                                            <constraint firstItem="0O5-aq-PtP" firstAttribute="top" secondItem="X18-0p-YNl" secondAttribute="top" id="GVO-fg-Vo4"/>
                                                                             <constraint firstItem="ulM-m0-Mwr" firstAttribute="top" secondItem="sWf-Gf-lb3" secondAttribute="bottom" id="eW3-j2-qlU"/>
-                                                                            <constraint firstItem="0O5-aq-PtP" firstAttribute="width" secondItem="X18-0p-YNl" secondAttribute="width" id="hu9-UV-lAg"/>
-                                                                            <constraint firstAttribute="bottom" secondItem="ulM-m0-Mwr" secondAttribute="bottom" constant="2" id="ny4-Td-sGV"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="0O5-aq-PtP" secondAttribute="bottom" id="i71-dk-b6m"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="ulM-m0-Mwr" secondAttribute="bottom" id="ny4-Td-sGV"/>
+                                                                            <constraint firstItem="0O5-aq-PtP" firstAttribute="leading" secondItem="X18-0p-YNl" secondAttribute="leading" id="pSH-aB-3Xf"/>
                                                                             <constraint firstItem="ulM-m0-Mwr" firstAttribute="leading" secondItem="X18-0p-YNl" secondAttribute="leading" id="pnd-c7-xaV"/>
                                                                             <constraint firstItem="sWf-Gf-lb3" firstAttribute="leading" secondItem="X18-0p-YNl" secondAttribute="leading" constant="8" id="qgm-ed-3OD"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="0O5-aq-PtP" secondAttribute="trailing" id="vL6-yh-FRS"/>
                                                                         </constraints>
                                                                     </view>
                                                                 </subviews>
@@ -1002,8 +1002,6 @@ Tap and Hold for  continous scrolling</string>
                         <outlet property="constraintHeightTOD" destination="QXP-qh-BJ8" id="fTd-f9-peJ"/>
                         <outlet property="constraintTopDPH" destination="hbY-Z6-4Q2" id="0Ot-jt-IQh"/>
                         <outlet property="constraintTopTOD" destination="6Gy-2o-4as" id="16H-xh-mxr"/>
-                        <outlet property="constraintTop_Speed" destination="nbn-sc-o3g" id="tYd-sg-HUf"/>
-                        <outlet property="constraintTop_Time" destination="eW3-j2-qlU" id="kyb-VY-3U6"/>
                         <outlet property="constraintWidthOdometer" destination="vdX-mF-Za3" id="XAf-Y9-kiD"/>
                         <outlet property="heightVwSpeed" destination="100-F8-Kuz" id="Btg-GA-pLN"/>
                         <outlet property="heightVwTime" destination="BWw-3A-ia4" id="PhV-Ch-V4F"/>
