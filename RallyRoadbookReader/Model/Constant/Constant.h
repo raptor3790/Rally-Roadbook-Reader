@@ -114,13 +114,9 @@
 #define kTokenKey @"TOKEN"
 
 
-
 // Default road name
-#define kDefaultRoadName @"Sample Road Rally Roadbook"
+#define kDefaultRallyName @"Sample Road Rally Roadbook"
 #define kDefaultCrossCountryName @"Sample Cross Country Roadbook"
-#define kDefaultRoadPdf @"Sample Road Rally Roadbook (full)"
-#define kDefaultCrossCountryPdf @"Sample Cross Country Roadbook (full)"
-
 
 
 #endif /* Constant_h */

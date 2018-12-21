@@ -10,8 +10,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Segment7Standard.otf">
-            <string>Segment7Standard</string>
+        <array key="DS-DIGII.TTF">
+            <string>DS-Digital-Italic</string>
         </array>
     </customFonts>
     <scenes>
@@ -470,8 +470,8 @@ Tap and Hold for  continous scrolling</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="23B-O2-LSb">
-                                                                        <rect key="frame" x="4" y="17" width="128" height="65"/>
-                                                                        <fontDescription key="fontDescription" name="Segment7Standard" family="Segment7" pointSize="65"/>
+                                                                        <rect key="frame" x="4" y="17" width="128" height="61"/>
+                                                                        <fontDescription key="fontDescription" name="DS-Digital-Italic" family="DS-Digital" pointSize="75"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
@@ -500,7 +500,7 @@ Tap and Hold for  continous scrolling</string>
                                                                     <constraint firstItem="TuI-e6-y2H" firstAttribute="leading" secondItem="sWX-HM-2Dp" secondAttribute="leading" id="ZWQ-55-zjX"/>
                                                                     <constraint firstItem="NcH-Kg-voh" firstAttribute="height" secondItem="TuI-e6-y2H" secondAttribute="height" multiplier="0.5" id="edd-VV-m8L"/>
                                                                     <constraint firstItem="NcH-Kg-voh" firstAttribute="width" secondItem="TuI-e6-y2H" secondAttribute="width" id="jW0-Gh-jEj"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="23B-O2-LSb" secondAttribute="bottom" id="kc2-Sr-l1F"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="23B-O2-LSb" secondAttribute="bottom" constant="4" id="kc2-Sr-l1F"/>
                                                                     <constraint firstAttribute="trailing" secondItem="TuI-e6-y2H" secondAttribute="trailing" id="km3-Q5-tTi"/>
                                                                     <constraint firstItem="s3e-OR-6PY" firstAttribute="height" secondItem="NcH-Kg-voh" secondAttribute="height" id="mso-fs-lUq"/>
                                                                     <constraint firstAttribute="trailing" secondItem="dSk-9q-02V" secondAttribute="trailing" constant="8" id="p2J-Rl-yoU"/>
@@ -602,7 +602,7 @@ Tap and Hold for  continous scrolling</string>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9z8-bx-jpK">
                                                                                 <rect key="frame" x="0.0" y="7.5" width="79" height="20.5"/>
-                                                                                <fontDescription key="fontDescription" name="Segment7Standard" family="Segment7" pointSize="18"/>
+                                                                                <fontDescription key="fontDescription" name="DS-Digital-Italic" family="DS-Digital" pointSize="28"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
@@ -708,9 +708,9 @@ Tap and Hold for  continous scrolling</string>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:46" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulM-m0-Mwr">
-                                                                                <rect key="frame" x="0.0" y="7.5" width="79" height="20.5"/>
-                                                                                <fontDescription key="fontDescription" name="Segment7Standard" family="Segment7" pointSize="20"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulM-m0-Mwr">
+                                                                                <rect key="frame" x="0.0" y="7.5" width="79" height="18.5"/>
+                                                                                <fontDescription key="fontDescription" name="DS-Digital-Italic" family="DS-Digital" pointSize="26"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
@@ -725,7 +725,7 @@ Tap and Hold for  continous scrolling</string>
                                                                             <constraint firstItem="0O5-aq-PtP" firstAttribute="centerY" secondItem="X18-0p-YNl" secondAttribute="centerY" id="csJ-Y4-aAI"/>
                                                                             <constraint firstItem="ulM-m0-Mwr" firstAttribute="top" secondItem="sWf-Gf-lb3" secondAttribute="bottom" id="eW3-j2-qlU"/>
                                                                             <constraint firstItem="0O5-aq-PtP" firstAttribute="width" secondItem="X18-0p-YNl" secondAttribute="width" id="hu9-UV-lAg"/>
-                                                                            <constraint firstAttribute="bottom" secondItem="ulM-m0-Mwr" secondAttribute="bottom" id="ny4-Td-sGV"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="ulM-m0-Mwr" secondAttribute="bottom" constant="2" id="ny4-Td-sGV"/>
                                                                             <constraint firstItem="ulM-m0-Mwr" firstAttribute="leading" secondItem="X18-0p-YNl" secondAttribute="leading" id="pnd-c7-xaV"/>
                                                                             <constraint firstItem="sWf-Gf-lb3" firstAttribute="leading" secondItem="X18-0p-YNl" secondAttribute="leading" constant="8" id="qgm-ed-3OD"/>
                                                                         </constraints>
@@ -829,9 +829,9 @@ Tap and Hold for  continous scrolling</string>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000°" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXa-NR-OGp">
-                                                                        <rect key="frame" x="0.0" y="17" width="136" height="65"/>
-                                                                        <fontDescription key="fontDescription" name="Segment7Standard" family="Segment7" pointSize="50"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000°" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eXa-NR-OGp">
+                                                                        <rect key="frame" x="4" y="17" width="128" height="61"/>
+                                                                        <fontDescription key="fontDescription" name="DS-Digital-Italic" family="DS-Digital" pointSize="80"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
@@ -839,13 +839,13 @@ Tap and Hold for  continous scrolling</string>
                                                                 <color key="backgroundColor" red="0.42352941179999998" green="0.41176470590000003" blue="0.33333333329999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstItem="aX3-YA-qno" firstAttribute="centerX" secondItem="7Ma-2x-eO3" secondAttribute="centerX" id="3G5-1R-GtV"/>
-                                                                    <constraint firstItem="eXa-NR-OGp" firstAttribute="leading" secondItem="7Ma-2x-eO3" secondAttribute="leading" id="7i3-7H-zk4"/>
+                                                                    <constraint firstItem="eXa-NR-OGp" firstAttribute="leading" secondItem="7Ma-2x-eO3" secondAttribute="leading" constant="4" id="7i3-7H-zk4"/>
                                                                     <constraint firstItem="eXa-NR-OGp" firstAttribute="top" secondItem="Ey4-hd-aOz" secondAttribute="bottom" id="AH1-y7-cv6"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="eXa-NR-OGp" secondAttribute="bottom" id="VCp-GB-x3o"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="eXa-NR-OGp" secondAttribute="bottom" constant="4" id="VCp-GB-x3o"/>
                                                                     <constraint firstItem="aX3-YA-qno" firstAttribute="height" secondItem="7Ma-2x-eO3" secondAttribute="height" id="fBG-dR-hJ7"/>
                                                                     <constraint firstItem="Ey4-hd-aOz" firstAttribute="top" secondItem="7Ma-2x-eO3" secondAttribute="top" constant="5" id="ig1-Xs-F1W"/>
                                                                     <constraint firstItem="aX3-YA-qno" firstAttribute="centerY" secondItem="7Ma-2x-eO3" secondAttribute="centerY" id="lka-2k-KPR"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="eXa-NR-OGp" secondAttribute="trailing" id="o0G-5j-H3H"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="eXa-NR-OGp" secondAttribute="trailing" constant="4" id="o0G-5j-H3H"/>
                                                                     <constraint firstAttribute="trailing" secondItem="Ey4-hd-aOz" secondAttribute="trailing" constant="8" id="qZm-8e-yVL"/>
                                                                     <constraint firstItem="aX3-YA-qno" firstAttribute="width" secondItem="7Ma-2x-eO3" secondAttribute="width" id="sDR-qX-i47"/>
                                                                     <constraint firstItem="Ey4-hd-aOz" firstAttribute="leading" secondItem="7Ma-2x-eO3" secondAttribute="leading" constant="8" id="xvE-jN-7iA"/>

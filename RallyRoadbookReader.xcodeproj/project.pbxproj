@@ -12,7 +12,8 @@
 		6614C61B21CB34CC00A8506D /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6614C61A21CB34CC00A8506D /* SyncManager.swift */; };
 		661FB75521C8A5C500194351 /* BaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 661FB75421C8A5C500194351 /* BaseVC.m */; };
 		66DC638521CC4B6C00BA124A /* Segment7Standard.otf in Resources */ = {isa = PBXBuildFile; fileRef = 66DC638421CC4B6C00BA124A /* Segment7Standard.otf */; };
-		66DC638721CC4BA000BA124A /* digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66DC638621CC4BA000BA124A /* digital-7.ttf */; };
+		66DC638921CC5C2600BA124A /* digital-7 (italic).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66DC638821CC5C2600BA124A /* digital-7 (italic).ttf */; };
+		66DC638E21CC687600BA124A /* DS-DIGII.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 66DC638D21CC687600BA124A /* DS-DIGII.TTF */; };
 		E4023F03215B50EA000268E1 /* RoadbooksVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E4023F02215B50EA000268E1 /* RoadbooksVC.m */; };
 		E40619C921AFFA7700E84FD7 /* Song 2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E40619C721AFFA7600E84FD7 /* Song 2.m4a */; };
 		E40619CA21AFFA7700E84FD7 /* Song 3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E40619C821AFFA7700E84FD7 /* Song 3.m4a */; };
@@ -107,7 +108,8 @@
 		661FB75421C8A5C500194351 /* BaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseVC.m; sourceTree = "<group>"; };
 		661FB75621C8A63000194351 /* BaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseVC.h; sourceTree = "<group>"; };
 		66DC638421CC4B6C00BA124A /* Segment7Standard.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Segment7Standard.otf; sourceTree = "<group>"; };
-		66DC638621CC4BA000BA124A /* digital-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7.ttf"; sourceTree = "<group>"; };
+		66DC638821CC5C2600BA124A /* digital-7 (italic).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7 (italic).ttf"; sourceTree = "<group>"; };
+		66DC638D21CC687600BA124A /* DS-DIGII.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DS-DIGII.TTF"; sourceTree = "<group>"; };
 		6EC42849C88ABD512568FD46 /* libPods-RallyRoadbookReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RallyRoadbookReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F49403900B7E34DF88D1BDC /* Pods-RallyRoadbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RallyRoadbookReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader.debug.xcconfig"; sourceTree = "<group>"; };
 		E4023F01215B50EA000268E1 /* RoadbooksVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoadbooksVC.h; sourceTree = "<group>"; };
@@ -540,7 +542,8 @@
 		E44E24B42181A2010081DA70 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				66DC638621CC4BA000BA124A /* digital-7.ttf */,
+				66DC638D21CC687600BA124A /* DS-DIGII.TTF */,
+				66DC638821CC5C2600BA124A /* digital-7 (italic).ttf */,
 				66DC638421CC4B6C00BA124A /* Segment7Standard.otf */,
 			);
 			path = Fonts;
@@ -849,6 +852,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E44E25252181A2020081DA70 /* Tink.mp3 in Resources */,
+				66DC638921CC5C2600BA124A /* digital-7 (italic).ttf in Resources */,
 				E44E25402181A2020081DA70 /* RoadbooksCell.xib in Resources */,
 				E432BDEB2167181E0048D5F4 /* Settings.storyboard in Resources */,
 				E443114921477FA8002CD004 /* Main.storyboard in Resources */,
@@ -857,10 +861,10 @@
 				E47D248B2148E67A006A72E1 /* roadbook-name-road-rally-a5.pdf in Resources */,
 				E4151CB4214CE81000CF7944 /* GoogleService-Info.plist in Resources */,
 				E44E25242181A2020081DA70 /* TapScrollUp.mp3 in Resources */,
+				66DC638E21CC687600BA124A /* DS-DIGII.TTF in Resources */,
 				E40619C921AFFA7700E84FD7 /* Song 2.m4a in Resources */,
 				E40619CA21AFFA7700E84FD7 /* Song 3.m4a in Resources */,
 				E443113521477E42002CD004 /* Assets.xcassets in Resources */,
-				66DC638721CC4BA000BA124A /* digital-7.ttf in Resources */,
 				E44E25212181A2020081DA70 /* HoldScrollUp.mp3 in Resources */,
 				66DC638521CC4B6C00BA124A /* Segment7Standard.otf in Resources */,
 				E443114821477FA8002CD004 /* LaunchScreen.storyboard in Resources */,

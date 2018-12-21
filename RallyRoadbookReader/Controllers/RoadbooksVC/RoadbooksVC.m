@@ -254,19 +254,28 @@
                                                                  sortDescriptor:[NSSortDescriptor sortDescriptorWithKey:@"updatedAt" ascending:NO]
                                                                       forEntity:NSStringFromClass([CDRoutes class])]];
     
+    BOOL userRole = [objUser.role isEqualToString:@"user"];
+    
     arrRoadBooks = [[NSMutableArray alloc] init];
     //    arrRoadBooks = [arrSyncData mutableCopy];
     for (CDRoutes *route in arrSyncData) {
+        
         Routes *item = [[Routes alloc] initWithCDRoutes:route];
-        [arrRoadBooks addObject:item];
-        if ([objUser.role isEqualToString:@"user"]) {
-            if (([route.name isEqualToString:kDefaultRoadName]) || ([route.name isEqualToString:kDefaultCrossCountryName])) {
-                Routes *itemPdf = [[Routes alloc] initWithCDRoutes:route];
-                itemPdf.name = [route.name isEqualToString:kDefaultRoadName] ? kDefaultRoadPdf : kDefaultCrossCountryPdf;
-                [arrRoadBooks addObject:itemPdf];
-            }
+        BOOL isDefault = [route.name isEqualToString:kDefaultRallyName] || [route.name isEqualToString:kDefaultCrossCountryName];
+        
+        if (userRole && isDefault) {
+            item.name = [NSString stringWithFormat:@"%@ - FREE User View", route.name];
+            [arrRoadBooks addObject:item];
+            
+            Routes *itemPdf = [[Routes alloc] initWithCDRoutes:route];
+            itemPdf.name = [NSString stringWithFormat:@"%@ - UPGRADED User View", route.name];
+            [arrRoadBooks addObject:itemPdf];
+        } else {
+            [arrRoadBooks addObject:item];
         }
+        
     }
+    
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(CDFolders *objFolder, NSDictionary<NSString *,id> * _Nullable bindings) {
         return ![objFolder.folderType isEqualToString:@"default"];

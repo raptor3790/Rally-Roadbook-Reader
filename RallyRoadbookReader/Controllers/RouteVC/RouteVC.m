@@ -148,9 +148,13 @@
     
     User *objUser = GET_USER_OBJ;
 
-    if ( ([objUser.role isEqualToString:@"user"] == NO) ||
-         ([_objRoute.name isEqualToString:kDefaultRoadPdf]) ||
-         ([_objRoute.name isEqualToString:kDefaultCrossCountryPdf]) )
+    BOOL isUserRole = [objUser.role isEqualToString:@"user"];
+    NSString *defaultRally = [NSString stringWithFormat:@"%@ - UPGRADED User View", kDefaultRallyName];
+    NSString *defaultCross = [NSString stringWithFormat:@"%@ - UPGRADED User View", kDefaultCrossCountryName];
+    
+    if ( !isUserRole ||
+         ([_objRoute.name isEqualToString:defaultRally]) ||
+         ([_objRoute.name isEqualToString:defaultCross]) )
     {
         [self setUpWebView];
     }
@@ -713,7 +717,7 @@
 {
     NSInteger degree = (NSInteger)currentDegree < 0 ? 0 : currentDegree;
     _lblDegree.text = [NSString stringWithFormat:degree < 10 ? @"00%ld°" : degree < 100 ? @"0%ld°" : @"%ld°", degree];
-    _lblDegree.attributedText = [self DegreeAttributedText:_lblDegree.text];
+    _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
 }
 
 - (void)getCurrentDateTime
@@ -756,12 +760,12 @@
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap)
     {
         _lblDegree.text = strCurrentDateTime;
-        _lblDegree.attributedText = [self TimeAttributedText:@"02:19"];//_lblDegree.text];
+        _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:YES]];
     }
     else
     {
         _lblTime.text = strCurrentDateTime;
-        _lblTime.attributedText = [self TimeAttributedText:@"22:18"];//_lblTime.text];
+        _lblTime.attributedText = [self StyleText:_lblTime.text size:[self NormalizedFontSizeIsEdge:NO IsDate:YES]];
     }
     
     [self performSelector:@selector(getCurrentDateTime) withObject:nil afterDelay:1];
@@ -850,36 +854,16 @@
     
 }
 
--(NSAttributedString *)TimeAttributedText:(NSString *)timeString
+-(NSAttributedString *)StyleText:(NSString *)text size:(float )fontSize
 {
-    NSUInteger totalDisplayUnits = 1;
-    totalDisplayUnits += (objUserConfig.isShowCap + objUserConfig.isShowTime + objUserConfig.isShowSpeed);
+    UIFont *digit = [UIFont fontWithName:@"DS-Digital-Italic" size:fontSize];
+    UIFont *sep = [UIFont fontWithName:@"Digital-7Italic" size:(fontSize)];
+    UIFont *degree = [UIFont fontWithName:@"Segment7Standard" size:(fontSize * 0.8)];
     
-    float fontSize = [self TimeSpeedFontSize:(totalDisplayUnits < 4)];
-    
-    UIFont *segment = [UIFont fontWithName:@"Segment7Standard" size:fontSize];
-    UIFont *sep = [UIFont fontWithName:@"Digital-7" size:fontSize];
-    
-    NSMutableAttributedString *attributeText = [[NSMutableAttributedString alloc] initWithString:timeString];
-    
-    [attributeText addAttribute:NSFontAttributeName value:segment range:[timeString rangeOfString:timeString]];
-    NSRange range  = [timeString rangeOfString:@":1"];
-    if (range.location == NSNotFound) {
-        [attributeText setAttributes:@{NSFontAttributeName: sep} range:[timeString rangeOfString:@":"]];
-    } else {
-        [attributeText setAttributes:@{NSFontAttributeName: sep} range:range];
-    }
-    
-    return attributeText;
-}
-
--(NSAttributedString *)DegreeAttributedText:(NSString *)degree
-{
-    UIFont *segment = [UIFont fontWithName:@"Segment7Standard" size:[self CapHeadingFontSize]];
-    
-    NSMutableAttributedString *attributeText = [[NSMutableAttributedString alloc]
-                                                initWithString:degree
-                                                attributes:@{NSFontAttributeName: segment}];
+    NSMutableAttributedString *attributeText = [[NSMutableAttributedString alloc] initWithString:text];
+    [attributeText addAttribute:NSFontAttributeName value:digit range:[text rangeOfString:text]];
+    [attributeText setAttributes:@{NSFontAttributeName: sep} range:[text rangeOfString:@":"]];
+    [attributeText setAttributes:@{NSFontAttributeName: degree} range:[text rangeOfString:@"°"]];
     
     return attributeText;
 }
@@ -958,262 +942,43 @@
     }
 }
 
--(float)OdometerFontSize:(NSUInteger)CharacterLength{
+-(float)NormalizedFontSizeIsEdge:(BOOL)isEdge IsDate:(BOOL)isDate
+{
+    float width = UIScreen.mainScreen.bounds.size.width;
+    int viewCount = (objUserConfig.isShowCap + objUserConfig.isShowSpeed + objUserConfig.isShowTime) + 1;
     
-    
-    int Width = SCREEN_WIDTH;
-    CharacterLength = CharacterLength - 1;
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    if (viewCount == 4)
     {
-        switch (Width) {
-            case 320:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 65;
-                        break;
-                    default:
-                        return 60;
-                        break;
-                }
-                break;
-            case 375:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 90;
-                        break;
-                    default:
-                        return 70;
-                        break;
-                }
-                break;
-            case 414:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 100;
-                        break;
-                    case 5:
-                        return 80;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 768:
-            case 834:
-            case 1024:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 130;
-                        break;
-                    default:
-                        return 110;
-                        break;
-                }
-            default:
-                break;
-        }
-    }
-    else{
-        switch (Width) {
-            case 320:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 35;
-                        break;
-                    default:
-                        return 30;
-                        break;
-                }
-                break;
-            case 375:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 45;
-                        break;
-                    default:
-                        return 40;
-                        break;
-                }
-                break;
-            case 414:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 55;
-                        break;
-                    default:
-                        return 40;
-                        break;
-                }
-                break;
-            case 768:
-            case 834:
-            case 1024:
-                switch (CharacterLength) {
-                    case 2:
-                    case 3:
-                    case 4:
-                        return 90;
-                        break;
-                    default:
-                        return 80;
-                        break;
-                }
-               break;
-            default:
-                break;
-        }
-    }
-    return 0.0;
-}
--(float)TimeSpeedFontSize:(BOOL)bigger{
-    
-    int Width = SCREEN_WIDTH;
-    
-    if (bigger) {
-        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+        if (isEdge)
         {
-            switch (Width) {
-                case 320:
-                    return 55;
-                case 375:
-                    return 65;
-                    break;
-                case 414:
-                    return 75;
-                    break;
-                case 768:
-                case 834:
-                case 1024:
-                    return 110;
-                default:
-                    break;
-            }
+            return MIN(width * 0.155, 140);
         }
-        else{
-            switch (Width) {
-                case 320:
-                    return 29;
-                case 375:
-                    return 34;
-                    break;
-                case 414:
-                    return 39;
-                    break;
-                case 768:
-                case 834:
-                case 1024:
-                    return 80;
-                default:
-                    break;
-            }
-        }
-    }
-    else{
-        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+        else
         {
-            switch (Width) {
-                case 320:
-                    return 40;
-                case 375:
-                    return 50;
-                    break;
-                case 414:
-                    return 55;
-                    break;
-                case 768:
-                case 834:
-                case 1024:
-                    return 60;
-                default:
-                    break;
-            }
-        }
-        else{
-            switch (Width) {
-                case 320:
-                    return 20;
-                case 375:
-                    return 25;
-                    break;
-                case 414:
-                    return 27;
-                    break;
-                case 768:
-                case 834:
-                case 1024:
-                    return 45;
-                default:
-                    break;
+            BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+            int screenWidth = SCREEN_WIDTH;
+            switch (screenWidth)
+            {
+                case 320: return landscape ? 44 : 20;
+                case 375: return landscape ? 56 : 26;
+                case 414: return landscape ? 64 : 30;
+                default: return landscape ? 76 : 54;
             }
         }
     }
     
-    return 0.0;
-}
-
--(float)CapHeadingFontSize{
-    int Width = SCREEN_WIDTH;
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    if (width == 812)
     {
-        switch (Width) {
-            case 320:
-                return 65;
-            case 375:
-                return 90;
-                break;
-            case 414:
-                return 100;
-                break;
-            case 768:
-            case 834:
-            case 1024:
-                return 130;
-            default:
-                break;
-        }
+        width = 768;
     }
-    else{
-        switch (Width) {
-            case 320:
-                return 35;
-            case 375:
-                return 45;
-                break;
-            case 414:
-                return 50;
-                break;
-            case 768:
-            case 834:
-            case 1024:
-                return 90;
-            default:
-                break;
-        }
-    }
-    return 0.0;
+    
+    float ratio = viewCount == 2 ? 0.18 : (isDate ? 0.125 : 0.15);
+    
+    return MIN(width * ratio, 180);
 }
 
 - (void)manageUI
 {
-    NSUInteger totalDisplayUnits = 1;
-    
-    totalDisplayUnits +=
-    (objUserConfig.isShowCap + objUserConfig.isShowTime + objUserConfig.isShowSpeed);
-    
     _labelTOD.font = [_labelTOD.font fontWithSize:5.0f];
     _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:5.0f];
     _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:8.0f];
@@ -1225,21 +990,26 @@
     _constraintHeightDPH.constant = 8.0f;
     _constraintHeightTOD.constant = 8.0f;
     
-    _lblDistance.font = [_lblDistance.font fontWithSize:[self OdometerFontSize:_lblDistance.text.length]];
-    _lblTime.attributedText = [self TimeAttributedText:_lblTime.text];
-    if (totalDisplayUnits < 4){
-        _lblSpeed.font = [_lblSpeed.font fontWithSize:[self CapHeadingFontSize]];
-        _labelTOD.font = [_labelTOD.font fontWithSize:12.0f];
-        _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:12.0f];
-        _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12.0f];
-        _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:12.0f];
-        _constraintTop_Time.constant = 0.0f;
-        _constraintTop_Speed.constant = 0.0f;
-        _constraintHeightTOD.constant = 12.0f;
-        _constraintHeightDPH.constant = 12.0f;
+    _lblDistance.font = [_lblDistance.font fontWithSize:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
+    _lblSpeed.font = [_lblSpeed.font fontWithSize:[self NormalizedFontSizeIsEdge:NO IsDate:NO]];
+    _lblTime.attributedText = [self StyleText:_lblTime.text size:[self NormalizedFontSizeIsEdge:NO IsDate:YES]];
+    
+    if (!objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed)
+    {
+        _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:YES]];
     }
-    else{
-        _lblSpeed.font = [_lblSpeed.font fontWithSize:[self TimeSpeedFontSize:false]];
+    else
+    {
+        _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
+    }
+    
+    _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12.0f];
+    _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:12.0f];
+    
+    // All visible (3 columes and 4 views)
+    if (objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed)
+    {
+        // Landscape 
         if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
         {
             _labelTOD.font = [_labelTOD.font fontWithSize:8.0f];
@@ -1249,29 +1019,32 @@
             _labelTOD.font = [_labelTOD.font fontWithSize:6.0f];
             _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:6.0f];
         }
-        _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12.0f];
-        _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:12.0f];
         _constraintTopDPH.constant = 2.0f;
         _constraintTopTOD.constant = 2.0f;
-        
     }
-    if (objUserConfig.isShowCap) {
-        _lblDegree.attributedText = [self DegreeAttributedText:_lblDegree.text];
-    }
-    else{
-        _lblDegree.attributedText = [self TimeAttributedText:_lblDegree.text];
-    }
-    
-    
-    if (SCREEN_WIDTH == 320)
+    else
     {
-        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+        _labelTOD.font = [_labelTOD.font fontWithSize:12.0f];
+        _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:12.0f];
+        _constraintTop_Time.constant = 0.0f;
+        _constraintTop_Speed.constant = 0.0f;
+        _constraintHeightTOD.constant = 12.0f;
+        _constraintHeightDPH.constant = 12.0f;
+    }
+    
+    // iPhone 4 & 5 & 6 Portrait
+    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+    {
+        if (SCREEN_WIDTH == 320)
         {
-            if(totalDisplayUnits == 4){
+            // All visible
+            if (objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed)
+            {
                 _labelTOD.font = [_labelTOD.font fontWithSize:5.0f];
                 _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:5.0f];
             }
-            else{
+            else
+            {
                 _labelTOD.font = [_labelTOD.font fontWithSize:8.0f];
                 _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:8.0f];
             }
@@ -1279,11 +1052,21 @@
             _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:8.0f];
             _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:8.0f];
         }
-        
+        else if (SCREEN_WIDTH == 375)
+        {
+            // All visible
+            if (objUserConfig.isShowCap && (objUserConfig.isShowTime + objUserConfig.isShowSpeed) == 1)
+            {
+                _labelTOD.font = [_labelTOD.font fontWithSize:10.0f];
+                _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:10.0f];
+                _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:10.0f];
+                _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:10.0f];
+            }
+        }
     }
     
     // Setting button image
-    if ([[UIScreen mainScreen] bounds].size.width > 600)
+    if (UIScreen.mainScreen.bounds.size.width > 600)
     {
         _settingImage.image = [UIImage imageNamed:@"menu_h"];
     }
@@ -1293,81 +1076,29 @@
     }
 }
 
--(float)ReturnFontSize:(BOOL)Bigger{
-    if(!Bigger){
-        if (SCREEN_WIDTH == 320){
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 50;
-            }
-            else{
-                return 15;
-            }
-        }
-        else if (SCREEN_WIDTH == 375){
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 60;
-            }
-            else{
-                return 25;
-            }
-        }
-        else if (SCREEN_WIDTH == 414){
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 65;
-            }
-            else{
-                return 30;
-            }
-        }
-        else {
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 65;
-            }
-            else{
-                return 65;
-            }
+-(float)ReturnFontSize:(BOOL)Bigger
+{
+    int Width = SCREEN_WIDTH;
+    BOOL landscape = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation);
+    
+    if (!Bigger)
+    {
+        switch (Width) {
+            case 320: return landscape ? 50 : 15;
+            case 375: return landscape ? 60 : 25;
+            case 414: return landscape ? 65 : 30;
+            default: return 65;
         }
     }
-    else{
-        if (SCREEN_WIDTH == 320){
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 60;
-            }
-            else{
-                return 30;
-            }
-        }else if (SCREEN_WIDTH == 375){
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 75;
-            }else{
-                return 40;
-            }
-        }else if (SCREEN_WIDTH == 414){
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 80;
-            }
-            else{
-                return 45;
-            }
-        }
-        else {
-            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
-            {
-                return 120;
-            }
-            else{
-                return 90;
-            }
+    else
+    {
+        switch (Width) {
+            case 320: return landscape ? 60 : 30;
+            case 375: return landscape ? 75 : 40;
+            case 414: return landscape ? 80 : 45;
+            default: return landscape ? 120 : 90;
         }
     }
-    return 50.0;
 }
 
 #pragma mark - Orientation Delegate Methods
@@ -2491,7 +2222,7 @@
     cell.txtView.editable = NO;
     cell.txtView.userInteractionEnabled = YES;
     
-    if ([[UIScreen mainScreen] bounds].size.width > 500)
+    if (UIScreen.mainScreen.bounds.size.width > 500)
     {
         cell.lblDistance.font = [UIFont boldSystemFontOfSize:48];
     }
@@ -2728,7 +2459,7 @@
     }
     
     // Update font size
-    if ([[UIScreen mainScreen] bounds].size.width > 500)
+    if (UIScreen.mainScreen.bounds.size.width > 500)
     {
         cell.lblDistance.font = [UIFont boldSystemFontOfSize:48];
     }
