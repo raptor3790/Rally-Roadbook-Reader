@@ -12,7 +12,6 @@
 #import "RoadbooksCell.h"
 #import <FBSDKLoginKit.h>
 #import <FBSDKCoreKit.h>
-#import "HowToUseVC.h"
 @import GoogleSignIn;
 
 @interface RoutesVC () <UITableViewDataSource, UITableViewDelegate, SettingsVCDelegate>

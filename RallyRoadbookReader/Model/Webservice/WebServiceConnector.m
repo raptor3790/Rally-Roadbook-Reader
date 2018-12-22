@@ -10,6 +10,12 @@
 #import "WebServiceResponse.h"
 #import "WebServiceDataAdaptor.h"
 #import "ReachabilityManager.h"
+#import "SVProgressHUD+Scale.h"
+#import <FBSDKLoginKit.h>
+#import <FBSDKCoreKit.h>
+
+@import GoogleSignIn;
+
 
 #define DEFAULT_TIMEOUT 3000.0f
 
@@ -84,6 +90,7 @@ showDisplayMsg:(NSString *)message
     
     if (showLoader)
     {
+        [SVProgressHUD setScale:NO];
         [SVProgressHUD show];
     }
     
@@ -126,6 +133,7 @@ showDisplayMsg:(NSString *)message
         if (showLoader)
         {
             [SVProgressHUD dismissWithCompletion:^{
+                [SVProgressHUD setScale:YES];
                 if ([object respondsToSelector:selector])
                 {
                     [object performSelectorOnMainThread:selector withObject:self waitUntilDone:false];
@@ -174,11 +182,11 @@ showDisplayMsg:(NSString *)message
                                     timeoutInterval:DEFAULT_TIMEOUT];
     if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
         User *objUser = GET_USER_OBJ;
-
-        if (objUser != nil) {
+        
+        if (objUser.authenticationToken && objUser.email)
+        {
             NSDictionary *headers = @{ @"token": objUser.authenticationToken,
                                        @"email": objUser.email  };
-
             [request setAllHTTPHeaderFields:headers];
         }
     }
@@ -215,11 +223,12 @@ showDisplayMsg:(NSString *)message
                                     timeoutInterval:DEFAULT_TIMEOUT];
     if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
         User *objUser = GET_USER_OBJ;
-
-        NSDictionary *headers = @{ @"token": objUser.authenticationToken,
-                                   @"email": objUser.email  };
-
-        [request setAllHTTPHeaderFields:headers];
+        if (objUser.authenticationToken && objUser.email)
+        {
+            NSDictionary *headers = @{ @"token": objUser.authenticationToken,
+                                       @"email": objUser.email  };
+            [request setAllHTTPHeaderFields:headers];
+        }
     }
     [request setHTTPMethod:@"DELETE"];
     
@@ -246,9 +255,16 @@ showDisplayMsg:(NSString *)message
         NSDictionary *headers;
         
         if ([DefaultsValues getBooleanValueFromUserDefaults_ForKey:kLogIn]) {
-            headers = @{ @"Content-Type": @"application/json",
-                         @"token": objUser.authenticationToken,
-                         @"email": objUser.email };
+            if (objUser.authenticationToken && objUser.email)
+            {
+                headers = @{ @"Content-Type": @"application/json",
+                             @"token": objUser.authenticationToken,
+                             @"email": objUser.email };
+            }
+            else
+            {
+                headers = @{ @"Content-Type": @"application/json" };
+            }
         }
         else
         {
@@ -265,11 +281,12 @@ showDisplayMsg:(NSString *)message
         if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
             
             User *objUser = GET_USER_OBJ;
-
-            NSDictionary *headers = @{ @"token": objUser.authenticationToken,
-                                       @"email": objUser.email  };
-
-            [request setAllHTTPHeaderFields:headers];
+            if (objUser.authenticationToken && objUser.email)
+            {
+                NSDictionary *headers = @{ @"token": objUser.authenticationToken,
+                                           @"email": objUser.email };
+                [request setAllHTTPHeaderFields:headers];
+            }
         }
         else{
             [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];

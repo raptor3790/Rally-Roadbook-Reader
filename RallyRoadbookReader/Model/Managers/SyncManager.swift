@@ -39,8 +39,6 @@ import Digger
     func request(folderId: Int = 0) {
         let url = folderId == 0 ? "\(Server_URL)\(ServerPath)folders?from=reader" : "\(Server_URL)\(ServerPath)folders?folder_id=\(folderId)"
 
-        print(">>>>> Touch <<<<< \(url)")
-
         WebServiceConnector().init(url,
             withParameters: nil,
             with: self,

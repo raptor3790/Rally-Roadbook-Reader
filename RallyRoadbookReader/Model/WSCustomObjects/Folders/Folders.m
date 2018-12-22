@@ -38,6 +38,20 @@ NSString *const kFoldersFolderType = @"folder_type";
     return instance;
 }
 
+- (instancetype)initWithCDFolders:(CDFolders *)folder
+{
+    self = [super init];
+    
+    self.routesCounts = folder.routesCounts.doubleValue;
+    self.foldersIdentifier = folder.foldersIdentifier.doubleValue;
+    self.parentId = folder.parentId.doubleValue;
+    self.subfoldersCount = folder.subfoldersCount.doubleValue;
+    self.folderName = [folder.folderName mutableCopy];
+    self.folderType = [folder.folderType mutableCopy];
+    
+    return self;
+}
+
 - (instancetype)initWithDictionary:(NSDictionary *)dict
 {
     self = [super init];

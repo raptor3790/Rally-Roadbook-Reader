@@ -14,7 +14,6 @@
 #import "Folders.h"
 #import "Routes.h"
 #import "Config.h"
-#import "HowToUseVC.h"
 #import <FBSDKLoginKit.h>
 #import <FBSDKCoreKit.h>
 
@@ -219,9 +218,6 @@
     [[NSMutableArray alloc] initWithArray:[CoreDataAdaptor fetchDataFromLocalDB:predicateFolder
                                                                  sortDescriptor:nil
                                                                       forEntity:NSStringFromClass([CDFolders class])]];
-    
-    arrFolders = [[NSMutableArray alloc] init];
-    arrFolders = [arrSyncFolders mutableCopy];
 
     NSString *parentId;
     
@@ -236,7 +232,7 @@
         }];
         
         NSMutableArray *arrWayPoints = [[NSMutableArray alloc] init];
-        arrWayPoints = [[arrFolders filteredArrayUsingPredicate:predicate] mutableCopy];
+        arrWayPoints = [[arrSyncFolders filteredArrayUsingPredicate:predicate] mutableCopy];
         
         if (arrWayPoints.count > 0)
         {
@@ -257,7 +253,6 @@
     BOOL userRole = [objUser.role isEqualToString:@"user"];
     
     arrRoadBooks = [[NSMutableArray alloc] init];
-    //    arrRoadBooks = [arrSyncData mutableCopy];
     for (CDRoutes *route in arrSyncData) {
         
         Routes *item = [[Routes alloc] initWithCDRoutes:route];
@@ -282,11 +277,17 @@
     }];
     
     NSMutableArray *arrWayPoints = [[NSMutableArray alloc] init];
-    arrWayPoints = [[arrFolders filteredArrayUsingPredicate:predicate] mutableCopy];
+    arrWayPoints = [[arrSyncFolders filteredArrayUsingPredicate:predicate] mutableCopy];
     
-    if (arrWayPoints.count > 0)
+    if (arrWayPoints.count == 0)
     {
-        arrFolders = [arrWayPoints mutableCopy];
+        arrWayPoints = [arrSyncFolders mutableCopy];
+    }
+    
+    arrFolders = [[NSMutableArray alloc] init];
+    for (CDFolders *folder in arrWayPoints) {
+        Folders *item = [[Folders alloc] initWithCDFolders:folder];
+        [arrFolders addObject:item];
     }
     
     [_tblRoadbooks reloadData];
@@ -432,11 +433,11 @@
     
     if (section == MyRoadbooksSectionFolders)
     {
-        strUrl = [NSString stringWithFormat:@"https://rallynavigator-staging.herokuapp.com/api/v1/folders/%@/share_reader_folder", strR_Id];
+        strUrl = [URLGetMyFolders stringByAppendingString:[NSString stringWithFormat:@"/%@/share_reader_folder", strR_Id]];
     }
     else
     {
-        strUrl = @"https://rallynavigator-staging.herokuapp.com/api/v1/folders/share_reader_roadbook";
+        strUrl = [URLGetMyFolders stringByAppendingString:@"/share_reader_roadbook"];
     }
     
     [[WebServiceConnector alloc] init:strUrl
@@ -454,11 +455,11 @@
     
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue])
     {
-        [SVProgressHUD showSuccessWithStatus:@"Roadbook has been shared successfully"];
+        [SVProgressHUD showSuccessWithStatus:@"ROADBOOK HAS SHARED WITH NEW USER"];
     }
     else
     {
-        [SVProgressHUD showInfoWithStatus:@"Sharing has been failed"];
+        [SVProgressHUD showInfoWithStatus:@"SHARING HAS FAILED\nYOU MUST BE ONLINE TO SHARE A ROADBOOK"];
     }
 }
 
@@ -498,8 +499,8 @@
     }
     else
     {
-        CDFolders *objFolder = [arrFolders objectAtIndex:idPath.row];
-        strId = [NSString stringWithFormat:@"%ld", (long)[objFolder.foldersIdentifier doubleValue]];
+        Folders *objFolder = [arrFolders objectAtIndex:idPath.row];
+        strId = [NSString stringWithFormat:@"%d", (int)objFolder.foldersIdentifier];
     }
     
     /*UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"Pick Sharing Method"
@@ -599,8 +600,8 @@
         case MyRoadbooksSectionFolders:
         {
             RoadbooksVC *vc = loadViewController(StoryBoard_Roadbooks, kIDRoadbooksVC);
-            CDFolders *objFolder = arrFolders[indexPath.row];
-            vc.strFolderId = [NSString stringWithFormat:@"%ld", (long)[objFolder.foldersIdentifier doubleValue]];
+            Folders *objFolder = arrFolders[indexPath.row];
+            vc.strFolderId = [NSString stringWithFormat:@"%d", (int)objFolder.foldersIdentifier];
             vc.strRoadbookPageName = objFolder.folderName;
             vc.strFolderType = objFolder.folderType;
             [self.navigationController pushViewController:vc animated:YES];
@@ -636,28 +637,11 @@
     {
         case MyRoadbooksSectionFolders:
         {
-            CDFolders *objFolder = [arrFolders objectAtIndex:indexPath.row];
+            Folders *objFolder = [arrFolders objectAtIndex:indexPath.row];
             
             cell.lblTitle.text = objFolder.folderName;
-            
-            if ([objFolder.routesCounts doubleValue] > 1)
-            {
-                cell.lblDetails.text = [NSString stringWithFormat:@"%ld routes", (long)[objFolder.routesCounts doubleValue]];
-            }
-            else
-            {
-                cell.lblDetails.text = [NSString stringWithFormat:@"%ld route", (long)[objFolder.routesCounts doubleValue]];
-            }
-            
-            if ([objFolder.subfoldersCount doubleValue] > 1)
-            {
-                cell.lblDate.text = [NSString stringWithFormat:@"%ld sub-folders", (long)[objFolder.subfoldersCount doubleValue]];
-            }
-            else
-            {
-                cell.lblDate.text = [NSString stringWithFormat:@"%ld sub-folder", (long)[objFolder.subfoldersCount doubleValue]];
-            }
-            
+            cell.lblDetails.text = objFolder.routesCounts == 1 ? @"1 route" : [NSString stringWithFormat:@"%d routes", (int)objFolder.routesCounts];
+            cell.lblDate.text = objFolder.subfoldersCount == 1 ? @"1 sub-folder" : [NSString stringWithFormat:@"%d sub-folders", (int)objFolder.subfoldersCount];
             cell.imgIcon.image = Set_Local_Image(@"folder_icon");
             
             if(isLightView)
@@ -723,7 +707,7 @@
                 }
             }
 
-            cell.lblDetails.text = [NSString stringWithFormat:@"%ld Way Points | %ld %@", (long)floorf(objRoadbook.waypointCount), distance, strUnit];
+            cell.lblDetails.text = [NSString stringWithFormat:@"%d Way Points | %d %@", (int)floorf(objRoadbook.waypointCount), (int)distance, strUnit];
             
             NSString *strDate = [self convertDateFormatDate:objRoadbook.updatedAt];
             cell.lblDate.text = strDate;

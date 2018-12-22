@@ -20,6 +20,7 @@
 
 + (Folders *)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
+- (instancetype)initWithCDFolders:(CDFolders *)folder;
 - (NSDictionary *)dictionaryRepresentation;
 
 @end

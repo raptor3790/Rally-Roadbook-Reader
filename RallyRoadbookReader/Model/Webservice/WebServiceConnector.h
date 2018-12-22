@@ -47,8 +47,8 @@ showDisplayMsg:(NSString *)message
 
 //-(NSString *) getNetURLFromService:(NSString *) WebService withParams: (NSArray *) ParamsArray;
 
--(NSMutableURLRequest *) getMutableRequestFromGetWS:(NSString *)WebService withParams: (NSDictionary *) ParamsDictionary;
+- (NSMutableURLRequest *) getMutableRequestFromGetWS:(NSString *)WebService withParams: (NSDictionary *)ParamsDictionary;
 
-- (NSMutableURLRequest *)getMutableRequestForPostWS:(NSString *)url withObjects:(NSDictionary *)dict isJsonBody:(bool)JSONBody isPut:(BOOL)isPut;
+- (NSMutableURLRequest *) getMutableRequestForPostWS:(NSString *)url withObjects:(NSDictionary *)dict isJsonBody:(bool)JSONBody isPut:(BOOL)isPut;
 
 @end

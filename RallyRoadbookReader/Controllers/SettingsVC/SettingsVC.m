@@ -607,7 +607,8 @@
     NSMutableDictionary *dicShare = [[NSMutableDictionary alloc] init];
     [dicShare setObject:dicParam forKey:@"share"];
     
-    [[WebServiceConnector alloc] init:@"https://rallynavigator-staging.herokuapp.com/api/v1/folders/share_reader_roadbook"
+    NSString *url = [URLGetMyFolders stringByAppendingString:@"/share_reader_roadbook"];
+    [[WebServiceConnector alloc] init:url
                        withParameters:dicShare
                            withObject:self
                          withSelector:@selector(handleShareResponse:)
@@ -622,11 +623,11 @@
     
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue])
     {
-        [SVProgressHUD showSuccessWithStatus:@"Roadbook has been shared successfully"];
+        [SVProgressHUD showSuccessWithStatus:@"ROADBOOK HAS SHARED WITH NEW USER"];
     }
     else
     {
-        [SVProgressHUD showInfoWithStatus:@"Sharing has been failed"];
+        [SVProgressHUD showInfoWithStatus:@"SHARING HAS FAILED\nYOU MUST BE ONLINE TO SHARE A ROADBOOK"];
     }
 }
 

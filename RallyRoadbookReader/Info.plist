@@ -78,6 +78,10 @@
 		<string>Segment7Standard.otf</string>
 		<string>DS-DIGII.TTF</string>
 		<string>digital-7 (italic).ttf</string>
+		<string>Roboto-Bold.ttf</string>
+		<string>Roboto-Light.ttf</string>
+		<string>Roboto-Medium.ttf</string>
+		<string>Roboto-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -196,9 +196,6 @@ Tap and Hold for  continous scrolling</string>
                                         <state key="normal" title="SKIP">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="buttonActSkipTutorial:" destination="1lz-Yh-F9l" eventType="touchUpInside" id="tM1-Nd-OWQ"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>

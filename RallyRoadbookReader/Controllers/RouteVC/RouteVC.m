@@ -12,7 +12,6 @@
 #import "RouteDetails.h"
 #import "Waypoints.h"
 #import "Backgroundimage.h"
-#import "HowToUseVC.h"
 #import "JPSVolumeButtonHandler.h"
 #import <FBSDKLoginKit.h>
 #import <FBSDKCoreKit.h>
@@ -27,7 +26,7 @@
 @interface RouteVC () <UITableViewDataSource, UITableViewDelegate, LocationManagerDelegate, SettingsVCDelegate, UIScrollViewDelegate, WKNavigationDelegate, AssetPlaybackManagerDelegate>
 {
     CGFloat volume;
-
+    
     double topSpeed;
     double totalDistance;
     double currentSpeed;
@@ -63,7 +62,7 @@
     [super viewDidLoad];
     
     _calibrate = AppContext.cal;
-
+    
     self.title = _strRouteName;
     
     ResetCount = 0;
@@ -72,18 +71,18 @@
     AppContext.locationManager.delegate = self;
     
     AppContext.assetManager.delegate = self;
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRemoteCommandNextTrackNotification:) name:@"nextTrackNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRemoteCommandPreviousTrackNotification:) name:@"previousTrackNotification" object:nil];
-
+    
     volumeButtonHandler = [JPSVolumeButtonHandler volumeButtonHandlerWithUpBlock:^{
         [self btnDigitUpClicked:nil];
     } downBlock:^{
         [self btnDigitDownClicked:nil];
     }];
     [volumeButtonHandler startHandler:YES];
-//    volumeButtonHandler.sessionOptions = AVAudioSessionCategoryOptionAllowBluetooth/*|AVAudioSessionCategoryOptionMixWithOthers*/;
-
+    //    volumeButtonHandler.sessionOptions = AVAudioSessionCategoryOptionAllowBluetooth/*|AVAudioSessionCategoryOptionMixWithOthers*/;
+    
     filterWaypointsPredicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints *objWayPoint, NSDictionary<NSString *,id> * _Nullable bindings) {
         return objWayPoint.show;
     }];
@@ -106,7 +105,7 @@
     
     UISwipeGestureRecognizer *swipeUpGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(btnResetDistanceClicked:)];
     UISwipeGestureRecognizer *swipeDownGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(btnResetDistanceClicked:)];
-
+    
     tapUpGesture.numberOfTapsRequired = 1;
     tapDownGesture.numberOfTapsRequired = 1;
     tapSpeedGesture.numberOfTapsRequired = 1;
@@ -117,7 +116,7 @@
     
     swipeUpGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     swipeDownGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-
+    
     [_vwDigitUp addGestureRecognizer:tapUpGesture];
     [_vwDigitDown addGestureRecognizer:tapDownGesture];
     [_vwSpeed addGestureRecognizer:tapSpeedGesture];
@@ -131,7 +130,7 @@
     
     [_vwDigitUp addGestureRecognizer:swipeUpGesture];
     [_vwDigitDown addGestureRecognizer:swipeDownGesture];
-
+    
     objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
     
     if (objUserConfig == nil)
@@ -152,14 +151,14 @@
     [self manageUI];
     
     User *objUser = GET_USER_OBJ;
-
+    
     BOOL isUserRole = [objUser.role isEqualToString:@"user"];
     NSString *defaultRally = [NSString stringWithFormat:@"%@ - UPGRADED User View", kDefaultRallyName];
     NSString *defaultCross = [NSString stringWithFormat:@"%@ - UPGRADED User View", kDefaultCrossCountryName];
     
     if ( !isUserRole ||
-         ([_objRoute.name isEqualToString:defaultRally]) ||
-         ([_objRoute.name isEqualToString:defaultCross]) )
+        ([_objRoute.name isEqualToString:defaultRally]) ||
+        ([_objRoute.name isEqualToString:defaultCross]) )
     {
         [self setUpWebView];
     }
@@ -181,9 +180,9 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(handleRouteChange:) name:AVAudioSessionRouteChangeNotification object:[AVAudioSession sharedInstance]];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeDidChange:) name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
-
+    //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(handleRouteChange:) name:AVAudioSessionRouteChangeNotification object:[AVAudioSession sharedInstance]];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(volumeDidChange:) name:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil];
+    
     objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
     
     if (objUserConfig == nil)
@@ -233,7 +232,7 @@
             {
                 strURL = objUserConfig.pdfFormat == PdfFormatRoadRally ?_objRoute.roadRallyPdf : _objRoute.pdf;
             }
-
+            
             if (strURL.length == 0)
             {
                 [SVProgressHUD showInfoWithStatus:@"PDF is unavailable for selected PDF format"];
@@ -256,7 +255,7 @@
                 NSString *filePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld%@.pdf", (long)_objRoute.routesIdentifier, strFileType]];
                 
                 NSURL *urlPdf = [NSURL fileURLWithPath:filePath];
-                [_wView loadFileURL:urlPdf allowingReadAccessToURL:urlPdf];
+//                [_wView loadFileURL:urlPdf allowingReadAccessToURL:urlPdf];
                 
                 [_wView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:strURL]]];
                 
@@ -340,12 +339,12 @@
     
     if ([self isMovingFromParentViewController])
     {
-//        [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
-//        [self resignFirstResponder];
+        //        [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+        //        [self resignFirstResponder];
         [super viewWillDisappear:animated];
         
-            //assetManager = nil;
-
+        //assetManager = nil;
+        
         [volumeButtonHandler setUpBlock:nil];
         [volumeButtonHandler setDownBlock:nil];
         [volumeButtonHandler stopHandler];
@@ -412,18 +411,18 @@
 
 - (IBAction)volumeDidChange:(NSNotification *)notification
 {
-//    CGFloat newVolume = [[notification.userInfo valueForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
-//
-//    if (volume == 0 || newVolume < volume)
-//    {
-//        [self btnDigitDownClicked:nil];
-//    }
-//    else
-//    {
-//        [self btnDigitUpClicked:nil];
-//    }
-//
-//    volume = newVolume;
+    //    CGFloat newVolume = [[notification.userInfo valueForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
+    //
+    //    if (volume == 0 || newVolume < volume)
+    //    {
+    //        [self btnDigitDownClicked:nil];
+    //    }
+    //    else
+    //    {
+    //        [self btnDigitUpClicked:nil];
+    //    }
+    //
+    //    volume = newVolume;
 }
 
 - (void)handleRemoteCommandNextTrackNotification:(NSNotification *)notification
@@ -448,9 +447,9 @@
     }
     else
     {
-        [self btnScrollDown:nil];
+        [self handleTapWebView:@"down"];
     }
-
+    
 }
 
 - (void)prevCalled
@@ -465,9 +464,9 @@
     }
     else
     {
-        [self btnScrollUp:nil];
+        [self handleTapWebView:@"up"];
     }
-
+    
 }
 
 - (MPRemoteCommandHandlerStatus)handleNextTrackCommandEvent:(MPRemoteCommandEvent *)event
@@ -475,14 +474,14 @@
     NSLog(@"Event Fired");
     
     User *objUser = GET_USER_OBJ;
-
+    
     if ([objUser.role isEqualToString:@"user"])
     {
         
     }
     else
     {
-        [self btnScrollDown:nil];
+        [self handleTapWebView:@"down"];
     }
     
     return MPRemoteCommandHandlerStatusSuccess;
@@ -500,7 +499,7 @@
     }
     else
     {
-        [self btnScrollUp:nil];
+        [self handleTapWebView:@"up"];
     }
     
     return MPRemoteCommandHandlerStatusSuccess;
@@ -686,17 +685,17 @@
         
         if(range.length > 0)
         {
-             _lblDistance.text = [_lblDistance.text stringByReplacingCharactersInRange:range withString:@""];
+            _lblDistance.text = [_lblDistance.text stringByReplacingCharactersInRange:range withString:@""];
         }
-//
+        //
         
-//        if([_lblDistance.text isEqualToString:@"0.0"]){
-//            _lblDistance.text = @"00.0";
-//        }
-//        range = [_lblDistance.text rangeOfString:@"(?<!\\.)0+$" options:NSRegularExpressionSearch];
-//        if(range.length > 0){
-//            _lblDistance.text = [_lblDistance.text stringByReplacingCharactersInRange:range withString:@""];
-//        }
+        //        if([_lblDistance.text isEqualToString:@"0.0"]){
+        //            _lblDistance.text = @"00.0";
+        //        }
+        //        range = [_lblDistance.text rangeOfString:@"(?<!\\.)0+$" options:NSRegularExpressionSearch];
+        //        if(range.length > 0){
+        //            _lblDistance.text = [_lblDistance.text stringByReplacingCharactersInRange:range withString:@""];
+        //        }
         
         if (isTopSpeedDisplaying)
         {
@@ -759,7 +758,7 @@
         strAdditionalMinute = @"0";
     }
     
-    strCurrentDateTime = [NSString stringWithFormat:@"%@%ld:%@%d", strAdditionalHour, (long)hour, strAdditionalMinute, dateComponents.minute];
+    strCurrentDateTime = [NSString stringWithFormat:@"%@%ld:%@%d", strAdditionalHour, (long)hour, strAdditionalMinute, (int)dateComponents.minute];
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap)
     {
         _lblDegree.text = strCurrentDateTime;
@@ -894,12 +893,12 @@
 
 -(void)SetUpTutorial{
     
-//    if(objUserConfig.isShowTutorial){
-//        [self.viewOverlay setHidden:false];
-//    }
-//    else{
-//        [self.viewOverlay setHidden:true];
-//    }
+    //    if(objUserConfig.isShowTutorial){
+    //        [self.viewOverlay setHidden:false];
+    //    }
+    //    else{
+    //        [self.viewOverlay setHidden:true];
+    //    }
     
     int borderWidth = 3.0f;
     _tViewScrollUp.clipsToBounds = YES;
@@ -926,10 +925,10 @@
 -(void)hidePDFPageLabel{
     for (UIView* webSubView in [_wView subviews])
     {
-//        NSLog(@"%@", webSubView);
+        //        NSLog(@"%@", webSubView);
         if ([webSubView isKindOfClass:[UIView class]]) {
             for(UIView* superSubView in [webSubView subviews]){
-//                NSLog(@"%@", superSubView);
+                //                NSLog(@"%@", superSubView);
                 if ([superSubView isKindOfClass:NSClassFromString(@"PDFPageLabelView")])
                 {
                     //NSLog(@"Here");
@@ -990,7 +989,7 @@
     
     BOOL degreeAsDate = !objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed;
     _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:degreeAsDate]];
-
+    
     float screenWidth = UIScreen.mainScreen.bounds.size.width;
     if (viewCount == 4)
     {
@@ -1026,13 +1025,13 @@
         _constraintHeightTOD.constant = 12;
         
         float fontSize = screenWidth == 320 ? 8 : ((screenWidth == 375 && viewCount == 3 && objUserConfig.isShowCap) ? 10 : 12);
-
+        
         _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:fontSize];
         _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:fontSize];
         _labelTOD.font = [_labelTOD.font fontWithSize:fontSize];
         _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:fontSize];
     }
-
+    
     // Setting button image
     if (UIScreen.mainScreen.bounds.size.width > 600)
     {
@@ -1161,7 +1160,7 @@
     {
         strURL = objUserConfig.pdfFormat == PdfFormatRoadRally ?_objRoute.roadRallyPdf : _objRoute.pdf;
     }
-
+    
     if (strURL.length == 0)
     {
         [SVProgressHUD showInfoWithStatus:@"PDF is unavailable for selected PDF format"];
@@ -1190,15 +1189,15 @@
         {
             urlPdf = [NSURL URLWithString:strURL];
             [_wView loadRequest:[NSURLRequest requestWithURL:urlPdf]];
-
+            
             NSURLSession *session = [NSURLSession sharedSession];
             [[session dataTaskWithURL:urlPdf completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-
+                
                 if(!error)
                 {
                     [data writeToFile:filePath atomically:YES];
                 }
-
+                
             }] resume];
         }
     }
@@ -1320,7 +1319,7 @@
     _upperPDFBorder = [[UIView alloc] init];
     _upperPDFBorder.backgroundColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
     
-   
+    
     //    _vWScrollUp.frame = CGRectMake(0, 100, SCREEN_WIDTH, 150)
     [self.view addSubview:_upperPDFBorder];
     
@@ -1329,39 +1328,39 @@
     
     _upperPDFBorder.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *heightUpperBorder = [NSLayoutConstraint constraintWithItem:_upperPDFBorder
-                                                                  attribute:NSLayoutAttributeHeight
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:nil
-                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                 multiplier:0.0f
-                                                                   constant:8.5f];
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:nil
+                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                        multiplier:0.0f
+                                                                          constant:8.5f];
     
     // Leading
     NSLayoutConstraint *leadingUpperBorder = [NSLayoutConstraint constraintWithItem:_upperPDFBorder
-                                                               attribute:NSLayoutAttributeLeading
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.view
-                                                               attribute:NSLayoutAttributeLeading
-                                                              multiplier:1.0f
-                                                                constant:3.0f];
+                                                                          attribute:NSLayoutAttributeLeading
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeLeading
+                                                                         multiplier:1.0f
+                                                                           constant:3.0f];
     
     // Bottom
     NSLayoutConstraint *trailingUpperBorder = [NSLayoutConstraint constraintWithItem:_upperPDFBorder
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.view
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1.0f
-                                                               constant:-3.0f];
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.view
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                          multiplier:1.0f
+                                                                            constant:-3.0f];
     
     // Top
     NSLayoutConstraint *topUpperBorder = [NSLayoutConstraint constraintWithItem:_upperPDFBorder
-                                                           attribute:NSLayoutAttributeTop
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:_vwSeparator
-                                                           attribute:NSLayoutAttributeBottom
-                                                          multiplier:1.0f
-                                                            constant:-10.0f];
+                                                                      attribute:NSLayoutAttributeTop
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:_vwSeparator
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                     multiplier:1.0f
+                                                                       constant:-10.0f];
     
     [self.view addConstraint:leadingUpperBorder];
     [_upperPDFBorder addConstraint:heightUpperBorder];
@@ -1377,7 +1376,7 @@
     [_lowerPDFBorder removeFromSuperview];
     _lowerPDFBorder = [[UIView alloc] init];
     _lowerPDFBorder.backgroundColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-
+    
     [self.view addSubview:_lowerPDFBorder];
     
     [self.view bringSubviewToFront:_lowerPDFBorder];
@@ -1385,39 +1384,39 @@
     
     _lowerPDFBorder.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *heightLowerBorder = [NSLayoutConstraint constraintWithItem:_lowerPDFBorder
-                                                                  attribute:NSLayoutAttributeHeight
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:nil
-                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                 multiplier:0.0f
-                                                                   constant:8.5f];
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:nil
+                                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                                        multiplier:0.0f
+                                                                          constant:8.5f];
     
     // Leading
     NSLayoutConstraint *leadingLowerBorder = [NSLayoutConstraint constraintWithItem:_lowerPDFBorder
-                                                               attribute:NSLayoutAttributeLeading
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.view
-                                                               attribute:NSLayoutAttributeLeading
-                                                              multiplier:1.0f
-                                                                constant:3.0f];
+                                                                          attribute:NSLayoutAttributeLeading
+                                                                          relatedBy:NSLayoutRelationEqual
+                                                                             toItem:self.view
+                                                                          attribute:NSLayoutAttributeLeading
+                                                                         multiplier:1.0f
+                                                                           constant:3.0f];
     
     // Bottom
     NSLayoutConstraint *trailingLowerBorder = [NSLayoutConstraint constraintWithItem:_lowerPDFBorder
-                                                                attribute:NSLayoutAttributeTrailing
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:self.view
-                                                                attribute:NSLayoutAttributeTrailing
-                                                               multiplier:1.0f
-                                                                 constant:-3.0f];
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.view
+                                                                           attribute:NSLayoutAttributeTrailing
+                                                                          multiplier:1.0f
+                                                                            constant:-3.0f];
     
     // Top
     NSLayoutConstraint *bottomLowerBorder = [NSLayoutConstraint constraintWithItem:_lowerPDFBorder
-                                                           attribute:NSLayoutAttributeBottom
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:_bottomFooter
-                                                           attribute:NSLayoutAttributeTop
-                                                          multiplier:1.0f
-                                                            constant:0.0f];
+                                                                         attribute:NSLayoutAttributeBottom
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:_bottomFooter
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
     
     [self.view addConstraint:leadingLowerBorder];
     [_lowerPDFBorder addConstraint:heightLowerBorder];
@@ -1432,11 +1431,13 @@
 }
 
 -(void)SetUpGeusture{
-    UITapGestureRecognizer *tapUpGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnScrollUp:)];
-    UITapGestureRecognizer *tapDownGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnScrollDown:)];
+    UITapGestureRecognizer *tapUpGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapWebView:)];
+    UITapGestureRecognizer *tapDownGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapWebView:)];
     
-    UILongPressGestureRecognizer *lPressDigitUpGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(btnScrollAllUp:)];
-    UILongPressGestureRecognizer *lPressDigitDownGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(btnScrollAllDown:)];
+    UILongPressGestureRecognizer *lPressDigitUpGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                                       action:@selector(handleLongPressWebView:)];
+    UILongPressGestureRecognizer *lPressDigitDownGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                                         action:@selector(handleLongPressWebView:)];
     
     tapUpGesture.numberOfTapsRequired = 1;
     tapDownGesture.numberOfTapsRequired = 1;
@@ -1444,17 +1445,17 @@
     lPressDigitUpGesture.minimumPressDuration = 1.0;
     lPressDigitDownGesture.minimumPressDuration = 1.0;
     
-    [_vWScrollDown addGestureRecognizer:tapUpGesture];
     [_vWScrollUp addGestureRecognizer:tapDownGesture];
-    
-    [_vWScrollDown addGestureRecognizer:lPressDigitUpGesture];
     [_vWScrollUp addGestureRecognizer:lPressDigitDownGesture];
+    
+    [_vWScrollDown addGestureRecognizer:tapUpGesture];
+    [_vWScrollDown addGestureRecognizer:lPressDigitUpGesture];
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
     [self SetupWebviewBorder];
-
+    
     [self hidePDFPageLabel];
     [_activityIndicator stopAnimating];
 }
@@ -1511,11 +1512,6 @@
                          }];
 }
 
-- (void)clickedWebView{
-    HowToUseVC *vc = loadViewController(StoryBoard_Settings, kIDHowToUseVC);
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)odoValueChanged:(double)distanceValue
 {
     AppContext.cal = distanceValue;
@@ -1527,7 +1523,6 @@
 
 - (IBAction)btnDigitUpClicked:(id)sender
 {
-    
     [[AudioPlayer sharedManager] createAudioPlayer:@"Tink" :@"mp3"];
     
     if (objUserConfig.odometerUnit == OdometerUnitTenth)
@@ -1698,18 +1693,18 @@
     CGPoint touchPoint = [sender locationInView: _vwBackground];
     
     CGRect upRect = CGRectMake(0, 0, CGRectGetWidth(_tblRoadbook.frame), CGRectGetHeight(_tblRoadbook.frame) / 2);
-    BOOL isUp = !CGRectContainsPoint(upRect, touchPoint);
+    BOOL isUp = CGRectContainsPoint(upRect, touchPoint);
     
     if ([sender isKindOfClass:[UILongPressGestureRecognizer class]])
     {
         // Long press
         UILongPressGestureRecognizer *r = sender;
-        [self handleLongPressBoardForUp:isUp touchState:r.state];
+        [self handleLongPressTableForUp:isUp touchState:r.state];
     }
     else
     {
         // Tap
-        [self handleTapBoardForUp:isUp];
+        [self handleTapTableForUp:isUp];
     }
 }
 
@@ -1724,282 +1719,22 @@
     [self presentViewController:nav animated:YES completion:nil];
 }
 
--(IBAction)btnScrollUp:(id)sender{
-//    NSLog(@"Up");
-    [self hidePDFPageLabel];
-//    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-    int scrollDistance = 100;
-    if (SCREEN_WIDTH >= 768) {
-        scrollDistance = 200;
-    }
-    if (_wView.scrollView.contentOffset.y > 0){
-        if ((_wView.scrollView.contentOffset.y - scrollDistance) < 0){
-            CGPoint Down = CGPointMake(0,0);
-            [UIView animateWithDuration:1.0 animations:^{
-                [self->_wView.scrollView setContentOffset:Down];
-            }];
-//            [_wView.scrollView setContentOffset:Down];
-        }else{
-            CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y - scrollDistance);
-            [UIView animateWithDuration:1.0 animations:^{
-                [self->_wView.scrollView setContentOffset:Down];
-            }];
-//            [_wView.scrollView setContentOffset:Down];
-        }
-    }
-   
-}
+#pragma mark - Scroll custom
 
--(IBAction)btnScrollDown:(id)sender{
-//    NSLog(@"Down");
-    [self hidePDFPageLabel];
-//    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-//    int currentPosition = (int)(_wView.scrollView.contentSize.height - _wView.frame.size.height);
-//    printf("%d", currentPosition);
-    int scrollDistance = 100;
-    if (SCREEN_WIDTH >= 768) {
-        scrollDistance = 200;
-    }
-    if (_wView.scrollView.contentOffset.y < (int)(_wView.scrollView.contentSize.height - _wView.frame.size.height)) {
-        if (((_wView.scrollView.contentOffset.y + _wView.frame.size.height) + scrollDistance) > _wView.scrollView.contentSize.height){
-            CGPoint Down = CGPointMake(0, _wView.scrollView.contentSize.height - _wView.frame.size.height);
-            
-            
-            [UIView animateWithDuration:1.0 animations:^{
-                [self->_wView.scrollView setContentOffset:Down];
-            }];
-        }
-        else{
-            CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y + scrollDistance);
-            [UIView animateWithDuration:1.0 animations:^{
-                [self->_wView.scrollView setContentOffset:Down];
-            }];
-           // [_wView.scrollView setContentOffset:Down];
-        }
-        
-    }
-}
-
--(IBAction)btnScrollAllDown:(id)sender{
-//    NSLog(@"AllDown");
-    [self hidePDFPageLabel];
-    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]])
-    {
-        UILongPressGestureRecognizer *r = sender;
-        if (r.state == UIGestureRecognizerStateBegan){
-//            [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-            if(!ScrollTimer.isValid){
-                ScrollCount = 0;
-                ScrollTimer = [[NSTimer alloc]init];
-                ScrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(ScrollPDFDown) userInfo:nil repeats:YES];
-            }
-        }
-        else if (r.state == UIGestureRecognizerStateEnded){
-            ScrollCount = 0;
-            [ScrollTimer invalidate];
-        }
-    }
-    //CGPoint Down = CGPointMake(0, _wView.scrollView.contentSize.height - _wView.frame.size.height);
-    //[_wView.scrollView setContentOffset:Down];
-}
-
--(void)ScrollPDFDown{
-//    NSLog(@"SCROLLING DOWN ::::::::::");
-    ScrollCount++;
-    
-    if (ScrollCount > 20) {
-//        int currentPosition = (int)(_wView.scrollView.contentSize.height - _wView.frame.size.height);
-//        printf("%d", currentPosition);
-        if (_wView.scrollView.contentOffset.y < (int)(_wView.scrollView.contentSize.height - _wView.frame.size.height)) {
-            if (((_wView.scrollView.contentOffset.y + _wView.frame.size.height) + 25) > _wView.scrollView.contentSize.height){
-                CGPoint Down = CGPointMake(0, _wView.scrollView.contentSize.height - _wView.frame.size.height);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-                //[_wView.scrollView setContentOffset:Down];
-            }
-            else{
-                CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y + 25);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-                //[_wView.scrollView setContentOffset:Down];
-            }
-            
-        }
-    }
-    else{
-//        int currentPosition = (int)(_wView.scrollView.contentSize.height - _wView.frame.size.height);
-//        printf("%d", currentPosition);
-        if (_wView.scrollView.contentOffset.y < (int)(_wView.scrollView.contentSize.height - _wView.frame.size.height)) {
-            if (((_wView.scrollView.contentOffset.y + _wView.frame.size.height) + 5) > _wView.scrollView.contentSize.height){
-                CGPoint Down = CGPointMake(0, _wView.scrollView.contentSize.height - _wView.frame.size.height);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-               // [_wView.scrollView setContentOffset:Down];
-            }
-            else{
-                CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y + 5);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-                //[_wView.scrollView setContentOffset:Down];
-            }
-            
-        }
-    }
-    
-}
-
--(void)ScrollTableDown{
-//    NSLog(@"SCROLLING DOWN ::::::::::");
-    ScrollCount++;
-    if (ScrollCount > 20) {
-//        int currentPosition = (int)(_tblRoadbook.contentSize.height - _tblRoadbook.frame.size.height);
-//        printf("%d", currentPosition);
-        if (_tblRoadbook.contentOffset.y < (int)(_tblRoadbook.contentSize.height - _tblRoadbook.frame.size.height)) {
-            if (((_tblRoadbook.contentOffset.y + _tblRoadbook.frame.size.height) + 25) > _tblRoadbook.contentSize.height){
-                CGPoint Down = CGPointMake(0, _tblRoadbook.contentSize.height - _tblRoadbook.frame.size.height);
-                [_tblRoadbook setContentOffset:Down];
-            }
-            else{
-                CGPoint Down = CGPointMake(0, _tblRoadbook.contentOffset.y + 25);
-                [_tblRoadbook setContentOffset:Down];
-            }
-            
-        }
-    }
-    else{
-//        int currentPosition = (int)(_tblRoadbook.contentSize.height - _tblRoadbook.frame.size.height);
-//        printf("%d", currentPosition);
-        if (_tblRoadbook.contentOffset.y < (int)(_tblRoadbook.contentSize.height - _tblRoadbook.frame.size.height)) {
-            if (((_tblRoadbook.contentOffset.y + _tblRoadbook.frame.size.height) + 5) > _tblRoadbook.contentSize.height){
-                CGPoint Down = CGPointMake(0, _tblRoadbook.contentSize.height - _tblRoadbook.frame.size.height);
-                [_tblRoadbook setContentOffset:Down];
-            }
-            else{
-                CGPoint Down = CGPointMake(0, _tblRoadbook.contentOffset.y + 5);
-                [_tblRoadbook setContentOffset:Down];
-            }
-            
-        }
-    }
-    
-}
-
-
--(IBAction)btnScrollAllUp:(id)sender{
-//    NSLog(@"AllUp");
-    
-    //CGPoint Down = CGPointMake(0, 0);
-    //[_wView.scrollView setContentOffset:Down];
-    [self hidePDFPageLabel];
-    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]])
-    {
-        UILongPressGestureRecognizer *r = sender;
-        if (r.state == UIGestureRecognizerStateBegan){
-//            [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-            if(!ScrollTimer.isValid){
-                ScrollCount = 0;
-                ScrollTimer = [[NSTimer alloc]init];
-                ScrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(ScrollPDFUp) userInfo:nil repeats:YES];
-            }
-        }
-        else if (r.state == UIGestureRecognizerStateEnded){
-            ScrollCount = 0;
-            [ScrollTimer invalidate];
-        }
-    }
-    
-}
-
--(void)ScrollTableUp{
-//    NSLog(@"SCROLLING Up ::::::::::");
-    ScrollCount++;
-    if (ScrollCount > 20){
-        if (_tblRoadbook.contentOffset.y > 0){
-            if ((_tblRoadbook.contentOffset.y - 25) < 0){
-                CGPoint Down = CGPointMake(0,0);
-                [_tblRoadbook setContentOffset:Down];
-            }else{
-                CGPoint Down = CGPointMake(0, _tblRoadbook.contentOffset.y - 25);
-                [_tblRoadbook setContentOffset:Down];
-            }
-        }
-    }
-    else{
-        if (_tblRoadbook.contentOffset.y > 0){
-            if ((_tblRoadbook.contentOffset.y - 5) < 0){
-                CGPoint Down = CGPointMake(0,0);
-                [_tblRoadbook setContentOffset:Down];
-            }else{
-                CGPoint Down = CGPointMake(0, _tblRoadbook.contentOffset.y - 5);
-                [_tblRoadbook setContentOffset:Down];
-            }
-        }
-    }
-}
-
--(void)ScrollPDFUp{
-//    NSLog(@"SCROLLING Up ::::::::::");
-    ScrollCount++;
-    if (ScrollCount > 20){
-        if (_wView.scrollView.contentOffset.y > 0){
-            if ((_wView.scrollView.contentOffset.y - 25) < 0){
-                CGPoint Down = CGPointMake(0,0);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-                //[_wView.scrollView setContentOffset:Down];
-            }else{
-                CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y - 25);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-                //[_wView.scrollView setContentOffset:Down];
-            }
-        }
-    }
-    else{
-        if (_wView.scrollView.contentOffset.y > 0){
-            if ((_wView.scrollView.contentOffset.y - 5) < 0){
-                CGPoint Down = CGPointMake(0,0);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-                //[_wView.scrollView setContentOffset:Down];
-                
-            }else{
-                CGPoint Down = CGPointMake(0, _wView.scrollView.contentOffset.y - 5);
-                [UIView animateWithDuration:0.3 animations:^{
-                    [self->_wView.scrollView setContentOffset:Down];
-                }];
-                //[_wView.scrollView setContentOffset:Down];
-            }
-        }
-    }
-    
-}
-
-- (IBAction)buttonActSkipTutorial:(id)sender {
-    [self.viewOverlay setHidden:true];
-}
-
-- (void)handleLongPressBoardForUp:(BOOL)isUp touchState:(UIGestureRecognizerState)state
+- (void)handleLongPressTableForUp:(BOOL)isUp touchState:(UIGestureRecognizerState)state
 {
-    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
     if (state == UIGestureRecognizerStateBegan)
     {
-        [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
+        //        [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
         if (!ScrollTimer.isValid)
         {
             ScrollCount = 0;
             ScrollTimer = [[NSTimer alloc]init];
             ScrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
                                                            target:self
-                                                         selector:isUp ? @selector(ScrollTableUp) : @selector(ScrollPDFDown)
-                                                         userInfo:nil repeats:YES];
+                                                         selector:isUp ? @selector(ScrollTableDown) : @selector(ScrollTableUp)
+                                                         userInfo:nil
+                                                          repeats:YES];
         }
     }
     else if (state == UIGestureRecognizerStateEnded)
@@ -2009,9 +1744,9 @@
     }
 }
 
-- (void)handleTapBoardForUp:(BOOL)isUp
+- (void)handleTapTableForUp:(BOOL)isUp
 {
-    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
+    //    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
     
     // DataSource
     NSMutableArray *arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate] mutableCopy];
@@ -2021,16 +1756,16 @@
     if (arrCells.count == 0) { return; }
     
     // Get indexPath
-    RouteCell *cell = isUp ? arrCells.firstObject : arrCells.lastObject;
+    RouteCell *cell = isUp ? arrCells.lastObject : arrCells.firstObject;
     NSIndexPath *indexPath = [_tblRoadbook indexPathForCell:cell];
     
-    if (isUp && indexPath.row > 0)
+    if (!isUp && indexPath.row > 0)
     {
         [_tblRoadbook scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]
                             atScrollPosition:UITableViewScrollPositionTop
                                     animated:YES];
     }
-    else if (!isUp && indexPath.row < arrSearchResults.count - 1)
+    else if (isUp && indexPath.row < arrSearchResults.count - 1)
     {
         [_tblRoadbook scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section]
                             atScrollPosition:UITableViewScrollPositionBottom
@@ -2038,6 +1773,125 @@
     }
 }
 
+- (void)handleLongPressWebView:(id)sender
+{
+    [self hidePDFPageLabel];
+    
+    if (![sender isKindOfClass:[UILongPressGestureRecognizer class]])
+    {
+        return;
+    }
+    
+    UILongPressGestureRecognizer *r = sender;
+    BOOL isUp = r.view == _vWScrollUp;
+    
+    switch (r.state) {
+        case UIGestureRecognizerStateBegan:
+            //            [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
+            if(!ScrollTimer.isValid)
+            {
+                ScrollCount = 0;
+                ScrollTimer = [[NSTimer alloc] init];
+                ScrollTimer = [NSTimer scheduledTimerWithTimeInterval:0.05
+                                                               target:self
+                                                             selector: isUp ? @selector(ScrollPDFDown) : @selector(ScrollPDFUp)
+                                                             userInfo:nil
+                                                              repeats:YES];
+            }
+            break;
+            
+        case UIGestureRecognizerStateEnded:
+            ScrollCount = 0;
+            [ScrollTimer invalidate];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+-(IBAction)handleTapWebView:(id)sender
+{
+    [self hidePDFPageLabel];
+    
+//    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
+    
+    int step = SCREEN_WIDTH >= 768 ? 200 : 100;
+    BOOL isUp = FALSE;
+    
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]])
+    {
+        UITapGestureRecognizer *r = sender;
+        isUp = r.view == _vWScrollUp;
+    } else if ([sender isEqualToString:@"up"]) {
+        isUp = YES;
+    }
+    
+    [self ScrollPDF2Up:!isUp step:step];
+}
+
+- (void)ScrollTableUp
+{
+    ScrollCount++;
+    
+    CGFloat offset = _tblRoadbook.contentOffset.y;
+    
+    if (offset <= 0) {
+        return;
+    }
+    
+    CGFloat step = ScrollCount > 20 ? 25 : 5;
+    CGPoint point = CGPointMake(0, MAX(0, offset - step));
+    [_tblRoadbook setContentOffset:point];
+}
+
+- (void)ScrollTableDown
+{
+    ScrollCount++;
+    
+    CGFloat offset = _tblRoadbook.contentOffset.y;
+    CGFloat maxY = _tblRoadbook.contentSize.height - _tblRoadbook.frame.size.height;
+    
+    if (offset >= maxY) {
+        return;
+    }
+    
+    CGFloat step = ScrollCount > 20 ? 25 : 5;
+    CGPoint point = CGPointMake(0, MIN(maxY, offset + step));
+    [_tblRoadbook setContentOffset:point];
+}
+
+- (void)ScrollPDFUp
+{
+    ScrollCount++;
+    
+    CGFloat step = ScrollCount > 20 ? 25 : 5;
+    [self ScrollPDF2Up:YES step:step];
+}
+
+- (void)ScrollPDFDown
+{
+    ScrollCount++;
+    
+    CGFloat step =  ScrollCount > 20 ? 25 : 5;
+    [self ScrollPDF2Up:NO step:step];
+}
+
+- (void)ScrollPDF2Up:(BOOL)isUp step:(CGFloat)step
+{
+    CGFloat offset = _wView.scrollView.contentOffset.y;
+    CGFloat maxY = _wView.scrollView.contentSize.height - _wView.frame.size.height;
+    
+    if ((isUp && offset <= 0) || (!isUp && offset >= maxY))
+    {
+        return;
+    }
+    
+    CGPoint point = isUp ? CGPointMake(0, MAX(0, offset - step)) : CGPointMake(0, MIN(maxY, offset + step));
+    [UIView animateWithDuration:0.3 animations:^{
+        [self->_wView.scrollView setContentOffset:point];
+    }];
+}
 
 #pragma mark - Location Manager Services
 
@@ -2115,7 +1969,7 @@
     NSMutableArray *arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate] mutableCopy];
     Waypoints *objWayPoint = [arrSearchResults objectAtIndex:indexPath.row];
     
-    cell.lblRow.text = [NSString stringWithFormat:@"%ld", indexPath.row + 1];
+    cell.lblRow.text = [NSString stringWithFormat:@"%d", (int)(indexPath.row + 1)];
     
     NSArray *arrResults = [self convertToDegreeThroughLat:objWayPoint.lat andLong:objWayPoint.lon];
     
