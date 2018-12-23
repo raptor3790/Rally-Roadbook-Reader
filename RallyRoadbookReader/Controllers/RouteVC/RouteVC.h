@@ -40,9 +40,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblTime;
 
 @property (weak, nonatomic) IBOutlet UIView *vwSeparator;
-@property (strong, nonatomic) IBOutlet WKWebView *wView;
-@property (strong, nonatomic) IBOutlet UIView *vWScrollUp;
-@property (strong, nonatomic) IBOutlet UIView *vWScrollDown;
+@property (strong, nonatomic) IBOutlet UIView *pdfContainer;
+@property (strong, nonatomic) IBOutlet UITableView *pdfView;
+@property (strong, nonatomic) IBOutlet UIView *pdfViewUp;
+@property (strong, nonatomic) IBOutlet UIView *pdfViewDown;
 
 @property (weak, nonatomic) IBOutlet UIView *vwBackground;
 @property (weak, nonatomic) IBOutlet UITableView *tblRoadbook;
@@ -70,9 +71,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTopTOD;
 
 @property (weak, nonatomic) IBOutlet UIView *viewOverlay;
-
-@property (strong, nonatomic) IBOutlet UIView *upperPDFBorder;
-@property (strong, nonatomic) IBOutlet UIView *lowerPDFBorder;
 
 @property (weak, nonatomic) IBOutlet UIView *tViewDistanceIncrease;
 @property (weak, nonatomic) IBOutlet UIView *tViewDistanceDecrease;

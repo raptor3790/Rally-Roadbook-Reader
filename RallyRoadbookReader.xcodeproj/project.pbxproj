@@ -147,7 +147,7 @@
 		E443114E21478085002CD004 /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
 		E443114F21478085002CD004 /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
 		E4431156214794D5002CD004 /* RouteVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RouteVC.h; sourceTree = "<group>"; };
-		E4431157214794D5002CD004 /* RouteVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RouteVC.m; sourceTree = "<group>"; };
+		E4431157214794D5002CD004 /* RouteVC.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RouteVC.m; sourceTree = "<group>"; tabWidth = 4; };
 		E44C56E321AEC337000BAE5C /* RallyRoadbookReader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RallyRoadbookReader-Bridging-Header.h"; sourceTree = "<group>"; };
 		E44C56E421AEC339000BAE5C /* AssetPlaybackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetPlaybackManager.swift; sourceTree = "<group>"; };
 		E44C56E521AEC339000BAE5C /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };

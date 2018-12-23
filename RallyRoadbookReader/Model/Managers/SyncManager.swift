@@ -18,7 +18,7 @@ import Digger
     private override init() {
 //        DiggerManager.shared.startDownloadImmediately = false
         DiggerManager.shared.maxConcurrentTasksCount = 4
-        DiggerManager.shared.logLevel = .high
+        DiggerManager.shared.logLevel = .none
         DiggerCache.cachesDirectory = "PDFs"
     }
 
@@ -83,9 +83,9 @@ import Digger
                 do {
                     try? FileManager.default.removeItem(at: local)
                     try FileManager.default.moveItem(at: temp, to: local)
-                    print(">>>>> Cache success: from = \(remote), to = \(local)")
-                } catch (let error) {
-                    print(">>>>> Cache failed: from = \(remote), to = \(local), error = \(error.localizedDescription)")
+//                    print(">>>>> Cache success: from = \(remote), to = \(local)")
+                } catch {
+//                    print(">>>>> Cache failed: from = \(remote), to = \(local), error = \(error.localizedDescription)")
                 }
 
             case .failure(let error):

@@ -21,59 +21,58 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-    if ([application applicationState] != UIApplicationStateBackground)
-    {
+    if ([application applicationState] != UIApplicationStateBackground) {
         [NSThread sleepForTimeInterval:2.0];
     }
-    
+
     _assetManager = [[AssetPlaybackManager alloc] init];
     _remoteCommandManager = [[RemoteCommandManager alloc] initWithAssetPlaybackManager:_assetManager];
     [_remoteCommandManager activatePlaybackCommands:YES];
-    
-    AVAudioSession *session = [AVAudioSession sharedInstance];
+
+    AVAudioSession* session = [AVAudioSession sharedInstance];
     [session setCategory:AVAudioSessionCategoryPlayback mode:AVAudioSessionModeDefault options:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
     [session setActive:YES withOptions:NO error:nil];
 
-//    [AppContext.assetManager initAsset];
+    //    [AppContext.assetManager initAsset];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [AppContext.assetManager pause];
-    });
+                                                                                      //        [AppContext.assetManager pause];
+                                                                                  });
 
     [self progressView];
-    
-    [Fabric with:@[[Crashlytics class]]];
-    
+
+    [Fabric with:@[ [Crashlytics class] ]];
+
     [GIDSignIn sharedInstance].clientID = @"1047391793931-ke1vikkcqhhkatgf8o8rd09o14h68uip.apps.googleusercontent.com";
 
     [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
-    
+
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+- (BOOL)application:(UIApplication*)application openURL:(NSURL*)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id>*)options
 {
     BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                                   openURL:url
                                                         sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
                                                                annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
-    
+
     BOOL handled2 = [[GIDSignIn sharedInstance] handleURL:url
                                         sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
                                                annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
-    
+
     return handled || handled2;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication*)application openURL:(NSURL*)url sourceApplication:(NSString*)sourceApplication annotation:(id)annotation
 {
     BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                                   openURL:url
                                                         sourceApplication:sourceApplication
                                                                annotation:annotation];
-    
+
     BOOL handled2 = [[GIDSignIn sharedInstance] handleURL:url
                                         sourceApplication:sourceApplication
                                                annotation:annotation];
@@ -81,24 +80,25 @@
     return handled || handled2;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-    
+- (void)applicationWillResignActive:(UIApplication*)application
+{
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication*)application
+{
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    
+- (void)applicationWillEnterForeground:(UIApplication*)application
+{
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (void)applicationDidBecomeActive:(UIApplication*)application
 {
     [AppContext.assetManager initAsset];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
-    
+- (void)applicationWillTerminate:(UIApplication*)application
+{
 }
 
 - (void)progressView
