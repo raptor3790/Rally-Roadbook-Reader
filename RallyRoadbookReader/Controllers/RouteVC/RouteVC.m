@@ -22,16 +22,17 @@
 
 #define DEGREES_TO_RADIANS(degrees) ((M_PI * degrees) / 180.0)
 #define RADIANS_TO_DEGREES(radians) ((radians * 180.0) / M_PI)
+#define MAX_PDF_PAGE_HEIGHT 200
 
 @interface RouteVC () <UITableViewDataSource, UITableViewDelegate, LocationManagerDelegate, SettingsVCDelegate, AssetPlaybackManagerDelegate> {
     CGFloat volume;
+
     double topSpeed;
     double totalDistance;
     double currentSpeed;
     double currentDegree;
-    
+
     BOOL isTopSpeedDisplaying;
-    
 
     NSString* strCurrentDateTime;
     NSMutableArray* arrAllLocations;
