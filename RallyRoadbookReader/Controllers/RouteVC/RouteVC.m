@@ -643,18 +643,7 @@
         }
     }
 
-    NSString* strAdditionalHour = @"";
-
-    if (hour >= 0 && hour < 10) {
-        strAdditionalHour = @"0";
-    }
-
-    NSString* strAdditionalMinute = @"";
-    if (dateComponents.minute < 10) {
-        strAdditionalMinute = @"0";
-    }
-
-    strCurrentDateTime = [NSString stringWithFormat:@"%@%ld:%@%d", strAdditionalHour, (long)hour, strAdditionalMinute, (int)dateComponents.minute];
+    strCurrentDateTime = [NSString stringWithFormat:@"%d:%.2d",  (int)hour, (int)dateComponents.minute];
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) {
         _lblDegree.text = strCurrentDateTime;
         _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:YES]];
@@ -839,7 +828,8 @@
         width = 768;
     }
 
-    float ratio = viewCount == 2 ? 0.18 : (isDate ? 0.125 : 0.15);
+//    float ratio = viewCount == 2 ? 0.18 : (isDate ? 0.125 : 0.15);
+    float ratio = viewCount == 2 ? 0.18 : (isDate && viewCount == 3 && width < 400 ? 0.13 : 0.15);
 
     return MIN(width * ratio, 180);
 }
@@ -866,7 +856,7 @@
             _constraintTopTOD.constant = 2;
             _constraintHeightDPH.constant = 6;
             _constraintHeightTOD.constant = 6;
-        } else if (screenWidth == 375) {
+        } else if (screenWidth < 500) {
             _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:12];
             _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12];
             _labelTOD.font = [_labelTOD.font fontWithSize:8];
@@ -878,7 +868,7 @@
         }
     }
 
-    if (viewCount < 4 || (viewCount == 4 && screenWidth > 375)) {
+    if (viewCount < 4 || (viewCount == 4 && screenWidth >= 500)) {
         _constraintTopDPH.constant = viewCount == 4 ? 2 : 5;
         _constraintTopTOD.constant = viewCount == 4 ? 2 : 5;
         _constraintHeightDPH.constant = 12;
@@ -897,36 +887,6 @@
         _settingImage.image = [UIImage imageNamed:@"menu_h"];
     } else {
         _settingImage.image = [UIImage imageNamed:@"menu"];
-    }
-}
-
-- (float)ReturnFontSize:(BOOL)Bigger
-{
-    int Width = SCREEN_WIDTH;
-    BOOL landscape = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation);
-
-    if (!Bigger) {
-        switch (Width) {
-        case 320:
-            return landscape ? 50 : 15;
-        case 375:
-            return landscape ? 60 : 25;
-        case 414:
-            return landscape ? 65 : 30;
-        default:
-            return 65;
-        }
-    } else {
-        switch (Width) {
-        case 320:
-            return landscape ? 60 : 30;
-        case 375:
-            return landscape ? 75 : 40;
-        case 414:
-            return landscape ? 80 : 45;
-        default:
-            return landscape ? 120 : 90;
-        }
     }
 }
 
