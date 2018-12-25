@@ -6,6 +6,7 @@
 //  Copyright © 2018 C205. All rights reserved.
 //
 
+#import "Constant.h"
 #import "RouteVC.h"
 #import "SettingsVC.h"
 #import "RouteCell.h"
@@ -63,6 +64,18 @@
 @implementation RouteVC
 
 @synthesize remoteCommandDataSource;
+
+- (UIInterfaceOrientationMask)getOrientation
+{
+    User* objUser = GET_USER_OBJ;
+    BOOL isUserRole = [objUser.role isEqualToString:@"user"];
+
+    if (iPhoneDevice && isUserRole) {
+        return UIInterfaceOrientationMaskPortrait;
+    } else {
+        return UIInterfaceOrientationMaskAll;
+    }
+}
 
 - (void)viewDidLoad
 {
@@ -930,7 +943,7 @@
     }
 
     if (remoteUrl.length == 0) {
-        [SVProgressHUD showInfoWithStatus:@"PDF is unavailable for selected PDF format"];
+        [AlertManager alert:@"PDF is unavailable for selected PDF format" title:NULL imageName:@"ic_error"];
     } else {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString* documentsDirectory = [paths objectAtIndex:0];
@@ -956,19 +969,19 @@
                             dispatch_async(dispatch_get_main_queue(), ^(void) {
                                 [self.activityIndicator stopAnimating];
                             });
-                            [SVProgressHUD showInfoWithStatus:@"Failed to Load PDF file"];
+                            [AlertManager alert:@"Failed to Load PDF file" title:NULL imageName:@"ic_error"];
                         } else {
                             [data writeToFile:filePath atomically:YES];
-                            [self setupPDFPages:localUrl];
+                            [self setupPDFPages:localUrl width: self.pdfView.frame.size.width];
                         }
                     }] resume];
         } else {
-            [self setupPDFPages:localUrl];
+            [self setupPDFPages:localUrl width: _pdfView.frame.size.width];
         }
     }
 }
 
-- (void)setupPDFPages:(NSURL*)url
+- (void)setupPDFPages:(NSURL*)url width:(CGFloat)viewWidth
 {
     CGPDFDocumentRef pdf = CGPDFDocumentCreateWithURL((CFURLRef)url);
     CGPDFPageRef page = CGPDFDocumentGetPage(pdf, 1);
@@ -989,36 +1002,27 @@
     }
     
     int pageCount = (int)arrPageHeights.count;
-    CGFloat scale = 1;
     PDFSize = CGSizeMake(documentSize.width, documentSize.height);
+    CGFloat scale = 1;//viewWidth / documentSize.width;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         CGFloat offset = 0;
         for (int i = 0; i < pageCount; i++) {
             CGFloat height = (CGFloat)[[self->arrPageHeights objectAtIndex:i] floatValue];
             
-            UIGraphicsBeginImageContext(CGSizeMake(self->PDFSize.width, height));
+            UIGraphicsBeginImageContext(CGSizeMake(viewWidth, height * scale));
             
-//            CGContextRef context = CGPDFContextCreateWithURL((CFURLRef)url, NULL, NULL);
-//            CGPDFContextBeginPage(context, NULL);
-//            UIGraphicsPushContext(context);
-
             CGContextRef context = UIGraphicsGetCurrentContext();
             CGContextSaveGState(context);
             CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
             
             // Flip coordinates
             CGContextScaleCTM(context, scale, -scale);
-            CGContextTranslateCTM(context, 0, -documentSize.height + offset);
+            CGContextTranslateCTM(context, 0, (-documentSize.height + offset) * scale);
             
             CGContextDrawPDFPage(UIGraphicsGetCurrentContext(), page);
             
             [self->arrPageImages addObject:UIGraphicsGetImageFromCurrentImageContext()];
-            
-//            UIGraphicsPopContext();
-            
-//            CGPDFContextEndPage(context);
-//            CGPDFContextClose(context);
             
             CGContextRestoreGState(context);
             UIGraphicsEndImageContext();
@@ -1039,31 +1043,30 @@
 
 - (void)clickedLogout
 {
-    [self presentConfirmationAlertWithTitle:@"Confirm Logout"
-                                withMessage:@"Are you sure you want to log out?"
-                      withCancelButtonTitle:@"Cancel"
-                               withYesTitle:@"Yes"
-                         withExecutionBlock:^{
-                             FBSDKLoginManager* login = [[FBSDKLoginManager alloc] init];
-                             [login logOut];
+    [AlertManager confirm:@"Are you sure you want to log out?"
+                    title:@"Confirm Logout"
+                 negative:@"Cancel"
+                 positive:@"Yes"
+                confirmed:^{
+                    FBSDKLoginManager* login = [[FBSDKLoginManager alloc] init];
+                    [login logOut];
 
-                             [[GIDSignIn sharedInstance] signOut];
-                             [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
-                             [self.navigationController popToRootViewControllerAnimated:YES];
-                         }];
+                    [[GIDSignIn sharedInstance] signOut];
+                    [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }];
 }
 
 // Change by Harjeet - hka
 - (void)clickedRoadbooks
 {
-    [self presentConfirmationAlertWithTitle:@"Load New Roadbook?"
-                                withMessage:@"Are you sure you want to load new "
-                                            @"roadbook and reset odometer?"
-                      withCancelButtonTitle:@"Cancel"
-                               withYesTitle:@"Yes"
-                         withExecutionBlock:^{
-                             [self.navigationController popViewControllerAnimated:YES];
-                         }];
+    [AlertManager confirm:@"Are you sure you want to load new roadbook and reset odometer?"
+                    title:@"Load New Roadbook?"
+                 negative:@"Cancel"
+                 positive:@"Yes"
+                confirmed:^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
 }
 
 - (void)odoValueChanged:(double)distanceValue
@@ -1178,16 +1181,15 @@
 - (IBAction)btnResetDistanceClicked:(id)sender
 {
     if (objUserConfig.isShowAlert) {
-        [self presentConfirmationAlertWithTitle:@"Reset ODO Distance"
-                                    withMessage:
-                                        @"Are you sure you want to reset distance?"
-                          withCancelButtonTitle:@"Cancel"
-                                   withYesTitle:@"Yes"
-                             withExecutionBlock:^{
-                                 self->totalDistance = 0.0f;
-                                 [[AudioPlayer sharedManager] createAudioPlayer:@"Reset":@"wav"];
-                                 [self InitateTimer];
-                             }];
+        [AlertManager confirm:@"Are you sure you want to reset distance?"
+                        title:@"Reset ODO Distance"
+                     negative:@"Cancel"
+                     positive:@"Yes"
+                    confirmed:^{
+                        self->totalDistance = 0.0f;
+                        [[AudioPlayer sharedManager] createAudioPlayer:@"Reset":@"wav"];
+                        [self InitateTimer];
+                    }];
     } else {
         totalDistance = 0.0f;
         [[AudioPlayer sharedManager] createAudioPlayer:@"Reset":@"wav"];
@@ -1675,7 +1677,7 @@
 
     double curAngle = 0.0;
     double preAngle = 0.0;
-
+    
     NSInteger curIndex = [objRouteDetails.waypoints indexOfObject:objWayPoints];
 
     if (curIndex != objRouteDetails.waypoints.count - 1) {

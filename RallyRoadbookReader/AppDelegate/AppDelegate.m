@@ -10,7 +10,6 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import "SVProgressHUD+Scale.h"
 
 @import GoogleSignIn;
 @import AVFoundation;
@@ -108,7 +107,6 @@
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     [SVProgressHUD setMinimumDismissTimeInterval:0.4f];
     [SVProgressHUD setMaximumDismissTimeInterval:0.8f];
-    [SVProgressHUD setScale:YES];
 }
 
 @end

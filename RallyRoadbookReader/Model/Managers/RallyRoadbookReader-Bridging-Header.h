@@ -5,3 +5,4 @@
 #import "WSConstant.h"
 #import "WebServiceConnector.h"
 #import "ReachabilityManager.h"
+#import "NSString+Extensions.h"

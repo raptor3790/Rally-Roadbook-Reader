@@ -25,12 +25,6 @@ typedef void (^RefreshBlock) (void);
 
 - (void)showErrorInObject:(nullable id)object forDict:(NSDictionary * _Nullable)dicResponse;
 
-- (void)presentConfirmationAlertWithTitle:(nonnull NSString *)strTitle
-                              withMessage:(nonnull NSString *)strMessage
-                    withCancelButtonTitle:(nonnull NSString *)strCancelTitle
-                             withYesTitle:(nonnull NSString *)strYes
-                       withExecutionBlock:(nonnull RefreshBlock)block;
-
 - (UserConfig * _Nullable)getDefaultUserConfiguration;
 
 - (UIView * _Nullable)getCellForClassName:(nonnull NSString *)classname
@@ -42,5 +36,7 @@ typedef void (^RefreshBlock) (void);
 - (void)pullToRefreshHeaderSetUpForTableView:(nullable UITableView *)tableView withStatus:(nonnull NSString *)strPlaceholder withRefreshingBlock:(nonnull RefreshBlock)block;
 
 - (void)loadMoreFooterSetUpForTableView:(nullable UITableView *)tableView withRefreshingBlock:(nonnull RefreshBlock)block;
+
+- (UIInterfaceOrientationMask)getOrientation;
 
 @end

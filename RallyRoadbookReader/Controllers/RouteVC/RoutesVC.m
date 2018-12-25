@@ -83,19 +83,18 @@
 
 - (void)clickedLogout
 {
-    [self presentConfirmationAlertWithTitle:@"Confirm Logout"
-                                withMessage:@"Are you sure you want to log out?"
-                      withCancelButtonTitle:@"Cancel"
-                               withYesTitle:@"Yes"
-                         withExecutionBlock:^{
-                             
-                             FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
-                             [login logOut];
-                             
-                             [[GIDSignIn sharedInstance] signOut];
-                             [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
-                             [self.navigationController popToRootViewControllerAnimated:YES];
-                         }];
+    [AlertManager confirm:@"Are you sure you want to log out?"
+                    title:@"Confirm Logout"
+                 negative:@"Cancel"
+                 positive:@"Yes"
+                confirmed:^{
+                    FBSDKLoginManager* login = [[FBSDKLoginManager alloc] init];
+                    [login logOut];
+
+                    [[GIDSignIn sharedInstance] signOut];
+                    [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }];
 }
 
 - (void)clickedRoadbooks{

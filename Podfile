@@ -18,5 +18,6 @@ target 'RallyRoadbookReader' do
   pod 'Crashlytics'
   pod 'SDWebImage'
   pod 'SwiftyJSON'
+  pod 'SwiftEntryKit'
   pod 'Digger'
 end

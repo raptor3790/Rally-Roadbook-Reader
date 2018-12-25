@@ -10,7 +10,6 @@
 #import "WebServiceResponse.h"
 #import "WebServiceDataAdaptor.h"
 #import "ReachabilityManager.h"
-#import "SVProgressHUD+Scale.h"
 #import <FBSDKLoginKit.h>
 #import <FBSDKCoreKit.h>
 
@@ -90,7 +89,6 @@ showDisplayMsg:(NSString *)message
     
     if (showLoader)
     {
-        [SVProgressHUD setScale:NO];
         [SVProgressHUD show];
     }
     
@@ -133,7 +131,6 @@ showDisplayMsg:(NSString *)message
         if (showLoader)
         {
             [SVProgressHUD dismissWithCompletion:^{
-                [SVProgressHUD setScale:YES];
                 if ([object respondsToSelector:selector])
                 {
                     [object performSelectorOnMainThread:selector withObject:self waitUntilDone:false];
@@ -280,7 +277,6 @@ showDisplayMsg:(NSString *)message
         objData = [self dictionaryToPostData:dict];
         if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
             
-            User *objUser = GET_USER_OBJ;
             if (objUser.authenticationToken && objUser.email)
             {
                 NSDictionary *headers = @{ @"token": objUser.authenticationToken,

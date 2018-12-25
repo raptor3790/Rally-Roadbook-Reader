@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yeT-dK-J2v">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yeT-dK-J2v">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -46,10 +44,10 @@
             </objects>
             <point key="canvasLocation" x="1928" y="117"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--NavigationVC-->
         <scene sceneID="Afp-5k-Q8e">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yeT-dK-J2v" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationVC" automaticallyAdjustsScrollViewInsets="NO" id="yeT-dK-J2v" userLabel="NavigationVC" customClass="NavigationVC" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vR3-nZ-4MT">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -74,11 +72,11 @@
                         <viewControllerLayoutGuide type="bottom" id="xW5-Vi-6tQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="T84-p9-8yc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="868"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qhe-UO-N9k">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="804"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idLoginLogoCell" rowHeight="100" id="XXN-GR-Lee">
@@ -89,7 +87,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" tag="2001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LoginHeaderLogo" translatesAutoresizingMaskIntoConstraints="NO" id="XZe-F5-EAK">
-                                                    <rect key="frame" x="24" y="0.0" width="272.5" height="100"/>
+                                                    <rect key="frame" x="24" y="0.0" width="272" height="100"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="100" id="FKC-cj-owM"/>
                                                     </constraints>
@@ -103,15 +101,15 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idLoginDescriptionCell" rowHeight="104" id="MEl-gU-zjY">
-                                        <rect key="frame" x="0.0" y="128" width="320" height="104"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idLoginDescriptionCell" rowHeight="279" id="MEl-gU-zjY">
+                                        <rect key="frame" x="0.0" y="128" width="320" height="279"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MEl-gU-zjY" id="8wv-Vc-qjg">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="279"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="4001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqX-Yw-mzJ">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="104"/>
+                                                    <rect key="frame" x="15" y="0.0" width="290" height="279"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="iWN-3Z-eIz"/>
                                                     </constraints>
@@ -142,7 +140,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Weo-9O-Tsb">
-                                                    <rect key="frame" x="30" y="0.0" width="260" height="104"/>
+                                                    <rect key="frame" x="30" y="0.0" width="260" height="279"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="4004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="753" text="Rally Roadbook Reader" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFK-D6-9mO">
                                                             <rect key="frame" x="0.0" y="0.0" width="260" height="24"/>
@@ -157,13 +155,13 @@ Roadbooks Created at www.rallynavigator.com</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="4006" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Roadbooks Created at" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PRs-TU-JkZ">
-                                                            <rect key="frame" x="0.0" y="77.5" width="260" height="21.5"/>
+                                                            <rect key="frame" x="0.0" y="77.5" width="260" height="24"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                                             <color key="textColor" red="0.72157000000000004" green="0.72157000000000004" blue="0.72157000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="4007" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="www.rallynavigator.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w5u-AU-EvQ">
-                                                            <rect key="frame" x="0.0" y="104" width="260" height="0.0"/>
+                                                            <rect key="frame" x="0.0" y="106.5" width="260" height="17"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                                                             <color key="textColor" red="0.72157000000000004" green="0.72157000000000004" blue="0.72157000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -204,7 +202,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idLoginDataCell" rowHeight="126" id="bvl-9r-8u8">
-                                        <rect key="frame" x="0.0" y="232" width="320" height="126"/>
+                                        <rect key="frame" x="0.0" y="407" width="320" height="126"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bvl-9r-8u8" id="3H1-cc-PQ0">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="126"/>
@@ -224,7 +222,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                                     </connections>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJJ-5S-dCu">
-                                                    <rect key="frame" x="125" y="67" width="71" height="18"/>
+                                                    <rect key="frame" x="124.5" y="67" width="71" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.85490196080000003" green="0.0" blue="0.066666666669999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -270,17 +268,17 @@ Roadbooks Created at www.rallynavigator.com</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idLoginActionCell" rowHeight="35" id="kPm-8o-p6T">
-                                        <rect key="frame" x="0.0" y="358" width="320" height="35"/>
+                                        <rect key="frame" x="0.0" y="533" width="320" height="35"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kPm-8o-p6T" id="Jne-ZH-von">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmD-nk-l86">
-                                                    <rect key="frame" x="30" y="0.0" width="260" height="34.5"/>
+                                                    <rect key="frame" x="30" y="0.0" width="260" height="35"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftg-s0-Pbc">
-                                                            <rect key="frame" x="0.5" y="0.0" width="103.5" height="34.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="104" height="35"/>
                                                             <color key="backgroundColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                             <state key="normal" title="Sign Up">
@@ -297,7 +295,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5tx-gq-g2S">
-                                                            <rect key="frame" x="156" y="0.0" width="104.5" height="34.5"/>
+                                                            <rect key="frame" x="156" y="0.0" width="104" height="35"/>
                                                             <color key="backgroundColor" red="0.94117647059999998" green="0.23529411759999999" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                             <state key="normal" title="Log In">
@@ -339,7 +337,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idLoginForgotPasswordCell" rowHeight="46" id="Dax-5Y-Q00">
-                                        <rect key="frame" x="0.0" y="393" width="320" height="46"/>
+                                        <rect key="frame" x="0.0" y="568" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Dax-5Y-Q00" id="ViS-Q5-McQ">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
@@ -378,23 +376,23 @@ Roadbooks Created at www.rallynavigator.com</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idDescritpion" id="SQE-Co-np1">
-                                        <rect key="frame" x="0.0" y="439" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="614" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SQE-Co-np1" id="MKB-aC-a1c">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pIB-zo-p5R">
-                                                    <rect key="frame" x="30" y="0.0" width="260" height="43.5"/>
+                                                    <rect key="frame" x="30" y="0.0" width="260" height="44"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="4002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cross Country" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jHd-J1-VkM">
-                                                            <rect key="frame" x="0.0" y="10" width="137.5" height="23.5"/>
+                                                            <rect key="frame" x="0.0" y="10" width="137.5" height="24"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                                             <color key="textColor" red="0.72156862745098038" green="0.72156862745098038" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="4003" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Road Rally" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEm-RR-lPe">
-                                                            <rect key="frame" x="157" y="10" width="103" height="23.5"/>
+                                                            <rect key="frame" x="157" y="10" width="103" height="24"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                                             <color key="textColor" red="0.72156862745098038" green="0.72156862745098038" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -423,7 +421,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="idLoginSocialCell" rowHeight="80" id="Zpm-Wx-RdA">
-                                        <rect key="frame" x="0.0" y="483" width="320" height="80"/>
+                                        <rect key="frame" x="0.0" y="658" width="320" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zpm-Wx-RdA" id="sJg-Hl-q0v">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
@@ -483,6 +481,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                         <viewLayoutGuide key="safeArea" id="fs2-9v-3sw"/>
                     </view>
                     <navigationItem key="navigationItem" id="2Bl-q8-AdS"/>
+                    <size key="freeformSize" width="320" height="868"/>
                     <connections>
                         <outlet property="bottomTblLogin" destination="IQc-Nf-zDZ" id="Y2v-jH-peJ"/>
                         <outlet property="tblLogin" destination="qhe-UO-N9k" id="LaA-Vq-zuD"/>
@@ -490,7 +489,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nUN-qZ-gjc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="465" y="117"/>
+            <point key="canvasLocation" x="465" y="116.19718309859155"/>
         </scene>
         <!--RegisterVC-->
         <scene sceneID="Tzz-4Q-3aa">
@@ -538,7 +537,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0UU-TA-0XX">
-                                                    <rect key="frame" x="140.5" y="13" width="40" height="18"/>
+                                                    <rect key="frame" x="140" y="13" width="40" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.85490196080000003" green="0.0" blue="0.066666666669999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -652,7 +651,7 @@ Roadbooks Created at www.rallynavigator.com</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q43-O1-j1a">
-                                                    <rect key="frame" x="37" y="5" width="247" height="35"/>
+                                                    <rect key="frame" x="36.5" y="5" width="247" height="35"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="W1J-Iu-QJn"/>
                                                         <constraint firstAttribute="width" constant="247" id="rfq-m7-4JC"/>

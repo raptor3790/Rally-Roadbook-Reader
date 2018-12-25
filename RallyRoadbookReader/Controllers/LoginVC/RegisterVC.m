@@ -287,49 +287,49 @@ typedef enum
 {
     if ([_strEmail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0)
     {
-        [SVProgressHUD showInfoWithStatus:@"Please Enter Email Address"];
+        [AlertManager alert:@"Please Enter Email Address" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
     if (![[_strEmail stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isValidEmail])
     {
-        [SVProgressHUD showInfoWithStatus:@"Please Enter Valid Email Address"];
+        [AlertManager alert:@"Please Enter Valid Email Address" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
     if ([_strUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0)
     {
-        [SVProgressHUD showInfoWithStatus:@"Please Enter User Name"];
+        [AlertManager alert:@"Please Enter User Name" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
     if (![[_strUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isValidName])
     {
-        [SVProgressHUD showInfoWithStatus:@"Please Enter Valid User Name"];
+        [AlertManager alert:@"Please Enter Valid User Name" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
     if ([_strPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0)
     {
-        [SVProgressHUD showInfoWithStatus:@"Please Enter Password"];
+        [AlertManager alert:@"Please Enter Password" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
     if (![_strPassword isValidPassword])
     {
-        [SVProgressHUD showInfoWithStatus:@"Password Must Be Between 6-32 Characters"];
+        [AlertManager alert:@"Password Must Be Between 6-32 Characters" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
     if ([_strConfirmPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0)
     {
-        [SVProgressHUD showInfoWithStatus:@"Please Enter Confirm Password"];
+        [AlertManager alert:@"Please Enter Confirm Password" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
     if (![_strPassword isEqualToString:_strConfirmPassword])
     {
-        [SVProgressHUD showInfoWithStatus:@"Password and Confirm Password must be same"];
+        [AlertManager alert:@"Password and Confirm Password must be same" title:NULL imageName:@"ic_error"];
         return NO;
     }
     
