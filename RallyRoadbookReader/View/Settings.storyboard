@@ -36,11 +36,12 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LB0-Kf-uao">
-                                                    <rect key="frame" x="328" y="25" width="30" height="30"/>
+                                                    <rect key="frame" x="314" y="18" width="44" height="44"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="3gT-7P-u3E"/>
-                                                        <constraint firstAttribute="width" constant="30" id="qYh-KB-UTm"/>
+                                                        <constraint firstAttribute="height" constant="44" id="dBw-Cg-P41"/>
+                                                        <constraint firstAttribute="width" secondItem="LB0-Kf-uao" secondAttribute="height" multiplier="1:1" id="rNR-ZB-lS3"/>
                                                     </constraints>
+                                                    <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                                                     <state key="normal" image="cross">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>

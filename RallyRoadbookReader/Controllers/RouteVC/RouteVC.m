@@ -25,7 +25,7 @@
 #define RADIANS_TO_DEGREES(radians) ((radians * 180.0) / M_PI)
 #define MAX_PDF_PAGE_HEIGHT 200
 
-@interface RouteVC () <UITableViewDataSource, UITableViewDelegate, LocationManagerDelegate, SettingsVCDelegate, AssetPlaybackManagerDelegate> {
+@interface RouteVC () <UITableViewDataSource, UITableViewDelegate, LocationManagerDelegate, SettingsVCDelegate, AssetPlaybackManagerDelegate, UIScrollViewDelegate, WKNavigationDelegate> {
     CGFloat volume;
 
     double topSpeed;
@@ -42,9 +42,6 @@
     RouteDetails* objRouteDetails;
     UserConfig* objUserConfig;
 
-    NSMutableArray* arrPageImages;
-    NSMutableArray* arrPageHeights;
-
     NSTimer* ResetTimer;
     NSTimer* ScrollTimer;
     NSTimer* UpdateSpeed;
@@ -56,8 +53,6 @@
     JPSVolumeButtonHandler* volumeButtonHandler;
 
     NSPredicate* filterWaypointsPredicate;
-
-    CGSize PDFSize;
 }
 @end
 
@@ -103,10 +98,10 @@
 
     volumeButtonHandler = [JPSVolumeButtonHandler
         volumeButtonHandlerWithUpBlock:^{
-            [self btnDigitUpClicked:nil];
+            [self handleTapDigital:@"up"];
         }
         downBlock:^{
-            [self btnDigitDownClicked:nil];
+            [self handleTapDigital:@"down"];
         }];
     [volumeButtonHandler startHandler:YES];
     //    volumeButtonHandler.sessionOptions =
@@ -116,7 +111,6 @@
         return objWayPoint.show;
     }];
 
-    _pdfView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _tblRoadbook.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     // Changes By Harjeet - hka
@@ -125,47 +119,6 @@
                                                                  target:self
                                                                  action:@selector(btnSettingsClicked:)];
     self.navigationItem.rightBarButtonItem = btnDrawer;
-
-    UITapGestureRecognizer* tapUpGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnDigitUpClicked:)];
-    UITapGestureRecognizer* tapDownGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnDigitDownClicked:)];
-    UITapGestureRecognizer* tapSpeedGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnSpeedClicked:)];
-    UITapGestureRecognizer* tapTableGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnTableClicked:)];
-
-    UILongPressGestureRecognizer* lPressDigitUpGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                                       action:@selector(btnDigitUpHoldClicked:)];
-    UILongPressGestureRecognizer* lPressDigitDownGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                                         action:@selector(btnDigitDownHoldClicked:)];
-    UILongPressGestureRecognizer* lPressSpeedGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                                     action:@selector(btnResetTopSpeedClicked:)];
-    UILongPressGestureRecognizer* lPressTableGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                                     action:@selector(btnTableClicked:)];
-
-    UISwipeGestureRecognizer* swipeUpGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(btnResetDistanceClicked:)];
-    UISwipeGestureRecognizer* swipeDownGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(btnResetDistanceClicked:)];
-
-    tapUpGesture.numberOfTapsRequired = 1;
-    tapDownGesture.numberOfTapsRequired = 1;
-    tapSpeedGesture.numberOfTapsRequired = 1;
-    tapTableGesture.numberOfTapsRequired = 1;
-
-    lPressSpeedGesture.minimumPressDuration = 1;
-    lPressTableGesture.minimumPressDuration = 1;
-
-    swipeUpGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-    swipeDownGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-
-    [_vwDigitUp addGestureRecognizer:tapUpGesture];
-    [_vwDigitDown addGestureRecognizer:tapDownGesture];
-    [_vwSpeed addGestureRecognizer:tapSpeedGesture];
-    [_tblRoadbook addGestureRecognizer:tapTableGesture];
-
-    [_tblRoadbook addGestureRecognizer:lPressTableGesture];
-    [_vwDigitUp addGestureRecognizer:lPressDigitUpGesture];
-    [_vwDigitDown addGestureRecognizer:lPressDigitDownGesture];
-    [_vwSpeed addGestureRecognizer:lPressSpeedGesture];
-
-    [_vwDigitUp addGestureRecognizer:swipeUpGesture];
-    [_vwDigitDown addGestureRecognizer:swipeDownGesture];
 
     objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
 
@@ -191,14 +144,14 @@
     NSString* defaultCross = [NSString stringWithFormat:@"%@ - UPGRADED User View", kDefaultCrossCountryName];
 
     if (!isUserRole || ([_objRoute.name isEqualToString:defaultRally]) || ([_objRoute.name isEqualToString:defaultCross])) {
+        _tblRoadbook.hidden = YES;
         [self setupPdfView];
     } else {
         _tblRoadbook.hidden = NO;
+        _containerView.backgroundColor = UIColor.whiteColor;
         [self fetchRouteDetails];
         [self callWebServiceToGetRoute];
     }
-
-    [self setupTutorial];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -251,9 +204,7 @@
             _currentPdfFormat = objUserConfig.pdfFormat;
             _isHighlight = objUserConfig.highlightPdf;
 
-            arrPageImages = [[NSMutableArray alloc] init];
-            arrPageHeights = [[NSMutableArray alloc] init];
-            [_pdfView reloadData];
+            [_pdfView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
 
             [self loadPDF];
         }
@@ -377,9 +328,9 @@
     //    CGFloat newVolume = [[notification.userInfo valueForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
     //
     //    if (volume == 0 || newVolume < volume) {
-    //        [self btnDigitDownClicked:nil];
+    //        [self handleTapDigital:@"up"];
     //    } else {
-    //        [self btnDigitUpClicked:nil];
+    //        [self handleTapDigital:@"down"];
     //    }
     //
     //    volume = newVolume;
@@ -403,7 +354,7 @@
 
     if ([objUser.role isEqualToString:@"user"]) {
     } else {
-        [self handleTapPDFView:@"down"];
+        [self handleTapContainerView:@"down"];
     }
 }
 
@@ -415,7 +366,7 @@
 
     if ([objUser.role isEqualToString:@"user"]) {
     } else {
-        [self handleTapPDFView:@"up"];
+        [self handleTapContainerView:@"up"];
     }
 }
 
@@ -427,7 +378,7 @@
 
     if ([objUser.role isEqualToString:@"user"]) {
     } else {
-        [self handleTapPDFView:@"down"];
+        [self handleTapContainerView:@"down"];
     }
 
     return MPRemoteCommandHandlerStatusSuccess;
@@ -441,7 +392,7 @@
 
     if ([objUser.role isEqualToString:@"user"]) {
     } else {
-        [self handleTapPDFView:@"up"];
+        [self handleTapContainerView:@"up"];
     }
 
     return MPRemoteCommandHandlerStatusSuccess;
@@ -477,7 +428,7 @@
                            showLoader:NO];
 }
 
-- (IBAction)handleRouteDetailsResponse:(id)sender
+- (void)handleRouteDetailsResponse:(id)sender
 {
     [self validateResponse:sender
                 forKeyName:RouteKey
@@ -514,14 +465,38 @@
         if (totalDisplayUnits == 2) {
             _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer with:0.5f];
         } else {
-            _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer with:0.333f];
+            _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer with:0.33333f];
         }
     } else {
         _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer with:0.38f];
     }
 
     if (SCREEN_WIDTH >= 768) {
-        _constraintAspectHeader = [self changeMultiplier:_constraintAspectHeader with:320 / 60];
+        _constraintHeaderRatio = [self changeMultiplier:_constraintHeaderRatio with:0.19f];
+    } else {
+        _constraintHeaderRatio = [self changeMultiplier:_constraintHeaderRatio with:0.3f];
+    }
+
+    BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    if (iPhoneDevice && landscape && ([self getOrientation] == UIInterfaceOrientationMaskAll)) {
+        _constraintHeaderCenter.constant = 20;
+        _constraintHeaderHeight.active = NO;
+        _separatorView.hidden = YES;
+        _containerView.hidden = YES;
+    } else {
+        _constraintHeaderCenter.constant = 0;
+        _constraintHeaderHeight.active = NO;
+        _constraintHeaderHeight = [NSLayoutConstraint constraintWithItem:_headerView
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:NULL
+                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                              multiplier:1.0f
+                                                                constant:self.view.frame.size.width * (SCREEN_WIDTH >= 768 ? 0.19f : 0.3f)];
+        [NSLayoutConstraint activateConstraints:([NSArray arrayWithObjects:_constraintHeaderHeight, nil])];
+
+        _separatorView.hidden = NO;
+        _containerView.hidden = NO;
     }
 
     [self manageUI];
@@ -544,6 +519,7 @@
     }
 
     [self.view layoutIfNeeded];
+    
     _vwMiddleContainer.hidden = NO;
     _vwSpeed.hidden = NO;
     _vwTime.hidden = NO;
@@ -562,19 +538,19 @@
     _vwCAP.hidden = (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) ? NO : !(objUserConfig.isShowCap);
     _vWCapSuper.hidden = (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) ? NO : !(objUserConfig.isShowCap);
 
-    _heightVwSpeed.constant = CGRectGetHeight(_vwMiddleContainer.frame) / 2;
-    _heightVwTime.constant = CGRectGetHeight(_vwMiddleContainer.frame) / 2;
+    _heightVwSpeed.constant = CGRectGetHeight(_vwMiddleContainer.frame) / 2 - 1.5f;
+    _heightVwTime.constant = CGRectGetHeight(_vwMiddleContainer.frame) / 2 - 1.5f;
 
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) {
         _lblCAPHeading.text = @"Time of Day";
-        _heightVwSpeed.constant = CGRectGetHeight(_vwMiddleContainer.frame);
+        _heightVwSpeed.constant = 1000;//CGRectGetHeight(_vwOdometer.frame);
         _heightVwTime.constant = 0.0f;
     } else if (objUserConfig.isShowSpeed && !objUserConfig.isShowTime) {
-        _heightVwSpeed.constant = CGRectGetHeight(_vwMiddleContainer.frame);
+        _heightVwSpeed.constant = 1000;//CGRectGetHeight(_vwOdometer.frame);
         _heightVwTime.constant = 0.0f;
     } else if (!objUserConfig.isShowSpeed && objUserConfig.isShowTime) {
+        _heightVwTime.constant = 1000;//CGRectGetHeight(_vwMiddleContainer.frame);
         _heightVwSpeed.constant = 0.0f;
-        _heightVwTime.constant = CGRectGetHeight(_vwMiddleContainer.frame);
     }
 
     [self updateViewConstraints];
@@ -656,7 +632,7 @@
         }
     }
 
-    strCurrentDateTime = [NSString stringWithFormat:@"%d:%.2d",  (int)hour, (int)dateComponents.minute];
+    strCurrentDateTime = [NSString stringWithFormat:@"%d:%.2d", (int)hour, (int)dateComponents.minute];
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) {
         _lblDegree.text = strCurrentDateTime;
         _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:YES]];
@@ -700,7 +676,7 @@
     return [numberString stringByReplacingOccurrencesOfString:@"," withString:@""];
 }
 
-- (void)InitateTimer
+- (void)initateTimer
 {
     if (![ResetTimer isValid]) {
         ResetTimer = [[NSTimer alloc] init];
@@ -782,69 +758,46 @@
     return NewConstraint;
 }
 
-- (void)setupTutorial
-{
-    //    if (objUserConfig.isShowTutorial) {
-    //        [self.viewOverlay setHidden:false];
-    //    } else {
-    //        [self.viewOverlay setHidden:true];
-    //    }
-
-    int borderWidth = 3.0f;
-    _tViewScrollUp.clipsToBounds = YES;
-    _tViewScrollUp.layer.borderWidth = borderWidth;
-    _tViewScrollUp.layer.borderColor = [UIColor colorWithRed:192 / 255.0 green:192 / 255.0 blue:192 / 255.0 alpha:1.0f].CGColor;
-
-    _tViewScrollDown.clipsToBounds = YES;
-    _tViewScrollDown.layer.borderWidth = borderWidth;
-    _tViewScrollDown.layer.borderColor = [UIColor colorWithRed:192 / 255.0 green:192 / 255.0 blue:192 / 255.0 alpha:1.0f].CGColor;
-
-    _tViewSettings.clipsToBounds = YES;
-    _tViewSettings.layer.borderWidth = borderWidth;
-    _tViewSettings.layer.borderColor = [UIColor colorWithRed:192 / 255.0 green:192 / 255.0 blue:192 / 255.0 alpha:1.0f].CGColor;
-
-    _tViewDistanceDecrease.clipsToBounds = YES;
-    _tViewDistanceDecrease.layer.borderWidth = borderWidth;
-    _tViewDistanceDecrease.layer.borderColor = [UIColor colorWithRed:192 / 255.0 green:192 / 255.0 blue:192 / 255.0 alpha:1.0f].CGColor;
-
-    _tViewDistanceIncrease.clipsToBounds = YES;
-    _tViewDistanceIncrease.layer.borderWidth = borderWidth;
-    _tViewDistanceIncrease.layer.borderColor = [UIColor colorWithRed:192 / 255.0 green:192 / 255.0 blue:192 / 255.0 alpha:1.0f].CGColor;
-}
-
 - (float)NormalizedFontSizeIsEdge:(BOOL)isEdge IsDate:(BOOL)isDate
 {
-    float width = UIScreen.mainScreen.bounds.size.width;
     int viewCount = (objUserConfig.isShowCap + objUserConfig.isShowSpeed + objUserConfig.isShowTime) + 1;
-
-    if (viewCount == 4) {
-        if (isEdge) {
-            return MIN(width * 0.155, 140);
-        } else {
-            BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-
-            int screenWidth = SCREEN_WIDTH;
-            switch (screenWidth) {
-            case 320:
-                return landscape ? 44 : 20;
-            case 375:
-                return landscape ? 56 : 26;
-            case 414:
-                return landscape ? 64 : 30;
-            default:
-                return landscape ? 76 : 54;
-            }
+    BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    
+    int screenWidth = SCREEN_WIDTH;
+    if (viewCount == 2) {
+        switch (screenWidth) {
+        case 320:
+            return landscape ? 126 : 58;
+        case 375:
+            return landscape ? (SCREEN_HEIGHT == 812 ? 180 : 150) : 72;
+        case 414:
+            return landscape ? 176 : 90;
+        default:
+            return landscape ? 176 : 120;
+        }
+    } else if (viewCount == 3) {
+        switch (screenWidth) {
+        case 320:
+            return landscape ? 88 : 42;
+        case 375:
+            return landscape ? (SCREEN_HEIGHT == 812 ? 120 : 102) : (isDate ? 52 : 56);
+        case 414:
+            return landscape ? 114 : 58;
+        default:
+            return landscape ? 165 : 115;
+        }
+    } else {
+        switch (screenWidth) {
+        case 320:
+            return landscape ? (isEdge ? 102 : 50) : (isEdge ? 52 : 20);
+        case 375:
+            return landscape ? (SCREEN_HEIGHT == 812 ? (isEdge ? 142 : 80) : (isEdge ? 120 : 72)) : (isEdge ? 64 : 25);
+        case 414:
+            return landscape ? (isEdge ? 136 : 74) : (isEdge ? 72 : 30);
+        default:
+            return landscape ? (isEdge ? 170 : 65) : (isEdge ? 120 : 34);
         }
     }
-
-    if (width == 812) {
-        width = 768;
-    }
-
-//    float ratio = viewCount == 2 ? 0.18 : (isDate ? 0.125 : 0.15);
-    float ratio = viewCount == 2 ? 0.18 : (isDate && viewCount == 3 && width < 400 ? 0.13 : 0.15);
-
-    return MIN(width * ratio, 180);
 }
 
 - (void)manageUI
@@ -865,8 +818,6 @@
             _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:8];
             _labelTOD.font = [_labelTOD.font fontWithSize:6];
             _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:6];
-            _constraintTopDPH.constant = 2;
-            _constraintTopTOD.constant = 2;
             _constraintHeightDPH.constant = 6;
             _constraintHeightTOD.constant = 6;
         } else if (screenWidth < 500) {
@@ -874,16 +825,15 @@
             _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12];
             _labelTOD.font = [_labelTOD.font fontWithSize:8];
             _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:8];
-            _constraintTopDPH.constant = 5;
-            _constraintTopTOD.constant = 5;
             _constraintHeightDPH.constant = 8;
             _constraintHeightTOD.constant = 8;
         }
     }
 
+    _constraintTopDPH.constant = viewCount == 4 ? 2 : 5;
+    _constraintTopTOD.constant = viewCount == 4 ? 2 : 5;
+
     if (viewCount < 4 || (viewCount == 4 && screenWidth >= 500)) {
-        _constraintTopDPH.constant = viewCount == 4 ? 2 : 5;
-        _constraintTopTOD.constant = viewCount == 4 ? 2 : 5;
         _constraintHeightDPH.constant = 12;
         _constraintHeightTOD.constant = 12;
 
@@ -922,27 +872,75 @@
 
 - (void)setupPdfView
 {
-    _pdfContainer.layer.cornerRadius = 10.0f;
-    _pdfContainer.clipsToBounds = YES;
+    _containerView.layer.cornerRadius = 10.0f;
+    _containerView.clipsToBounds = YES;
 
-    [self.view bringSubviewToFront:_pdfContainer];
-    [self.view bringSubviewToFront:_activityIndicator];
-    [self.view bringSubviewToFront:self.viewOverlay];
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+//    config.preferences.render
+    _pdfView = [[WKWebView alloc] initWithFrame:_containerView.bounds configuration:config];
+    _pdfView.backgroundColor = UIColor.clearColor;
+    _pdfView.scrollView.backgroundColor = UIColor.clearColor;
+    _pdfView.clipsToBounds = YES;
+    _pdfView.navigationDelegate = self;
+    _pdfView.scrollView.delegate = self;
+
+    [_containerView addSubview:_pdfView];
+    [_containerView sendSubviewToBack:_pdfView];
+
+    _pdfView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    // Leading
+    NSLayoutConstraint* leading = [NSLayoutConstraint constraintWithItem:_pdfView
+                                                               attribute:NSLayoutAttributeLeading
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:_containerView
+                                                               attribute:NSLayoutAttributeLeading
+                                                              multiplier:1.0f
+                                                                constant:0.0f];
+    // Trailing
+    NSLayoutConstraint* trailing = [NSLayoutConstraint constraintWithItem:_pdfView
+                                                                attribute:NSLayoutAttributeTrailing
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:_containerView
+                                                                attribute:NSLayoutAttributeTrailing
+                                                               multiplier:1.0f
+                                                                 constant:0.0f];
+    // Top
+    NSLayoutConstraint* top = [NSLayoutConstraint constraintWithItem:_pdfView
+                                                           attribute:NSLayoutAttributeTop
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:_containerView
+                                                           attribute:NSLayoutAttributeTop
+                                                          multiplier:1.0f
+                                                            constant:10.0f];
+    // Bottom
+    NSLayoutConstraint* bottom = [NSLayoutConstraint constraintWithItem:_pdfView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:_containerView
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0f
+                                                               constant:-10.0f];
+
+    [_containerView addConstraint:leading];
+    [_containerView addConstraint:trailing];
+    [_containerView addConstraint:top];
+    [_containerView addConstraint:bottom];
 
     [self loadPDF];
 }
 
 - (void)loadPDF
 {
-    NSString* remoteUrl;
+    NSString* remotePath;
 
     if (objUserConfig.highlightPdf) {
-        remoteUrl = objUserConfig.pdfFormat == PdfFormatCrossCountry ? _objRoute.crossCountryHighlightPdf : _objRoute.highlightRoadRally;
+        remotePath = objUserConfig.pdfFormat == PdfFormatCrossCountry ? _objRoute.crossCountryHighlightPdf : _objRoute.highlightRoadRally;
     } else {
-        remoteUrl = objUserConfig.pdfFormat == PdfFormatRoadRally ? _objRoute.roadRallyPdf : _objRoute.pdf;
+        remotePath = objUserConfig.pdfFormat == PdfFormatRoadRally ? _objRoute.roadRallyPdf : _objRoute.pdf;
     }
 
-    if (remoteUrl.length == 0) {
+    if (remotePath.length == 0) {
         [AlertManager alert:@"PDF is unavailable for selected PDF format" title:NULL imageName:@"ic_error"];
     } else {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -957,86 +955,72 @@
         NSString* filePath = [documentsDirectory stringByAppendingPathComponent:
                                                      [NSString stringWithFormat:@"%ld%@.pdf", (long)_objRoute.routesIdentifier, strFileType]];
         NSURL* localUrl = [NSURL fileURLWithPath:filePath];
+        NSURL* remoteUrl = [NSURL URLWithString:remotePath];
 
         [_activityIndicator startAnimating];
         NSLog(@">>>>> Load pdf: remote = %@, local = %@", remoteUrl, localUrl);
 
+        [_pdfView loadFileURL:localUrl allowingReadAccessToURL:localUrl];
+
         if ([[WebServiceConnector alloc] checkNetConnection]) {
+            [_pdfView loadRequest:[NSURLRequest requestWithURL:remoteUrl]];
+
             NSURLSession* session = [NSURLSession sharedSession];
-            [[session dataTaskWithURL:[NSURL URLWithString:remoteUrl]
+            [[session dataTaskWithURL:remoteUrl
                     completionHandler:^(NSData* data, NSURLResponse* response, NSError* error) {
-                        if (error) {
-                            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                                [self.activityIndicator stopAnimating];
-                            });
-                            [AlertManager alert:@"Failed to Load PDF file" title:NULL imageName:@"ic_error"];
-                        } else {
+                        if (!error) {
                             [data writeToFile:filePath atomically:YES];
-                            [self setupPDFPages:localUrl width: self.pdfView.frame.size.width];
                         }
                     }] resume];
-        } else {
-            [self setupPDFPages:localUrl width: _pdfView.frame.size.width];
         }
     }
 }
 
-- (void)setupPDFPages:(NSURL*)url width:(CGFloat)viewWidth
+- (void)hidePDFPageLabel
 {
-    CGPDFDocumentRef pdf = CGPDFDocumentCreateWithURL((CFURLRef)url);
-    CGPDFPageRef page = CGPDFDocumentGetPage(pdf, 1);
-    CGSize documentSize = CGPDFPageGetBoxRect(page, kCGPDFCropBox).size;
-    
-    arrPageImages = [[NSMutableArray alloc] init];
-    arrPageHeights = [[NSMutableArray alloc] init];
+    for (UIView* webSubView in [_pdfView subviews]) {
+        if (![webSubView isKindOfClass:[UIView class]]) {
+            continue;
+        }
 
-    CGFloat reminder = documentSize.height;
-    while (reminder > 0) {
-        if (reminder > MAX_PDF_PAGE_HEIGHT) {
-            [arrPageHeights addObject:[NSNumber numberWithFloat:MAX_PDF_PAGE_HEIGHT]];
-            reminder -= MAX_PDF_PAGE_HEIGHT;
-        } else {
-            [arrPageHeights addObject:[NSNumber numberWithFloat:reminder]];
-            break;
+        for (UIView* superSubView in webSubView.subviews) {
+            if ([superSubView isKindOfClass:NSClassFromString(@"PDFPageLabelView")]) {
+                [superSubView setHidden:true];
+            }
+
+            if ([superSubView isKindOfClass:NSClassFromString(@"WKPDFPageNumberIndicator")]) {
+                [superSubView setHidden:true];
+            }
         }
     }
-    
-    int pageCount = (int)arrPageHeights.count;
-    PDFSize = CGSizeMake(documentSize.width, documentSize.height);
-    CGFloat scale = 1;//viewWidth / documentSize.width;
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        CGFloat offset = 0;
-        for (int i = 0; i < pageCount; i++) {
-            CGFloat height = (CGFloat)[[self->arrPageHeights objectAtIndex:i] floatValue];
-            
-            UIGraphicsBeginImageContext(CGSizeMake(viewWidth, height * scale));
-            
-            CGContextRef context = UIGraphicsGetCurrentContext();
-            CGContextSaveGState(context);
-            CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-            
-            // Flip coordinates
-            CGContextScaleCTM(context, scale, -scale);
-            CGContextTranslateCTM(context, 0, (-documentSize.height + offset) * scale);
-            
-            CGContextDrawPDFPage(UIGraphicsGetCurrentContext(), page);
-            
-            [self->arrPageImages addObject:UIGraphicsGetImageFromCurrentImageContext()];
-            
-            CGContextRestoreGState(context);
-            UIGraphicsEndImageContext();
-            
-            offset += height;
-        }
-        
-        CGPDFDocumentRelease(pdf);
+}
 
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [self.activityIndicator stopAnimating];
-            [self.pdfView reloadData];
-        });
-    });
+#pragma mark - Scroll View Method
+
+- (void)scrollViewWillBeginZooming:(UIScrollView*)scrollView withView:(UIView*)view
+{
+    [[scrollView pinchGestureRecognizer] setEnabled:false];
+}
+
+#pragma mark - WKWebView Delegate
+
+- (void)webView:(WKWebView*)webView didFinishNavigation:(WKNavigation*)navigation
+{
+    [self hidePDFPageLabel];
+    [_activityIndicator stopAnimating];
+}
+
+- (void)webView:(WKWebView*)webView didFailNavigation:(WKNavigation*)navigation withError:(NSError*)error
+{
+    [_activityIndicator stopAnimating];
+    [AlertManager alert:@"Failed to Load PDF file" title:NULL imageName:@"ic_error"];
+}
+
+- (void)webView:(WKWebView*)webView didCommitNavigation:(WKNavigation*)navigation
+{
+    NSString* javascript = @"var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');document.getElementsByTagName('head')[0].appendChild(meta);";
+
+    [webView evaluateJavaScript:javascript completionHandler:nil];
 }
 
 #pragma mark - Setting Delegate Methods
@@ -1060,8 +1044,8 @@
 // Change by Harjeet - hka
 - (void)clickedRoadbooks
 {
-    [AlertManager confirm:@"Are you sure you want to load new roadbook and reset odometer?"
-                    title:@"Load New Roadbook?"
+    [AlertManager confirm:@""
+                    title:@"Load new roadbook and reset odometer?"
                  negative:@"Cancel"
                  positive:@"Yes"
                 confirmed:^{
@@ -1078,96 +1062,71 @@
 
 #pragma mark - Button Click Events
 
-- (IBAction)btnDigitUpClicked:(id)sender
+- (IBAction)handleTapDigital:(id)sender
 {
-    [[AudioPlayer sharedManager] createAudioPlayer:@"Tink":@"mp3"];
+    BOOL isUp = FALSE;
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer* r = sender;
+        isUp = r.view == _vwDigitUp;
+    } else if ([sender isEqualToString:@"up"]) {
+        isUp = YES;
+    }
 
-    if (objUserConfig.odometerUnit == OdometerUnitTenth) {
-        totalDistance += (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.10f / 0.621371 : 0.10f);
+    if (isUp) {
+        [[AudioPlayer sharedManager] createAudioPlayer:@"Tink":@"mp3"];
+        [self updateSpeedContinuosUp];
     } else {
-        totalDistance += (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.01f / 0.621371 : 0.01f);
-    }
-
-    [self displayAllUnits];
-}
-
-- (IBAction)btnDigitDownClicked:(id)sender
-{
-    [[AudioPlayer sharedManager] createAudioPlayer:@"Tock":@"mp3"];
-
-    if (objUserConfig.odometerUnit == OdometerUnitTenth) {
-        totalDistance -= (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.10f / 0.621371 : 0.10f);
-    } else {
-        totalDistance -= (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.01f / 0.621371 : 0.01f);
-    }
-
-    if (totalDistance < 0) {
-        totalDistance = 0.0f;
-    }
-
-    [self displayAllUnits];
-}
-
-- (IBAction)btnDigitDownHoldClicked:(id)sender
-{
-    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        UILongPressGestureRecognizer* r = sender;
-        if (r.state == UIGestureRecognizerStateBegan) {
-            [[AudioPlayer sharedManager] createAudioPlayer:@"Tock":@"mp3"];
-
-            if (!UpdateSpeed.isValid) {
-                UpdateSpeed = [[NSTimer alloc] init];
-                UpdateSpeed = [NSTimer
-                    scheduledTimerWithTimeInterval:0.05
-                                            target:self
-                                          selector:@selector(UpdateSpeedContinuosDown)
-                                          userInfo:nil
-                                           repeats:YES];
-            }
-        } else if (r.state == UIGestureRecognizerStateEnded) {
-            [UpdateSpeed invalidate];
-        }
+        [[AudioPlayer sharedManager] createAudioPlayer:@"Tock":@"mp3"];
+        [self updateSpeedContinuosDown];
     }
 }
 
-- (void)UpdateSpeedContinuosDown
+- (IBAction)handleLongPressDigital:(id)sender
 {
-    if (objUserConfig.odometerUnit == OdometerUnitTenth) {
-        totalDistance -= (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.10f / 0.621371 : 0.10f);
-    } else {
-        totalDistance -= (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.01f / 0.621371 : 0.01f);
+    if (![sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        return;
     }
 
-    if (totalDistance < 0) {
-        totalDistance = 0.0f;
-    }
+    UILongPressGestureRecognizer* r = sender;
+    BOOL isUp = r.view == _vwDigitUp;
 
-    [self displayAllUnits];
-}
-
-- (IBAction)btnDigitUpHoldClicked:(id)sender
-{
-    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        UILongPressGestureRecognizer* r = sender;
-        if (r.state == UIGestureRecognizerStateBegan) {
+    if (r.state == UIGestureRecognizerStateBegan) {
+        if (isUp) {
             [[AudioPlayer sharedManager] createAudioPlayer:@"Tink":@"mp3"];
-
-            if (!UpdateSpeed.isValid) {
-                UpdateSpeed = [[NSTimer alloc] init];
-                UpdateSpeed = [NSTimer
-                    scheduledTimerWithTimeInterval:0.05
-                                            target:self
-                                          selector:@selector(UpdateSpeedContinuosUp)
-                                          userInfo:nil
-                                           repeats:YES];
-            }
-        } else if (r.state == UIGestureRecognizerStateEnded) {
-            [UpdateSpeed invalidate];
+        } else {
+            [[AudioPlayer sharedManager] createAudioPlayer:@"Tock":@"mp3"];
         }
+
+        if (!UpdateSpeed.isValid) {
+            UpdateSpeed = [[NSTimer alloc] init];
+            UpdateSpeed = [NSTimer
+                scheduledTimerWithTimeInterval:0.05
+                                        target:self
+                                      selector:isUp ? @selector(updateSpeedContinuosUp) : @selector(updateSpeedContinuosDown)
+                                      userInfo:nil
+                                       repeats:YES];
+        }
+    } else if (r.state == UIGestureRecognizerStateEnded) {
+        [UpdateSpeed invalidate];
     }
 }
 
-- (void)UpdateSpeedContinuosUp
+- (void)updateSpeedContinuosDown
+{
+    if (objUserConfig.odometerUnit == OdometerUnitTenth) {
+        totalDistance -= (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.10f / 0.621371 : 0.10f);
+    } else {
+        totalDistance -= (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.01f / 0.621371 : 0.01f);
+    }
+
+    if (totalDistance < 0) {
+        totalDistance = 0.0f;
+    }
+
+    [self displayAllUnits];
+}
+
+- (void)updateSpeedContinuosUp
 {
     if (objUserConfig.odometerUnit == OdometerUnitTenth) {
         totalDistance += (objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.10f / 0.621371 : 0.10f);
@@ -1178,7 +1137,7 @@
     [self displayAllUnits];
 }
 
-- (IBAction)btnResetDistanceClicked:(id)sender
+- (IBAction)handleSwipeDigit:(id)sender
 {
     if (objUserConfig.isShowAlert) {
         [AlertManager confirm:@"Are you sure you want to reset distance?"
@@ -1188,17 +1147,17 @@
                     confirmed:^{
                         self->totalDistance = 0.0f;
                         [[AudioPlayer sharedManager] createAudioPlayer:@"Reset":@"wav"];
-                        [self InitateTimer];
+                        [self initateTimer];
                     }];
     } else {
         totalDistance = 0.0f;
         [[AudioPlayer sharedManager] createAudioPlayer:@"Reset":@"wav"];
         [self.view setUserInteractionEnabled:false];
-        [self InitateTimer];
+        [self initateTimer];
     }
 }
 
-- (IBAction)btnSpeedClicked:(id)sender
+- (IBAction)handleTapSpeed:(id)sender
 {
     if (!isTopSpeedDisplaying) {
         isTopSpeedDisplaying = YES;
@@ -1229,28 +1188,11 @@
     }
 }
 
-- (IBAction)btnResetTopSpeedClicked:(id)sender
+- (IBAction)handleLongPressSpeed:(id)sender
 {
     if (isTopSpeedDisplaying) {
         topSpeed = 0.0f;
         [self displayAllUnits];
-    }
-}
-
-- (IBAction)btnTableClicked:(id)sender
-{
-    CGPoint touchPoint = [sender locationInView:_vwBackground];
-
-    CGRect upRect = CGRectMake(0, 0, CGRectGetWidth(_tblRoadbook.frame), CGRectGetHeight(_tblRoadbook.frame) / 2);
-    BOOL isUp = CGRectContainsPoint(upRect, touchPoint);
-
-    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        // Long press
-        UILongPressGestureRecognizer* r = sender;
-        [self handleLongPressTableForUp:isUp touchState:r.state];
-    } else {
-        // Tap
-        [self handleTapTableForUp:isUp];
     }
 }
 
@@ -1267,29 +1209,65 @@
 
 #pragma mark - Scroll custom
 
-- (void)handleLongPressTableForUp:(BOOL)isUp touchState:(UIGestureRecognizerState)state
+- (IBAction)handleLongPressContainerView:(id)sender
 {
-    if (state == UIGestureRecognizerStateBegan) {
-        //        [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange":@"mp3"];
+    if (![sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        return;
+    }
+
+    UILongPressGestureRecognizer* r = sender;
+    BOOL isUp = r.view == _containerViewUp;
+    BOOL isPDF = _tblRoadbook.isHidden;
+
+    switch (r.state) {
+    case UIGestureRecognizerStateBegan:
+        [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange":@"mp3"];
         if (!ScrollTimer.isValid) {
             ScrollCount = 0;
             ScrollTimer = [[NSTimer alloc] init];
             ScrollTimer = [NSTimer
                 scheduledTimerWithTimeInterval:0.05
                                         target:self
-                                      selector:isUp ? @selector(ScrollTableDown) : @selector(ScrollTableUp)
+                                      selector:isUp ? (isPDF ? @selector(ScrollPDFDown) : @selector(ScrollTableDown)) : (isPDF ? @selector(ScrollPDFUp) : @selector(ScrollTableUp))
                                       userInfo:nil
                                        repeats:YES];
         }
-    } else if (state == UIGestureRecognizerStateEnded) {
+        break;
+
+    case UIGestureRecognizerStateEnded:
         ScrollCount = 0;
         [ScrollTimer invalidate];
+        break;
+
+    default:
+        break;
+    }
+}
+
+- (IBAction)handleTapContainerView:(id)sender
+{
+    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange":@"mp3"];
+
+    int step = SCREEN_WIDTH >= 768 ? 200 : 100;
+    BOOL isUp = FALSE;
+
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer* r = sender;
+        isUp = r.view == _containerViewUp;
+    } else if ([sender isEqualToString:@"up"]) {
+        isUp = YES;
+    }
+
+    if (_tblRoadbook.isHidden) {
+        [self ScrollPDF2Up:!isUp step:step];
+    } else {
+        [self handleTapTableForUp:isUp];
     }
 }
 
 - (void)handleTapTableForUp:(BOOL)isUp
 {
-    //    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange":@"mp3"];
+    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange":@"mp3"];
 
     // DataSource
     NSMutableArray* arrSearchResults = [[objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate] mutableCopy];
@@ -1315,57 +1293,6 @@
                             atScrollPosition:UITableViewScrollPositionBottom
                                     animated:YES];
     }
-}
-
-- (IBAction)handleLongPressPDFView:(id)sender
-{
-    if (![sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        return;
-    }
-
-    UILongPressGestureRecognizer* r = sender;
-    BOOL isUp = r.view == _pdfViewUp;
-
-    switch (r.state) {
-    case UIGestureRecognizerStateBegan:
-        //        [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange":@"mp3"];
-        if (!ScrollTimer.isValid) {
-            ScrollCount = 0;
-            ScrollTimer = [[NSTimer alloc] init];
-            ScrollTimer = [NSTimer
-                scheduledTimerWithTimeInterval:0.05
-                                        target:self
-                                      selector:isUp ? @selector(ScrollPDFDown) : @selector(ScrollPDFUp)
-                                      userInfo:nil
-                                       repeats:YES];
-        }
-        break;
-
-    case UIGestureRecognizerStateEnded:
-        ScrollCount = 0;
-        [ScrollTimer invalidate];
-        break;
-
-    default:
-        break;
-    }
-}
-
-- (IBAction)handleTapPDFView:(id)sender
-{
-    //    [[AudioPlayer sharedManager] createAudioPlayer:@"ScrollChange" :@"mp3"];
-
-    int step = SCREEN_WIDTH >= 768 ? 200 : 100;
-    BOOL isUp = FALSE;
-
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer* r = sender;
-        isUp = r.view == _pdfViewUp;
-    } else if ([sender isEqualToString:@"up"]) {
-        isUp = YES;
-    }
-
-    [self ScrollPDF2Up:!isUp step:step];
 }
 
 - (void)ScrollTableUp
@@ -1417,8 +1344,10 @@
 
 - (void)ScrollPDF2Up:(BOOL)isUp step:(CGFloat)step
 {
-    CGFloat offset = _pdfView.contentOffset.y;
-    CGFloat maxY = _pdfView.contentSize.height - _pdfView.frame.size.height;
+    [self hidePDFPageLabel];
+
+    CGFloat offset = _pdfView.scrollView.contentOffset.y;
+    CGFloat maxY = _pdfView.scrollView.contentSize.height - _pdfView.frame.size.height;
 
     if ((isUp && offset <= 0) || (!isUp && offset >= maxY)) {
         return;
@@ -1428,7 +1357,7 @@
                          : CGPointMake(0, MIN(maxY, offset + step));
     [UIView animateWithDuration:0.3
                      animations:^{
-                         [self.pdfView setContentOffset:point];
+                         [self.pdfView.scrollView setContentOffset:point];
                      }];
 }
 
@@ -1490,24 +1419,11 @@
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == _pdfView) {
-        return arrPageImages.count;
-    } else {
-        return [objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate].count;
-    }
+    return [objRouteDetails.waypoints filteredArrayUsingPredicate:filterWaypointsPredicate].count;
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (tableView == _pdfView) {
-        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"idPDFCell" forIndexPath:indexPath];
-
-        UIImageView* imageView = [cell viewWithTag:123];
-        imageView.image = (UIImage*)[arrPageImages objectAtIndex:indexPath.row];
-
-        return cell;
-    }
-
     RouteCell* cell = [tableView dequeueReusableCellWithIdentifier:@"idRouteCell"];
 
     if (!cell) {
@@ -1613,16 +1529,6 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    if (tableView == _pdfView) {
-        CGFloat height = (CGFloat)[[arrPageHeights objectAtIndex:indexPath.row] floatValue];
-        return height * tableView.frame.size.width / PDFSize.width;
-    }
-
-    return UITableViewAutomaticDimension;
-}
-
 - (double)angleFromCoordinate:(double)lat1 lon1:(double)lon1 lat2:(double)lat2 lon2:(double)lon2
 {
     lat1 = DEGREES_TO_RADIANS(lat1);
@@ -1677,7 +1583,7 @@
 
     double curAngle = 0.0;
     double preAngle = 0.0;
-    
+
     NSInteger curIndex = [objRouteDetails.waypoints indexOfObject:objWayPoints];
 
     if (curIndex != objRouteDetails.waypoints.count - 1) {

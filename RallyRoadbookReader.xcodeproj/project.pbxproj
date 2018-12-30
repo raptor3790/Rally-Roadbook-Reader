@@ -104,7 +104,6 @@
 		E44E25632181A2020081DA70 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E251B2181A2010081DA70 /* User.m */; };
 		E44E25642181A2020081DA70 /* UserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E251E2181A2010081DA70 /* UserConfig.m */; };
 		E461BBB1214BD4EE00CFEBC1 /* SettingsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E461BBB0214BD4EE00CFEBC1 /* SettingsVC.m */; };
-		E47D248B2148E67A006A72E1 /* roadbook-name-road-rally-a5.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E47D248A2148E679006A72E1 /* roadbook-name-road-rally-a5.pdf */; };
 		E493420C218448BC0087D3FC /* ScrollChange.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E493420B218448BB0087D3FC /* ScrollChange.mp3 */; };
 		E4F9072721A93D1D00C708FD /* JPSVolumeButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E4F9072621A93D1D00C708FD /* JPSVolumeButtonHandler.m */; };
 /* End PBXBuildFile section */
@@ -277,7 +276,6 @@
 		E44E251E2181A2010081DA70 /* UserConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserConfig.m; sourceTree = "<group>"; };
 		E461BBAF214BD4EE00CFEBC1 /* SettingsVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsVC.h; sourceTree = "<group>"; };
 		E461BBB0214BD4EE00CFEBC1 /* SettingsVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingsVC.m; sourceTree = "<group>"; };
-		E47D248A2148E679006A72E1 /* roadbook-name-road-rally-a5.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "roadbook-name-road-rally-a5.pdf"; sourceTree = "<group>"; };
 		E493420B218448BB0087D3FC /* ScrollChange.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ScrollChange.mp3; sourceTree = "<group>"; };
 		E4F9072521A93D1D00C708FD /* JPSVolumeButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPSVolumeButtonHandler.h; sourceTree = "<group>"; };
 		E4F9072621A93D1D00C708FD /* JPSVolumeButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPSVolumeButtonHandler.m; sourceTree = "<group>"; };
@@ -352,7 +350,6 @@
 		E443111F21477E42002CD004 = {
 			isa = PBXGroup;
 			children = (
-				E47D248A2148E679006A72E1 /* roadbook-name-road-rally-a5.pdf */,
 				E443112A21477E42002CD004 /* RallyRoadbookReader */,
 				E443112921477E42002CD004 /* Products */,
 				397BC6DC2D6990DFFB4055F5 /* Pods */,
@@ -902,7 +899,6 @@
 				66286B3E21D0C1AE0082DE40 /* russo_one.ttf in Resources */,
 				E44E25202181A2020081DA70 /* HoldScrollDown.mp3 in Resources */,
 				E44C56EF21AECE4F000BAE5C /* Song 1.m4a in Resources */,
-				E47D248B2148E67A006A72E1 /* roadbook-name-road-rally-a5.pdf in Resources */,
 				E4151CB4214CE81000CF7944 /* GoogleService-Info.plist in Resources */,
 				E44E25242181A2020081DA70 /* TapScrollUp.mp3 in Resources */,
 				66DC638E21CC687600BA124A /* DS-DIGII.TTF in Resources */,

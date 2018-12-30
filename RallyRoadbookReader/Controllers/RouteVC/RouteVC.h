@@ -9,8 +9,8 @@
 #import "BaseVC.h"
 #import "Routes.h"
 
-@import WebKit;
 @import UIKit;
+@import WebKit;
 
 @interface RouteVC : BaseVC
 
@@ -20,15 +20,12 @@
 @property (assign, nonatomic) BOOL isHighlight;
 @property (strong, nonatomic) NSString *strRouteName;
 
-@property (weak, nonatomic) IBOutlet UIView *vwHeader;
-
 @property (weak, nonatomic) IBOutlet UIImageView *settingImage;
 
 @property (weak, nonatomic) IBOutlet UIView *vwOdometer;
 @property (weak, nonatomic) IBOutlet UIView *vwSpeed;
 @property (weak, nonatomic) IBOutlet UIView *vwCAP;
 @property (weak, nonatomic) IBOutlet UIView *vwTime;
-@property (weak, nonatomic) IBOutlet UIView *vwMiddleContainer;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblOdoDistanceUnit;
 @property (weak, nonatomic) IBOutlet UILabel *lbldistancePerHour;
@@ -39,15 +36,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblSpeed;
 @property (weak, nonatomic) IBOutlet UILabel *lblTime;
 
-@property (weak, nonatomic) IBOutlet UIView *vwSeparator;
-@property (strong, nonatomic) IBOutlet UIView *pdfContainer;
-@property (strong, nonatomic) IBOutlet UITableView *pdfView;
-@property (strong, nonatomic) IBOutlet UIView *pdfViewUp;
-@property (strong, nonatomic) IBOutlet UIView *pdfViewDown;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet UIView *separatorView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UIView *containerViewUp;
+@property (weak, nonatomic) IBOutlet UIView *containerViewDown;
+@property (strong, nonatomic) WKWebView *pdfView;
 
-@property (weak, nonatomic) IBOutlet UIView *vwBackground;
 @property (weak, nonatomic) IBOutlet UITableView *tblRoadbook;
-@property (weak, nonatomic) IBOutlet UIImageView *bottomFooter;
+@property (weak, nonatomic) IBOutlet UIImageView *footerView;
 
 @property (weak, nonatomic) IBOutlet UIView *vwDigitUp;
 @property (weak, nonatomic) IBOutlet UIView *vwDigitDown;
@@ -61,27 +58,18 @@
 @property (weak, nonatomic) IBOutlet UIView *vWSpeedSuper;
 @property (weak, nonatomic) IBOutlet UIView *vWTimeSuper;
 @property (weak, nonatomic) IBOutlet UIView *vWCapSuper;
-
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintWidthOdometer;
+@property (weak, nonatomic) IBOutlet UIView *vwMiddleContainer;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTOD;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintWidthOdometer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTopDPH;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTopTOD;
-
-@property (weak, nonatomic) IBOutlet UIView *viewOverlay;
-
-@property (weak, nonatomic) IBOutlet UIView *tViewDistanceIncrease;
-@property (weak, nonatomic) IBOutlet UIView *tViewDistanceDecrease;
-@property (weak, nonatomic) IBOutlet UIView *tViewSettings;
-@property (weak, nonatomic) IBOutlet UIView *tViewScrollUp;
-@property (weak, nonatomic) IBOutlet UIView *tViewScrollDown;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightTOD;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightDPH;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintAspectHeader;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeaderHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeaderRatio;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeaderCenter;
 
 @property (strong, nonatomic) RemoteCommandDataSource *remoteCommandDataSource;
 

@@ -95,6 +95,10 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
 
 - (void)keyboardWillShow:(NSNotification*)notification
 {
+    if (_bottomTblLogin.constant > 100) {
+        return;
+    }
+    
     NSDictionary* userInfo = [notification userInfo];
     CGSize kbSize = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 
@@ -429,18 +433,16 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
 
     [AlertManager input:@"Please enter your email address to reset your password"
                   title:@"Forgot password?"
+                  extra:NULL
+            suggestions:NULL
             placeHolder:NULL
                   image:@"ic_email_w"
                negative:NULL
                positive:NULL
               confirmed:^(NSString* _Nullable email) {
-                  if (email.isValid) {
-                      [AlertManager dismiss];
-                      [self.view endEditing:YES];
-                      [self resetPasswordForEmailID:email];
-                  } else {
-                      [AlertManager toast:@"Please Enter Valid Email Address" title:NULL image:@"ic_error"];
-                  }
+                  [AlertManager dismiss];
+                  [self.view endEditing:YES];
+                  [self resetPasswordForEmailID:email];
               }];
 }
 

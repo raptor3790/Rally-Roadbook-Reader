@@ -529,9 +529,9 @@
     NSDictionary* dic = [sender responseDict];
 
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue]) {
-        [AlertManager alert:@"Roadbook has been shared with user" title:NULL imageName:@"ic_success"];
+        [AlertManager alert:@"" title:@"Roadbook has been shared with user" imageName:@"ic_success"];
     } else {
-        [AlertManager alert:@"Sharing has failed\nYou must be online to share a Roadbook" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"" title:@"Sharing has failed\nYou must be online to share a Roadbook" imageName:@"ic_error"];
     }
 }
 
@@ -675,20 +675,18 @@
         [self.view endEditing:YES];
 
         if (_strRoadbookId) {
-            [AlertManager input:@"Please enter your email address"
+            [AlertManager input:@"User will receive invitation email to download Rally Roadbook Reader mobile app"
                           title:@"Share Roadbook"
+                          extra:@"Roadbook will be in users \"Shared With Me\" folder on App"
+                    suggestions:arrEmails
                     placeHolder:NULL
                           image:@"ic_email_w"
                        negative:NULL
                        positive:@"Send"
                       confirmed:^(NSString* _Nullable email) {
-                          if (email.isValid) {
-                              [AlertManager dismiss];
-                              [self.view endEditing:YES];
-                              [self shareRoadbookForEmailID:email];
-                          } else {
-                              [AlertManager toast:@"Please Enter Valid Email Address" title:NULL image:@"ic_error"];
-                          }
+                          [AlertManager dismiss];
+                          [self.view endEditing:YES];
+                          [self shareRoadbookForEmailID:email];
                       }];
         }
     } break;
@@ -733,6 +731,8 @@
         cell.lblNavigationTitle.textColor = [UIColor redColor];
         if (SCREEN_WIDTH >= 768) {
             [cell.lblNavigationTitle setFont:[cell.lblNavigationTitle.font fontWithSize:32.0f]];
+            [cell.btnCloseWindow setImage:[UIImage imageNamed:@"cross_x"] forState:UIControlStateNormal];
+            cell.btnCloseWindow.contentEdgeInsets = UIEdgeInsetsZero;
         }
         [cell.btnCloseWindow setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [cell.btnCloseWindow setHidden:false];
@@ -748,10 +748,12 @@
         cell.lblNavigationTitle.textColor = themeTextColor;
         if (SCREEN_WIDTH >= 768) {
             [cell.lblNavigationTitle setFont:[cell.lblNavigationTitle.font fontWithSize:32.0f]];
+            [cell.btnCloseWindow setImage:[UIImage imageNamed:@"cross_x"] forState:UIControlStateNormal];
+            cell.btnCloseWindow.contentEdgeInsets = UIEdgeInsetsZero;
         }
+        [cell.btnCloseWindow setTitleColor:themeTextColor forState:UIControlStateNormal];
         [cell.btnCloseWindow setHidden:true];
         cell.redBordeer.backgroundColor = [UIColor clearColor];
-        //            [cell.btnCloseWindow setTitleColor:themeTextColor forState:UIControlStateNormal];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     } break;

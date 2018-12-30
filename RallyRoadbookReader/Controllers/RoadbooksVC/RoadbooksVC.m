@@ -192,6 +192,7 @@
         predicateFolder = [NSString stringWithFormat:@"parentId = %@", _strFolderId];
     } else {
         predicateFolder = @"parentId = 0";
+        _isShareFolder = NO;
     }
 
     NSMutableArray* arrSyncFolders =
@@ -407,9 +408,9 @@
     NSDictionary* dic = [sender responseDict];
 
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue]) {
-        [AlertManager alert:@"Roadbook has been shared with user" title:NULL imageName:@"ic_success"];
+        [AlertManager alert:@"" title:@"Roadbook has been shared with user" imageName:@"ic_success"];
     } else {
-        [AlertManager alert:@"Sharing has failed\nYou must be online to share a Roadbook" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"" title:@"Sharing has failed\nYou must be online to share a Roadbook" imageName:@"ic_error"];
     }
 }
 
@@ -447,20 +448,18 @@
         strId = [NSString stringWithFormat:@"%d", (int)objFolder.foldersIdentifier];
     }
 
-    [AlertManager input:@"Please enter your email address"
+    [AlertManager input:@"User will receive invitation email to download Rally Roadbook Reader mobile app"
                   title:@"Share Roadbook"
+                  extra:@"Roadbook will be in users \"Shared With Me\" folder on App"
+            suggestions:arrEmails
             placeHolder:NULL
                   image:@"ic_email_w"
                negative:NULL
                positive:@"Send"
               confirmed:^(NSString* _Nullable email) {
-                  if (email.isValid) {
-                      [AlertManager dismiss];
-                      [self.view endEditing:YES];
-                      [self share:strId for:(MyRoadbooksSection)idPath.section withEmailID:email];
-                  } else {
-                      [AlertManager toast:@"Please Enter Valid Email Address" title:NULL image:@"ic_error"];
-                  }
+                  [AlertManager dismiss];
+                  [self.view endEditing:YES];
+                  [self share:strId for:(MyRoadbooksSection)idPath.section withEmailID:email];
               }];
 }
 
@@ -497,7 +496,11 @@
         Folders* objFolder = arrFolders[indexPath.row];
         vc.strFolderId = [NSString stringWithFormat:@"%d", (int)objFolder.foldersIdentifier];
         vc.strRoadbookPageName = objFolder.folderName;
-        vc.strFolderType = objFolder.folderType;
+        if (_isShareFolder) {
+            vc.isShareFolder = _isShareFolder;
+        } else {
+            vc.isShareFolder = [objFolder.folderType isEqualToString:@"shared_with_me"];
+        }
         [self.navigationController pushViewController:vc animated:YES];
     } break;
 
@@ -542,6 +545,9 @@
             cell.lblDetails.textColor = UIColor.lightGrayColor;
             cell.lblTitle.textColor = UIColor.lightGrayColor;
         }
+
+        BOOL isSharedPage = [objFolder.folderType isEqualToString:@"shared_with_me"];
+        [cell.btnShare setHidden:(_isShareFolder || isSharedPage)];
     } break;
 
     case MyRoadbooksSectionRoadbooks: {
@@ -594,14 +600,14 @@
             cell.lblDetails.textColor = UIColor.lightGrayColor;
             cell.lblTitle.textColor = UIColor.lightGrayColor;
         }
+
+        [cell.btnShare setHidden:(_isShareFolder)];
     } break;
 
     default:
         break;
     }
 
-    BOOL isSharedPage = [_strFolderType isEqualToString:@"shared_with_me"];
-    [cell.btnShare setHidden:isSharedPage];
     [cell.btnShare setTintColor:[UIColor redColor]];
     [cell.btnShare addTarget:self action:@selector(btnShareClicked:) forControlEvents:UIControlEventTouchUpInside];
 

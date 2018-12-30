@@ -8,21 +8,20 @@
 
 #import "BaseVC.h"
 
-typedef enum
-{
+typedef enum {
     MyRoadbooksSectionFolders = 0,
     MyRoadbooksSectionRoadbooks
-}MyRoadbooksSection;
+} MyRoadbooksSection;
 
 @interface RoadbooksVC : BaseVC
 
-@property (strong, nonatomic) NSMutableArray *arrEmails;
-@property (strong, nonatomic) NSMutableArray *arrFolders;
-@property (strong, nonatomic) NSMutableArray *arrRoadBooks;
+@property (strong, nonatomic) NSMutableArray* arrEmails;
+@property (strong, nonatomic) NSMutableArray* arrFolders;
+@property (strong, nonatomic) NSMutableArray* arrRoadBooks;
 
-@property (strong, nonatomic) NSString *strFolderId;
-@property (strong, nonatomic) NSString *strFolderType;
-@property (strong, nonatomic) NSString *strRoadbookPageName;
-@property (weak, nonatomic) IBOutlet UITableView *tblRoadbooks;
+@property (nonatomic) BOOL isShareFolder;
+@property (strong, nonatomic) NSString* strFolderId;
+@property (strong, nonatomic) NSString* strRoadbookPageName;
+@property (weak, nonatomic) IBOutlet UITableView* tblRoadbooks;
 
 @end

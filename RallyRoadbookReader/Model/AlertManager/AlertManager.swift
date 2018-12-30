@@ -25,15 +25,18 @@ import SwiftEntryKit
         var fontSize: CGFloat = 16
         switch width {
         case 0..<375: fontSize = 16
-        case 375..<500: fontSize = 20
+        case 375..<500: fontSize = 19
         case 500..<1000: fontSize = 26
         default: fontSize = 36
         }
         return UIFont(name: "RussoOne", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
     }
     private static var maxWidth: CGFloat {
-        let width = CGFloat.minimum(UIScreen.main.bounds.width, UIScreen.main.bounds.height);
-        switch width {
+        if UIScreen.main.bounds.width > UIScreen.main.bounds.height {
+            return UIScreen.main.bounds.width * 0.7
+        }
+
+        switch UIScreen.main.bounds.width {
         case 0..<375: return 260
         case 375..<500: return 320
         case 500..<1000: return 480
@@ -59,6 +62,7 @@ import SwiftEntryKit
         attributes.exitAnimation = .init(fade: .init(from: 1, to: 0, duration: 0.2))
         attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.65, spring: .init(damping: 0.8, initialVelocity: 0))))
         attributes.positionConstraints.size = .init(width: .offset(value: 24), height: .intrinsic)
+//        attributes.positionConstraints.maxSize = .sizeToWidth
         attributes.positionConstraints.maxSize = .init(width: .constant(value: maxWidth), height: .intrinsic)
 
         return attributes
@@ -105,7 +109,7 @@ import SwiftEntryKit
 
         let simpleMessage = EKSimpleMessage(image: image, title: title, description: description)
 
-        let okButtonLabel = EKProperty.LabelContent(text: "OKAY", style: .init(font: buttonFont, color: .white))
+        let okButtonLabel = EKProperty.LabelContent(text: "OK", style: .init(font: buttonFont, color: .white))
         let okButton = EKProperty.ButtonContent(label: okButtonLabel, backgroundColor: .clear, highlightedBackgroundColor: UIColor.white.withAlphaComponent(0.1)) {
             SwiftEntryKit.dismiss()
         }
@@ -132,7 +136,7 @@ import SwiftEntryKit
             SwiftEntryKit.dismiss()
         }
 
-        let okButtonLabel = EKProperty.LabelContent(text: positive?.uppercased() ?? "OKAY", style: .init(font: buttonFont, color: .white))
+        let okButtonLabel = EKProperty.LabelContent(text: positive?.uppercased() ?? "OK", style: .init(font: buttonFont, color: .white))
         let okButton = EKProperty.ButtonContent(label: okButtonLabel, backgroundColor: .clear, highlightedBackgroundColor: UIColor.white.withAlphaComponent(0.1)) {
             confirmed?()
             SwiftEntryKit.dismiss()
@@ -149,12 +153,11 @@ import SwiftEntryKit
         SwiftEntryKit.display(entry: contentView, using: attributes)
     }
 
-    public static func input(_ message: String, title: String? = nil, placeHolder: String? = nil, image: String? = nil, negative: String? = "CANCEL", positive: String? = "SUBMIT", confirmed: ((_ text: String?) -> Void)? = nil) {
+    public static func input(_ message: String, title: String? = nil, extra: String? = nil, suggestions: [String]? = [], placeHolder: String? = nil, image: String? = nil, negative: String? = "CANCEL", positive: String? = "SUBMIT", confirmed: ((_ text: String?) -> Void)? = nil) {
 
-        let title = EKProperty.LabelContent(text: title?.uppercased() ?? "", style: .init(font: titleFont, color: .white))
-        let description = EKProperty.LabelContent(text: message.uppercased(), style: .init(font: messageFont, color: .lightGray))
-
-        let simpleMessage = EKSimpleMessage(title: title, description: description)
+        let title = EKProperty.LabelContent(text: title?.uppercased() ?? "", style: .init(font: titleFont, color: .white, alignment: .center))
+        let description = EKProperty.LabelContent(text: message.uppercased(), style: .init(font: messageFont, color: .lightGray, alignment: .center))
+        let extra = EKProperty.LabelContent(text: extra?.uppercased() ?? "", style: .init(font: messageFont, color: .white, alignment: .center))
 
         let emailPlaceholder = EKProperty.LabelContent(text: placeHolder ?? "EMAIL ADDRESS", style: .init(font: buttonFont, color: .lightGray))
         let textField = EKProperty.TextFieldContent(
@@ -175,11 +178,14 @@ import SwiftEntryKit
         }
         let buttonsBarContent = EKProperty.ButtonBarContent(with: cancelButton, okButton, separatorColor: .red, expandAnimatedly: false)
 
-        let contentView = FormMessageView(with: simpleMessage, textFieldsContent: [textField], buttonBarContent: buttonsBarContent, estimatedWidth: maxWidth)
+        let contentView = FormMessageView(with: [title, description, extra], textFieldsContent: [textField], buttonBarContent: buttonsBarContent, suggestions: suggestions ?? [])
 
         var attributes = ekAttributes
         attributes.screenInteraction = .absorbTouches
         attributes.entryInteraction = .absorbTouches
+        if !extra.text.isEmpty {
+            attributes.positionConstraints.maxSize = .sizeToWidth
+        }
         attributes.positionConstraints.keyboardRelation = .bind(offset: .init(bottom: 15, screenEdgeResistance: 0))
         attributes.lifecycleEvents.didAppear = {
             contentView.becomeFirstResponder(with: 0)
