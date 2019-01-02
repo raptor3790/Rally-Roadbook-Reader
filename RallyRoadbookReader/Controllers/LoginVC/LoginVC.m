@@ -583,6 +583,11 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
 
         NSAttributedString* strEmail = [[NSAttributedString alloc] initWithString:@"Enter Email Address" attributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
         ((UITextField*)[cell.contentView viewWithTag:3001]).attributedPlaceholder = strEmail;
+        if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
+            User* objUser = GET_USER_OBJ;
+            ((UITextField*)[cell.contentView viewWithTag:3001]).text = objUser.email;
+            self.strEmail = objUser.email;
+        }
 
         NSAttributedString* strPassword = [[NSAttributedString alloc] initWithString:@"Enter Password" attributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
         ((UITextField*)[cell.contentView viewWithTag:3002]).attributedPlaceholder = strPassword;

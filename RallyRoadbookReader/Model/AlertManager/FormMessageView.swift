@@ -185,6 +185,11 @@ import SwiftEntryKit
 }
 
 extension FormMessageView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        endEditing(true)
+        return true
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Remove validate error if exist
         textStack.arrangedSubviews[textField.tag].layer.borderColor = UIColor.lightGray.cgColor
@@ -194,8 +199,7 @@ extension FormMessageView: UITextFieldDelegate {
 
         // Check if suggested emails exist
         let emails = suggestions.filter({ $0.contains(text) || $0.hasPrefix(text) })
-        guard !emails.isEmpty else { return true }
-
+        
         // Get toolbar
         let toolbar = self.toolbar(for: textField)
         toolbar.items = emails.map {
@@ -209,5 +213,6 @@ extension FormMessageView: UITextFieldDelegate {
 
     @objc private func onButtonItemTapped(_ sender: UIBarButtonItem) {
         textField(from: textStack.arrangedSubviews[sender.tag])?.text = sender.title
+        textField(from: textStack.arrangedSubviews[sender.tag])?.resignFirstResponder()
     }
 }
