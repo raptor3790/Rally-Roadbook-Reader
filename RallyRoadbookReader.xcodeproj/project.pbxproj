@@ -28,7 +28,6 @@
 		E4151CB4214CE81000CF7944 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4151CB3214CE81000CF7944 /* GoogleService-Info.plist */; };
 		E4151CB7214F867D00CF7944 /* RegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E4151CB6214F867D00CF7944 /* RegisterVC.m */; };
 		E416E5B62168880100A0F4A7 /* RallyRoadbookReader.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E416E5B42168880100A0F4A7 /* RallyRoadbookReader.xcdatamodeld */; };
-		E427AD0A2158B96A0099BF0F /* RoutesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E427AD092158B96A0099BF0F /* RoutesVC.m */; };
 		E432BDEB2167181E0048D5F4 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E432BDEA2167181E0048D5F4 /* Settings.storyboard */; };
 		E432BDED216718520048D5F4 /* Roadbooks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E432BDEC216718520048D5F4 /* Roadbooks.storyboard */; };
 		E443113521477E42002CD004 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E443113421477E42002CD004 /* Assets.xcassets */; };
@@ -64,7 +63,6 @@
 		E44E25322181A2020081DA70 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24B12181A2010081DA70 /* CDRoute.m */; };
 		E44E25332181A2020081DA70 /* CDRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24B32181A2010081DA70 /* CDRoutes.m */; };
 		E44E253D2181A2020081DA70 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C02181A2010081DA70 /* LocationManager.m */; };
-		E44E253E2181A2020081DA70 /* RegisterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C42181A2010081DA70 /* RegisterCell.m */; };
 		E44E253F2181A2020081DA70 /* RoadbooksCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C72181A2010081DA70 /* RoadbooksCell.m */; };
 		E44E25402181A2020081DA70 /* RoadbooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E44E24C82181A2010081DA70 /* RoadbooksCell.xib */; };
 		E44E25412181A2020081DA70 /* RouteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24CB2181A2010081DA70 /* RouteCell.m */; };
@@ -136,8 +134,6 @@
 		E4151CB5214F867D00CF7944 /* RegisterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterVC.h; sourceTree = "<group>"; };
 		E4151CB6214F867D00CF7944 /* RegisterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterVC.m; sourceTree = "<group>"; };
 		E416E5B52168880100A0F4A7 /* RallyRoadbookReader.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RallyRoadbookReader.xcdatamodel; sourceTree = "<group>"; };
-		E427AD082158B96A0099BF0F /* RoutesVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutesVC.h; sourceTree = "<group>"; };
-		E427AD092158B96A0099BF0F /* RoutesVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutesVC.m; sourceTree = "<group>"; };
 		E432BDEA2167181E0048D5F4 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		E432BDEC216718520048D5F4 /* Roadbooks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Roadbooks.storyboard; sourceTree = "<group>"; };
 		E443112821477E42002CD004 /* Rally Navigator Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rally Navigator Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,8 +193,6 @@
 		E44E24B32181A2010081DA70 /* CDRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDRoutes.m; sourceTree = "<group>"; };
 		E44E24BF2181A2010081DA70 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		E44E24C02181A2010081DA70 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
-		E44E24C32181A2010081DA70 /* RegisterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterCell.h; sourceTree = "<group>"; };
-		E44E24C42181A2010081DA70 /* RegisterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterCell.m; sourceTree = "<group>"; };
 		E44E24C62181A2010081DA70 /* RoadbooksCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoadbooksCell.h; sourceTree = "<group>"; };
 		E44E24C72181A2010081DA70 /* RoadbooksCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoadbooksCell.m; sourceTree = "<group>"; };
 		E44E24C82181A2010081DA70 /* RoadbooksCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoadbooksCell.xib; sourceTree = "<group>"; };
@@ -430,8 +424,6 @@
 		E4431155214794C3002CD004 /* RouteVC */ = {
 			isa = PBXGroup;
 			children = (
-				E427AD082158B96A0099BF0F /* RoutesVC.h */,
-				E427AD092158B96A0099BF0F /* RoutesVC.m */,
 				E4431156214794D5002CD004 /* RouteVC.h */,
 				E4431157214794D5002CD004 /* RouteVC.m */,
 			);
@@ -600,21 +592,11 @@
 		E44E24C12181A2010081DA70 /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				E44E24C22181A2010081DA70 /* RegisterCell */,
 				E44E24C52181A2010081DA70 /* RoadbookCell */,
 				E44E24C92181A2010081DA70 /* RouteCell */,
 				E44E24CC2181A2010081DA70 /* SettingsCell */,
 			);
 			path = TableViewCells;
-			sourceTree = "<group>";
-		};
-		E44E24C22181A2010081DA70 /* RegisterCell */ = {
-			isa = PBXGroup;
-			children = (
-				E44E24C32181A2010081DA70 /* RegisterCell.h */,
-				E44E24C42181A2010081DA70 /* RegisterCell.m */,
-			);
-			path = RegisterCell;
 			sourceTree = "<group>";
 		};
 		E44E24C52181A2010081DA70 /* RoadbookCell */ = {
@@ -947,14 +929,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader-resources.sh",
-				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
@@ -987,7 +967,6 @@
 				E44E255B2181A2020081DA70 /* RouteDetails.m in Sources */,
 				E44E25422181A2020081DA70 /* SettingsCell.m in Sources */,
 				E44E25442181A2020081DA70 /* DefaultsValues.m in Sources */,
-				E44E253E2181A2020081DA70 /* RegisterCell.m in Sources */,
 				E44C56E821AEC33B000BAE5C /* AssetPlaybackManager.swift in Sources */,
 				E44E25412181A2020081DA70 /* RouteCell.m in Sources */,
 				661FB75521C8A5C500194351 /* BaseVC.m in Sources */,
@@ -1039,7 +1018,6 @@
 				E44E254B2181A2020081DA70 /* WebServiceConnector.m in Sources */,
 				E443114421477F3B002CD004 /* AppDelegate.m in Sources */,
 				6653FC8721D12BF500925FE8 /* AlertManager.swift in Sources */,
-				E427AD0A2158B96A0099BF0F /* RoutesVC.m in Sources */,
 				E44E255D2181A2020081DA70 /* Startlocation.m in Sources */,
 				E4023F03215B50EA000268E1 /* RoadbooksVC.m in Sources */,
 				E44E254C2181A2020081DA70 /* WebServiceDataAdaptor.m in Sources */,

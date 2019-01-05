@@ -95,7 +95,6 @@
 
 #define kIDRegisterVC @"idRegisterVC"
 #define kIDSettingsVC @"idSettingsVC"
-#define kIDRoutesVC @"idRoutesVC"
 #define kIDRouteVC @"idRouteVC"
 #define kIDRoadbooksVC @"idRoadbooksVC"
 #define kIDHowToUseVC @"idHowToUseVC"

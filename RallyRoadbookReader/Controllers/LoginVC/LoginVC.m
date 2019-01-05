@@ -8,24 +8,12 @@
 
 #import "LoginVC.h"
 #import "RegisterVC.h"
-#import "RoutesVC.h"
 #import "RoadbooksVC.h"
-#import <FBSDKLoginKit.h>
-#import <FBSDKCoreKit.h>
 #import <Crashlytics/Crashlytics.h>
 
 @import GoogleSignIn;
 
-static const int HEIGHT_DESCRIPTION_CELL = 104;
-static const int HEIGHT_LOGIN_INFO_CELL = 126;
-static const int HEIGHT_ACTIONS_CELL = 35;
-static const int HEIGHT_FORGOT_PASSWORD_CELL = 46;
-static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
-
-@interface LoginVC () <GIDSignInDelegate, GIDSignInUIDelegate> {
-    BOOL isSignUp;
-
-    CGFloat heightLogoCell, height_Logo;
+@interface LoginVC () <GIDSignInDelegate, GIDSignInUIDelegate, UITextFieldDelegate> {
 }
 @end
 
@@ -35,21 +23,22 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
 {
     [super viewDidLoad];
 
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = UIColor.blackColor;
 
-    [self registerForKeyboardNotifications];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 0)];
 
     UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
     [self.view addGestureRecognizer:tapRecognizer];
+    self.view.backgroundColor = UIColor.blackColor;
 
     AppContext.locationManager = [LocationManager sharedManager];
     [AppContext.locationManager startStandardUpdates];
 
     if ([DefaultsValues getBooleanValueFromUserDefaults_ForKey:kLogIn]) {
+
         RoadbooksVC* vc = loadViewController(StoryBoard_Roadbooks, kIDRoadbooksVC);
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:NO];
-        //        [self setNeedsStatusBarAppearanceUpdate];
 
         [SyncManager.shared startSync];
     } else {
@@ -61,18 +50,7 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
 {
     [super viewWillAppear:animated];
 
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if (!isSignUp) {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-    } else {
-        isSignUp = NO;
-    }
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,52 +63,28 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
     return UIStatusBarStyleLightContent;
 }
 
-#pragma mark - KeyBoard Handling Methods
-
-- (void)registerForKeyboardNotifications
+- (UIInterfaceOrientationMask)getOrientation
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)keyboardWillShow:(NSNotification*)notification
-{
-    if (_bottomTblLogin.constant > 100) {
-        return;
-    }
-    
-    NSDictionary* userInfo = [notification userInfo];
-    CGSize kbSize = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-
-    _bottomTblLogin.constant = kbSize.height;
-    [self.view layoutIfNeeded];
-
-    [_tblLogin scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:LoginCellTypeLoginInfo inSection:0]
-                     atScrollPosition:UITableViewScrollPositionTop
-                             animated:YES];
-}
-
-- (void)keyboardWillBeHidden:(NSNotification*)notification
-{
-    _bottomTblLogin.constant = 0;
-    [self.view layoutIfNeeded];
+    return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - Validation
 
 - (BOOL)validateUserInput
 {
-    if (_strEmail.length == 0) {
+    _emailText.text = [_emailText.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+
+    if (_emailText.text.length == 0) {
         [AlertManager alert:@"Please Enter Email Address" title:NULL imageName:@"ic_error"];
         return NO;
     }
 
-    if (![_strEmail isValidEmail]) {
+    if (![_emailText.text isValidEmail]) {
         [AlertManager alert:@"Please Enter Valid Email Address" title:NULL imageName:@"ic_error"];
         return NO;
     }
 
-    if (_strPassword.length == 0) {
+    if (_passwordText.text.length == 0) {
         [AlertManager alert:@"Please Enter Password" title:NULL imageName:@"ic_error"];
         return NO;
     }
@@ -138,78 +92,17 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
     return YES;
 }
 
-#pragma mark -
-
-- (int)SetSmallFont
-{
-    int originalSmallFontSize = 14;
-
-    if (SCREEN_WIDTH == 320) {
-        // iPhone SE / 5s
-        return originalSmallFontSize;
-    } else if (SCREEN_WIDTH == 375) {
-        // iPhone 6 / 8 / X
-        return originalSmallFontSize + 3;
-    } else if (SCREEN_WIDTH == 414) {
-        // iPhone 8 Plus
-        return originalSmallFontSize + 5;
-    } else if (SCREEN_WIDTH == 768 || SCREEN_WIDTH == 834 || SCREEN_WIDTH == 1024) {
-        return originalSmallFontSize + 7;
-    }
-
-    return originalSmallFontSize;
-}
-
-- (int)SetBigFont
-{
-    int originalBigFontSize = 20;
-
-    if (SCREEN_WIDTH == 320) {
-        // iPhone SE / 5s
-        return originalBigFontSize;
-    } else if (SCREEN_WIDTH == 375) {
-        // iPhone 6 / 8 / X
-        return originalBigFontSize + 3;
-    } else if (SCREEN_WIDTH == 414) {
-        // iPhone 8 Plus
-        return originalBigFontSize + 5;
-    } else if (SCREEN_WIDTH == 768 || SCREEN_WIDTH == 834 || SCREEN_WIDTH == 1024) {
-        return originalBigFontSize + 7;
-    }
-
-    return originalBigFontSize;
-}
-
 #pragma mark - UITextField Delegate Methods
 
 - (BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-    if (textField.tag == 3001) {
-        UITableViewCell* cell = [_tblLogin cellForRowAtIndexPath:[NSIndexPath indexPathForRow:LoginCellTypeLoginInfo inSection:0]];
-        [[cell.contentView viewWithTag:3002] becomeFirstResponder];
+    if (textField == _emailText) {
+        [_passwordText becomeFirstResponder];
     } else {
         [textField resignFirstResponder];
     }
 
     return YES;
-}
-
-- (void)updateLabelUsingContentsOfTextField:(id)sender
-{
-    UITextField* txtInfo = (UITextField*)sender;
-
-    switch (txtInfo.tag) {
-    case 3001: {
-        _strEmail = txtInfo.text;
-    } break;
-
-    case 3002: {
-        _strPassword = txtInfo.text;
-    } break;
-
-    default:
-        break;
-    }
 }
 
 - (void)hideKeyBoard
@@ -265,97 +158,37 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
 {
     [self.view endEditing:YES];
 
-    if ([self validateUserInput]) {
-        if ([[WebServiceConnector alloc] checkNetConnection]) {
-            NSMutableDictionary* dicParam = [[NSMutableDictionary alloc] init];
+    if (![self validateUserInput]) {
+        return;
+    }
 
-            [dicParam setValue:_strEmail forKey:@"email"];
-            [dicParam setValue:_strPassword forKey:@"password"];
-            [dicParam setValue:@YES forKey:@"send_email"];
+    if ([[WebServiceConnector alloc] checkNetConnection]) {
+        NSMutableDictionary* dicParam = [[NSMutableDictionary alloc] init];
 
-            _loginType = LoginTypeNormal;
+        [dicParam setValue:_emailText.text forKey:@"email"];
+        [dicParam setValue:_passwordText.text forKey:@"password"];
+        [dicParam setValue:@YES forKey:@"send_email"];
 
-            [[WebServiceConnector alloc] init:URLLogin
-                               withParameters:dicParam
-                                   withObject:self
-                                 withSelector:@selector(handleLoginResponse:)
-                               forServiceType:ServiceTypePOST
-                               showDisplayMsg:@""
-                                   showLoader:YES];
-        } else {
-            if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
-                User* objUser = GET_USER_OBJ;
-                if ([objUser.email isEqualToString:_strEmail]) {
-                    if ([[DefaultsValues getStringValueFromUserDefaults_ForKey:kUserPassword] isEqualToString:_strPassword]) {
-                        [DefaultsValues setBooleanValueToUserDefaults:YES ForKey:kLogIn];
-                        RoutesVC* vc = [self.storyboard instantiateViewControllerWithIdentifier:kIDRoutesVC];
-                        vc.navigationItem.hidesBackButton = YES;
-                        [self.navigationController pushViewController:vc animated:YES];
-                    }
-                }
-            }
+        _loginType = LoginTypeNormal;
+
+        [[WebServiceConnector alloc] init:URLLogin
+                           withParameters:dicParam
+                               withObject:self
+                             withSelector:@selector(handleLoginResponse:)
+                           forServiceType:ServiceTypePOST
+                           showDisplayMsg:@""
+                               showLoader:YES];
+    } else if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
+        User* objUser = GET_USER_OBJ;
+        NSString* password = [DefaultsValues getStringValueFromUserDefaults_ForKey:kUserPassword];
+        if ([objUser.email isEqualToString:_emailText.text] && [password isEqualToString:_passwordText.text]) {
+            [DefaultsValues setBooleanValueToUserDefaults:YES ForKey:kLogIn];
+
+            RoadbooksVC* vc = loadViewController(StoryBoard_Roadbooks, kIDRoadbooksVC);
+            vc.navigationItem.hidesBackButton = YES;
+            [self.navigationController pushViewController:vc animated:NO];
         }
     }
-}
-
-- (IBAction)btnLogInFacebookClicked:(id)sender
-{
-    [self.view endEditing:YES];
-
-    FBSDKLoginManager* login = [[FBSDKLoginManager alloc] init];
-
-    login.loginBehavior = FBSDKLoginBehaviorNative;
-
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"id, name, link, first_name, last_name, picture.type(large), email, birthday, location, friends, hometown, gender, friendlists", @"fields", nil];
-
-    [login logInWithReadPermissions:@[ @"public_profile", @"email", @"user_friends" ]
-                 fromViewController:self
-                            handler:^(FBSDKLoginManagerLoginResult* result, NSError* error) {
-                                if (error) {
-                                } else if (result.isCancelled) {
-                                } else {
-                                    if ([result.grantedPermissions containsObject:@"public_profile"]) {
-                                        if ([FBSDKAccessToken currentAccessToken]) {
-                                            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me"
-                                                                               parameters:params]
-                                                startWithCompletionHandler:^(FBSDKGraphRequestConnection* connection, id result, NSError* error) {
-
-                                                    if (!error) {
-                                                        NSMutableDictionary* dicAuth = [[NSMutableDictionary alloc] init];
-
-                                                        NSMutableDictionary* dicInfo = [[NSMutableDictionary alloc] init];
-                                                        [dicInfo setValue:[result valueForKey:@"email"] forKey:@"email"];
-                                                        [dicInfo setValue:[result valueForKey:@"name"] forKey:@"name"];
-
-                                                        [dicAuth setValue:dicInfo forKey:@"info"];
-                                                        [dicAuth setValue:[NSString stringWithFormat:@"%@", [result valueForKey:@"id"]] forKey:@"uid"];
-
-                                                        NSMutableDictionary* dicCredentials = [[NSMutableDictionary alloc] init];
-                                                        [dicCredentials setValue:[[FBSDKAccessToken currentAccessToken] tokenString] forKey:@"token"];
-
-                                                        [dicAuth setValue:dicCredentials forKey:@"credentials"];
-
-                                                        [dicAuth setValue:@"facebook" forKey:@"provider"];
-
-                                                        NSMutableDictionary* dicParam = [[NSMutableDictionary alloc] init];
-                                                        [dicParam setValue:dicAuth forKey:@"auth"];
-                                                        [dicParam setValue:@YES forKey:@"send_email"];
-
-                                                        self->_loginType = LoginTypeFacebook;
-
-                                                        [[WebServiceConnector alloc] init:URLSocialLogin
-                                                                           withParameters:dicParam
-                                                                               withObject:self
-                                                                             withSelector:@selector(handleLoginResponse:)
-                                                                           forServiceType:ServiceTypeJSON
-                                                                           showDisplayMsg:@""
-                                                                               showLoader:YES];
-                                                    }
-                                                }];
-                                        }
-                                    }
-                                }
-                            }];
 }
 
 - (IBAction)btnSignInGoogleClicked:(id)sender
@@ -369,35 +202,13 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
     [signInGoogle signIn];
 }
 
-- (IBAction)handleLoginResponse:(id)sender
+- (void)handleLoginResponse:(id)sender
 {
-    NSString* strLoginType = @"";
+    NSString* strLoginType = _loginType == LoginTypeGoogle ? @"Google" : @"Normal";
 
-    switch (_loginType) {
-    case LoginTypeNormal: {
-        strLoginType = @"Normal";
-    } break;
-
-    case LoginTypeGoogle: {
-        strLoginType = @"Google";
-    } break;
-
-    case LoginTypeFacebook: {
-        strLoginType = @"Facebook";
-    } break;
-
-    default:
-        break;
-    }
-
-    NSArray* arrResponse = [self validateResponse:sender
-                                       forKeyName:LoginKey
-                                        forObject:self
-                                        showError:YES];
-
-    [Answers logLoginWithMethod:strLoginType
-                        success:@(arrResponse.count > 0)
-               customAttributes:@{}];
+    NSDictionary* dic = [sender responseDict];
+    NSArray* arrResponse = [dic valueForKey:LoginKey] && [[dic valueForKey:SUCCESS_STATUS] boolValue] ? [sender responseArray] : @[];
+    [Answers logLoginWithMethod:strLoginType success:@(arrResponse.count > 0) customAttributes:@{}];
 
     if (arrResponse.count > 0) {
         [CoreDataAdaptor deleteAllDataInCoreDB:NSStringFromClass([CDFolders class])];
@@ -410,20 +221,33 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
             objUser.config = @"{\"action\":\"{\\\"autoPhoto\\\":false,\\\"voiceToText\\\":true,\\\"takePicture\\\":true,\\\"voiceRecorder\\\":true,\\\"waypointOnly\\\":true,\\\"text\\\":true}\",\"unit\":\"Kilometers\",\"rotation\":{\"value\":\"1\"},\"sync\":\"2\",\"odo\":\"00.00\",\"autoCamera\":true,\"accuracy\":{\"minDistanceTrackpoint\":50,\"angle\":1,\"accuracy\":50,\"distance\":3}}";
         }
 
-        UserConfig* objConfig = [self getDefaultUserConfiguration];
+        UserConfig* objConfig = [[UserConfig alloc] init];
+        objConfig.isShowCap = YES;
+        objConfig.isShowSpeed = YES;
+        objConfig.isShowTime = YES;
+        objConfig.isShowAlert = YES;
+        objConfig.isShowTutorial = YES;
+        objConfig.distanceUnit = DistanceUnitsTypeKilometers;
+        objConfig.cal = 0.00f;
         [DefaultsValues setCustomObjToUserDefaults:objConfig ForKey:kUserConfiguration];
 
         [DefaultsValues setCustomObjToUserDefaults:objUser ForKey:kUserObject];
         [DefaultsValues setBooleanValueToUserDefaults:YES ForKey:kLogIn];
-        [DefaultsValues setStringValueToUserDefaults:_strPassword ForKey:kUserPassword];
+        [DefaultsValues setStringValueToUserDefaults:_passwordText.text ForKey:kUserPassword];
 
         RoadbooksVC* vc = loadViewController(StoryBoard_Roadbooks, kIDRoadbooksVC);
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:YES];
 
         [SyncManager.shared startSync];
+
     } else {
-        [self showErrorInObject:self forDict:[sender responseDict]];
+        NSDictionary* dicResponse = [sender responseDict];
+        BOOL isStatusFalse = [dicResponse objectForKey:SUCCESS_STATUS] && ![[dicResponse valueForKey:SUCCESS_STATUS] boolValue];
+        if (isStatusFalse && [dicResponse objectForKey:ERROR_CODE]) {
+            NSInteger errorCode = [[dicResponse valueForKey:ERROR_CODE] integerValue];
+            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error"];
+        }
     }
 }
 
@@ -460,14 +284,19 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
                            showLoader:YES];
 }
 
-- (IBAction)handleResetResponse:(id)sender
+- (void)handleResetResponse:(id)sender
 {
     NSDictionary* dic = [sender responseDict];
 
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue]) {
         [AlertManager alert:@"Check your email for the link to reset your password" title:@"Password Request Sent" imageName:@"ic_success"];
     } else {
-        [self showErrorInObject:self forDict:[sender responseDict]];
+        NSDictionary* dicResponse = [sender responseDict];
+        BOOL isStatusFalse = [dicResponse objectForKey:SUCCESS_STATUS] && ![[dicResponse valueForKey:SUCCESS_STATUS] boolValue];
+        if (isStatusFalse && [dicResponse objectForKey:ERROR_CODE]) {
+            NSInteger errorCode = [[dicResponse valueForKey:ERROR_CODE] integerValue];
+            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error"];
+        }
     }
 }
 
@@ -475,143 +304,29 @@ static const int HEIGHT_SOCIAL_LOGIN_CELL = 80;
 {
     [self.view endEditing:YES];
 
-    isSignUp = YES;
-
     RegisterVC* vc = loadViewController(StoryBoard_Main, kIDRegisterVC);
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UITableView Delegate Methods
 
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 7;
-}
-
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    switch (indexPath.row) {
-    case LoginCellTypeLogo: {
-        double val = (SCREEN_HEIGHT / 2) - (HEIGHT_LOGIN_INFO_CELL / 2) - HEIGHT_DESCRIPTION_CELL;
+    BOOL portrait = UIScreen.mainScreen.bounds.size.width < UIScreen.mainScreen.bounds.size.height;
 
-        heightLogoCell = val < 100 ? 100 : val;
-
-        if (_heightLogo) {
-            val = val < 100 ? 100 : val > 250 ? 250 : val;
-            height_Logo = (val > heightLogoCell) ? heightLogoCell : val;
-            _heightLogo.constant = height_Logo;
-        }
-
-        return heightLogoCell;
-    } break;
-
-    case LoginCellTypeDescription: {
-        return UITableViewAutomaticDimension;
-    } break;
-    case LoginCellDescription: {
-        return UITableViewAutomaticDimension;
-    } break;
-
-    case LoginCellTypeLoginInfo: {
-        return HEIGHT_LOGIN_INFO_CELL;
-    } break;
-
-    case LoginCellTypeActions: {
-        return HEIGHT_ACTIONS_CELL;
-    } break;
-
-    case LoginCellTypeForgotPassword: {
-        return HEIGHT_FORGOT_PASSWORD_CELL;
-    } break;
-
-    case LoginCellTypeSocialLogin: {
-        return HEIGHT_SOCIAL_LOGIN_CELL;
-    } break;
-
-    default:
-        break;
-    }
-
-    return 0.0f;
-}
-
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    UITableViewCell* cell;
-
-    switch (indexPath.row) {
-    case LoginCellTypeLogo: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idLoginLogoCell"];
-
-        NSLayoutConstraint* heightConstraint;
-        for (NSLayoutConstraint* constraint in [cell.contentView viewWithTag:2001].constraints) {
-            if (constraint.firstAttribute == NSLayoutAttributeHeight) {
-                heightConstraint = constraint;
-                break;
+    if (indexPath.row == 0) {
+        if (iPadDevice || portrait) {
+            if (UIScreen.mainScreen.bounds.size.width == 320) {
+                return 240;
+            } else {
+                return UIScreen.mainScreen.bounds.size.height * 0.45;
             }
-        }
-
-        if (_heightLogo) {
-            _heightLogo.constant = height_Logo;
-            [cell.contentView layoutIfNeeded];
         } else {
-            _heightLogo = heightConstraint;
+            return 270;
         }
-    } break;
-
-    case LoginCellTypeDescription: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idLoginDescriptionCell"];
-
-        [((UILabel*)[cell.contentView viewWithTag:4004]) setFont:[((UILabel*)[cell.contentView viewWithTag:4004]).font fontWithSize:[self SetBigFont]]];
-        [((UILabel*)[cell.contentView viewWithTag:4005]) setFont:[((UILabel*)[cell.contentView viewWithTag:4005]).font fontWithSize:[self SetSmallFont]]];
-        [((UILabel*)[cell.contentView viewWithTag:4006]) setFont:[((UILabel*)[cell.contentView viewWithTag:4006]).font fontWithSize:[self SetBigFont]]];
-        [((UILabel*)[cell.contentView viewWithTag:4007]) setFont:[((UILabel*)[cell.contentView viewWithTag:4007]).font fontWithSize:[self SetSmallFont]]];
-    } break;
-    case LoginCellDescription: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idDescritpion"];
-
-        [((UILabel*)[cell.contentView viewWithTag:4002]) setFont:[((UILabel*)[cell.contentView viewWithTag:4002]).font fontWithSize:[self SetBigFont]]];
-
-        [((UILabel*)[cell.contentView viewWithTag:4003]) setFont:[((UILabel*)[cell.contentView viewWithTag:4003]).font fontWithSize:[self SetBigFont]]];
-    } break;
-
-    case LoginCellTypeLoginInfo: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idLoginDataCell"];
-
-        ((UITextField*)[cell.contentView viewWithTag:3001]).delegate = self;
-        ((UITextField*)[cell.contentView viewWithTag:3002]).delegate = self;
-
-        NSAttributedString* strEmail = [[NSAttributedString alloc] initWithString:@"Enter Email Address" attributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
-        ((UITextField*)[cell.contentView viewWithTag:3001]).attributedPlaceholder = strEmail;
-        if ([DefaultsValues isKeyAvailbaleInDefault:kUserObject]) {
-            User* objUser = GET_USER_OBJ;
-            ((UITextField*)[cell.contentView viewWithTag:3001]).text = objUser.email;
-            self.strEmail = objUser.email;
-        }
-
-        NSAttributedString* strPassword = [[NSAttributedString alloc] initWithString:@"Enter Password" attributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }];
-        ((UITextField*)[cell.contentView viewWithTag:3002]).attributedPlaceholder = strPassword;
-        [[cell.contentView viewWithTag:3001] addTarget:self action:@selector(updateLabelUsingContentsOfTextField:) forControlEvents:UIControlEventEditingChanged | UIControlEventEditingDidEnd];
-        [[cell.contentView viewWithTag:3002] addTarget:self action:@selector(updateLabelUsingContentsOfTextField:) forControlEvents:UIControlEventEditingChanged | UIControlEventEditingDidEnd];
-    } break;
-
-    case LoginCellTypeActions: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idLoginActionCell"];
-    } break;
-
-    case LoginCellTypeForgotPassword: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idLoginForgotPasswordCell"];
-    } break;
-
-    case LoginCellTypeSocialLogin: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idLoginSocialCell"];
-    } break;
-
-    default:
-        break;
     }
 
-    return cell;
+    return UITableViewAutomaticDimension;
 }
 
 @end

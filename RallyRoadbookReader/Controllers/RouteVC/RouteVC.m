@@ -14,8 +14,6 @@
 #import "Waypoints.h"
 #import "Backgroundimage.h"
 #import "JPSVolumeButtonHandler.h"
-#import <FBSDKLoginKit.h>
-#import <FBSDKCoreKit.h>
 #import <WebKit/WebKit.h>
 
 @import GoogleSignIn;
@@ -1032,9 +1030,6 @@
                  negative:@"Cancel"
                  positive:@"Yes"
                 confirmed:^{
-                    FBSDKLoginManager* login = [[FBSDKLoginManager alloc] init];
-                    [login logOut];
-
                     [[GIDSignIn sharedInstance] signOut];
                     [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
                     [self.navigationController popToRootViewControllerAnimated:YES];

@@ -9,8 +9,6 @@ target 'RallyRoadbookReader' do
   # use_frameworks!
 
   # Pods for RallyRoadbookReader
-  pod 'FBSDKCoreKit'
-  pod 'FBSDKLoginKit'
   pod 'GoogleSignIn'
   pod 'SVProgressHUD'
   pod 'MJRefresh'

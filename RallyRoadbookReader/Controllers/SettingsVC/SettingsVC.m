@@ -610,44 +610,7 @@
         return 0.00f;
     }
 
-    /*if (indexPath.row == UserConfigTypeCalibrate && !_strRoadbookId)
-    {
-        return 0.00f;
-    }*/
-
     return UITableViewAutomaticDimension;
-
-    /*switch (indexPath.row)
-    {
-        case UserConfigTypeShareRoadbook:
-        case UserConfigTypeHighlightPreference:
-        case UserConfigTypeTheme:
-        case UserConfigTypePDFFormat:
-        case UserConfigTypeDistanceUnit:
-        case UserConfigTypeOdoDistance:
-        case UserConfigTypeLogout:
-        {
-            return UITableViewAutomaticDimension;
-            if (SCREEN_WIDTH >= 768){
-                return 70.0f;
-            }
-            return 65.0f;
-        }
-            break;
-     
-        case UserConfigNavigation:
-        case UserConfigSettings:
-        case UserConfigTypeMobileUse:
-        {
-            return UITableViewAutomaticDimension;
-        }
-            break;
-     
-        default:
-            break;
-    }
-    
-    return 55.0f;*/
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
@@ -656,19 +619,17 @@
     case UserConfigNavigation: {
         [self.view endEditing:YES];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self->_delegate respondsToSelector:@selector(clickedRoadbooks)]) {
-                [self dismissViewControllerAnimated:YES
-                                         completion:^{
-                                             [self->_delegate clickedRoadbooks];
-                                         }];
-                if (self->_strRoadbookId) {
-                    if ([self->_delegate respondsToSelector:@selector(clickedLogout)]) {
-                        [self->_delegate odoValueChanged:self->totalDistance];
-                    }
+        if ([self->_delegate respondsToSelector:@selector(clickedRoadbooks)]) {
+            [self dismissViewControllerAnimated:YES
+                                     completion:^{
+                                         [self->_delegate clickedRoadbooks];
+                                     }];
+            if (self->_strRoadbookId) {
+                if ([self->_delegate respondsToSelector:@selector(clickedLogout)]) {
+                    [self->_delegate odoValueChanged:self->totalDistance];
                 }
             }
-        });
+        }
     } break;
 
     case UserConfigTypeShareRoadbook: {

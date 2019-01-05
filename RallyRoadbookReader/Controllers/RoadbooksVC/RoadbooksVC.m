@@ -14,8 +14,6 @@
 #import "Folders.h"
 #import "Routes.h"
 #import "Config.h"
-#import <FBSDKLoginKit.h>
-#import <FBSDKCoreKit.h>
 
 @import GoogleSignIn;
 
@@ -80,6 +78,8 @@
     if (objUserConfig == nil) {
         objUserConfig = [self getDefaultUserConfiguration];
     }
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 
     switch (objUserConfig.themePreference) {
     case ThemePreferenceDark: {
@@ -274,9 +274,6 @@
                  negative:@"Cancel"
                  positive:@"Yes"
                 confirmed:^{
-                    FBSDKLoginManager* login = [[FBSDKLoginManager alloc] init];
-                    [login logOut];
-
                     [[GIDSignIn sharedInstance] signOut];
                     [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
                     [self.navigationController popToRootViewControllerAnimated:YES];

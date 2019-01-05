@@ -36,7 +36,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LB0-Kf-uao">
-                                                    <rect key="frame" x="314" y="18" width="44" height="44"/>
+                                                    <rect key="frame" x="316" y="18" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="dBw-Cg-P41"/>
                                                         <constraint firstAttribute="width" secondItem="LB0-Kf-uao" secondAttribute="height" multiplier="1:1" id="rNR-ZB-lS3"/>
@@ -64,7 +64,7 @@
                                             <constraints>
                                                 <constraint firstItem="9Ys-W1-4zo" firstAttribute="top" secondItem="5R6-Mt-iao" secondAttribute="topMargin" constant="10" id="5zf-DR-qsq"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="9Ys-W1-4zo" secondAttribute="bottom" constant="10" id="8uL-ET-Vjv"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="LB0-Kf-uao" secondAttribute="trailingMargin" constant="10" id="ChG-jG-dCK"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="LB0-Kf-uao" secondAttribute="trailing" id="ChG-jG-dCK"/>
                                                 <constraint firstAttribute="bottom" secondItem="HVG-dW-KJD" secondAttribute="bottom" id="JzI-Pm-I1C"/>
                                                 <constraint firstItem="9Ys-W1-4zo" firstAttribute="leading" secondItem="5R6-Mt-iao" secondAttribute="leadingMargin" constant="10" id="ZXi-Lm-wTp"/>
                                                 <constraint firstItem="HVG-dW-KJD" firstAttribute="leading" secondItem="5R6-Mt-iao" secondAttribute="leading" constant="15" id="a5i-zI-iUq"/>

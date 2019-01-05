@@ -10,8 +10,6 @@
 #import "WebServiceResponse.h"
 #import "WebServiceDataAdaptor.h"
 #import "ReachabilityManager.h"
-#import <FBSDKLoginKit.h>
-#import <FBSDKCoreKit.h>
 
 @import GoogleSignIn;
 

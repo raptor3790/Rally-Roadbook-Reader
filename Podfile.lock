@@ -1,18 +1,8 @@
 PODS:
-  - Bolts (1.9.0):
-    - Bolts/AppLinks (= 1.9.0)
-    - Bolts/Tasks (= 1.9.0)
-  - Bolts/AppLinks (1.9.0):
-    - Bolts/Tasks
-  - Bolts/Tasks (1.9.0)
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - Digger (0.0.5)
   - Fabric (1.9.0)
-  - FBSDKCoreKit (4.39.0):
-    - Bolts (~> 1.9)
-  - FBSDKLoginKit (4.39.0):
-    - FBSDKCoreKit
   - GoogleSignIn (4.4.0):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
@@ -40,8 +30,6 @@ DEPENDENCIES:
   - Crashlytics
   - Digger
   - Fabric
-  - FBSDKCoreKit
-  - FBSDKLoginKit
   - GoogleSignIn
   - MJRefresh
   - SDWebImage
@@ -51,12 +39,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Bolts
     - Crashlytics
     - Digger
     - Fabric
-    - FBSDKCoreKit
-    - FBSDKLoginKit
     - GoogleSignIn
     - GoogleToolboxForMac
     - GTMSessionFetcher
@@ -68,12 +53,9 @@ SPEC REPOS:
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   Digger: c474bde76a91e0a36f12101c5dfe7e86774b15d3
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
-  FBSDKCoreKit: 1e3981faefab8c88edfaa9eecd94aab02d99a9bc
-  FBSDKLoginKit: 30ba5039a2c53d65a75103889bc2deebdacd5a1f
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
@@ -84,6 +66,6 @@ SPEC CHECKSUMS:
   SwiftEntryKit: cb0e8d6b61552e374813a304a29b7ba51ea53128
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: 89206c89bfc40a5bbeb104df731e40e6786378aa
+PODFILE CHECKSUM: 01260d52c0faa1a476eb30aeba29ff69e572612c
 
 COCOAPODS: 1.6.0.beta.2
