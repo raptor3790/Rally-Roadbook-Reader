@@ -210,8 +210,6 @@
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:NO];
 
-        [SyncManager.shared startSync];
-
     } else {
         NSDictionary* dicResponse = [sender responseDict];
         BOOL isStatusFalse = [dicResponse objectForKey:SUCCESS_STATUS] && ![[dicResponse valueForKey:SUCCESS_STATUS] boolValue];

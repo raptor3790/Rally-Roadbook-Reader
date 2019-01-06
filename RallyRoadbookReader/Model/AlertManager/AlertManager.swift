@@ -73,8 +73,8 @@ import SwiftEntryKit
     }
 
     public static func toast(_ message: String, title: String? = nil, image: String? = nil) {
-        let title = EKProperty.LabelContent(text: title?.uppercased() ?? "", style: .init(font: buttonFont, color: .white))
-        let description = EKProperty.LabelContent(text: message, style: .init(font: buttonFont.withSize(buttonFont.pointSize - 2), color: .lightGray))
+        let description = EKProperty.LabelContent(text: message, style: .init(font: buttonFont.withSize(buttonFont.pointSize - 2), color: title == nil ? .white : .lightGray, alignment: .center))
+        let title = EKProperty.LabelContent(text: title?.uppercased() ?? "", style: .init(font: buttonFont, color: .white, alignment: .center))
         var imageContent: EKProperty.ImageContent?
         if let imageName = image {
             imageContent = .init(image: UIImage(named: imageName)!, size: CGSize(width: 35, height: 35))
@@ -85,13 +85,16 @@ import SwiftEntryKit
         let contentView = EKNotificationMessageView(with: notificationMessage)
 
         var attributes = ekAttributes
-        attributes.position = .top
+        attributes.windowLevel = .statusBar
         attributes.screenBackground = .clear
         attributes.roundCorners = .none
         attributes.scroll = .enabled(swipeable: false, pullbackAnimation: .jolt)
         attributes.border = .none
         attributes.entranceAnimation = .init(translate: .init(duration: 0.2, anchorPosition: .top))
         attributes.exitAnimation = .init(translate: .init(duration: 0.2, anchorPosition: .top))
+        attributes.position = .top
+        attributes.positionConstraints.safeArea = .empty(fillSafeArea: true)
+        attributes.positionConstraints.verticalOffset = 0
         attributes.positionConstraints.size = .init(width: .fill, height: .intrinsic)
         attributes.positionConstraints.maxSize = .screen
         attributes.displayDuration = 2

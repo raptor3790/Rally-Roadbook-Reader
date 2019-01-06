@@ -23,8 +23,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x3q-Qx-HcY">
+                                <rect key="frame" x="0.0" y="20" width="375" height="0.0"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading Roadbooks" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="mg6-bX-ExP">
+                                        <rect key="frame" x="8" y="0.0" width="359" height="0.0"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" id="x6r-W5-rjV"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="26"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="mg6-bX-ExP" firstAttribute="leading" secondItem="x3q-Qx-HcY" secondAttribute="leading" constant="8" id="5lg-3Y-WKN"/>
+                                    <constraint firstAttribute="trailing" secondItem="mg6-bX-ExP" secondAttribute="trailing" constant="8" id="Wjx-XH-9Bp"/>
+                                    <constraint firstItem="mg6-bX-ExP" firstAttribute="top" secondItem="x3q-Qx-HcY" secondAttribute="top" id="c4O-Vd-6lw"/>
+                                    <constraint firstAttribute="bottom" secondItem="mg6-bX-ExP" secondAttribute="bottom" id="eJ9-fS-8BG"/>
+                                    <constraint firstAttribute="bottom" secondItem="mg6-bX-ExP" secondAttribute="bottom" id="vb1-iM-WXV"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wts-bQ-H9R">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Q8A-QW-CXo" id="fLr-xS-cnQ"/>
@@ -34,20 +57,25 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="x3q-Qx-HcY" firstAttribute="trailing" secondItem="lO4-S0-A0A" secondAttribute="trailing" id="Oe2-2v-Ecq"/>
+                            <constraint firstItem="wts-bQ-H9R" firstAttribute="top" secondItem="x3q-Qx-HcY" secondAttribute="bottom" id="XFB-KA-KNf"/>
                             <constraint firstItem="wts-bQ-H9R" firstAttribute="trailing" secondItem="lO4-S0-A0A" secondAttribute="trailing" id="jhd-vS-8ag"/>
                             <constraint firstItem="wts-bQ-H9R" firstAttribute="bottom" secondItem="lO4-S0-A0A" secondAttribute="bottom" id="l13-Qg-4oq"/>
                             <constraint firstItem="wts-bQ-H9R" firstAttribute="leading" secondItem="lO4-S0-A0A" secondAttribute="leading" id="lb9-6H-oqf"/>
-                            <constraint firstItem="wts-bQ-H9R" firstAttribute="top" secondItem="GHp-Qc-iZ1" secondAttribute="top" id="qJp-1z-4zC"/>
+                            <constraint firstItem="x3q-Qx-HcY" firstAttribute="leading" secondItem="lO4-S0-A0A" secondAttribute="leading" id="wy2-Zc-wBK"/>
+                            <constraint firstItem="x3q-Qx-HcY" firstAttribute="top" secondItem="lO4-S0-A0A" secondAttribute="top" id="xoh-fH-VEi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lO4-S0-A0A"/>
                     </view>
                     <connections>
+                        <outlet property="syncLabel" destination="mg6-bX-ExP" id="GSC-fT-0hP"/>
+                        <outlet property="syncLabelHeight" destination="x6r-W5-rjV" id="0N3-gx-lKU"/>
                         <outlet property="tblRoadbooks" destination="wts-bQ-H9R" id="mkz-QO-s7R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dzk-Im-YK1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1927.5" y="773.23943661971828"/>
+            <point key="canvasLocation" x="1927.2" y="773.16341829085468"/>
         </scene>
         <!--RouteVC-->
         <scene sceneID="C5j-Pv-7zc">

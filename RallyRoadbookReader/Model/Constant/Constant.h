@@ -117,5 +117,4 @@
 #define kDefaultRallyName @"Sample Road Rally Roadbook"
 #define kDefaultCrossCountryName @"Sample Cross Country Roadbook"
 
-
 #endif /* Constant_h */

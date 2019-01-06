@@ -35,12 +35,9 @@
     [AppContext.locationManager startStandardUpdates];
 
     if ([DefaultsValues getBooleanValueFromUserDefaults_ForKey:kLogIn]) {
-
         RoadbooksVC* vc = loadViewController(StoryBoard_Roadbooks, kIDRoadbooksVC);
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:NO];
-
-        [SyncManager.shared startSync];
     } else {
         [self setNeedsStatusBarAppearanceUpdate];
     }
@@ -238,8 +235,6 @@
         RoadbooksVC* vc = loadViewController(StoryBoard_Roadbooks, kIDRoadbooksVC);
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:YES];
-
-        [SyncManager.shared startSync];
 
     } else {
         NSDictionary* dicResponse = [sender responseDict];

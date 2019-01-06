@@ -21,6 +21,8 @@
     User* objUser;
     BOOL isLightView;
     UIToolbar* toolbar;
+    id synchronizingObserver;
+    id synchronizedObserver;
 }
 @end
 
@@ -78,7 +80,7 @@
     if (objUserConfig == nil) {
         objUserConfig = [self getDefaultUserConfiguration];
     }
-    
+
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
     switch (objUserConfig.themePreference) {
@@ -130,6 +132,17 @@
     } else {
         self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     }
+
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleSynchronizeEnd:) name:SyncManager.stateSynchronized object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleSynchronizing:) name:SyncManager.stateSynchronizing object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [NSNotificationCenter.defaultCenter removeObserver:self name:SyncManager.stateSynchronized object:nil];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:SyncManager.stateSynchronizing object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -151,6 +164,49 @@
     NSString* strConvertedDate = [formatter stringFromDate:date];
 
     return strConvertedDate;
+}
+
+#pragma mark - Sync Methods
+
+- (void)handleSynchronizeBegin
+{
+    _syncLabel.text = @"Preparing to Download Roadbooks";
+    self.syncLabelHeight.constant = 50.0f;
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [self.view layoutIfNeeded];
+                     }];
+}
+
+- (void)handleSynchronizeEnd:(NSNotification*)notification
+{
+    _syncLabel.text = @"All Roadbooks Up to Date";
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.syncLabelHeight.constant = 0.0f;
+        [UIView animateWithDuration:0.5
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                         }];
+    });
+}
+
+- (void)handleSynchronizing:(NSNotification*)notification
+{
+    if (_syncLabelHeight.constant == 0) {
+        self.syncLabelHeight.constant = 50.0f;
+        [UIView animateWithDuration:0.5
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                         }];
+    }
+
+    NSDictionary* userInfo = notification.userInfo;
+
+    double count = [[userInfo objectForKey:@"count"] doubleValue];
+    double total = [[userInfo objectForKey:@"total"] doubleValue];
+    double percentage = count / total;
+
+    _syncLabel.text = [NSString stringWithFormat:@"Downloading Roadbooks - %d%%", (int)(percentage * 100)];
 }
 
 #pragma mark -  WS Call
@@ -178,6 +234,15 @@
 {
     if ([self isHeaderRefreshingForTableView:_tblRoadbooks]) {
         [_tblRoadbooks.mj_header endRefreshing];
+        if (!SyncManager.shared.isSyncing) {
+            [self handleSynchronizeBegin];
+            [SyncManager.shared startSyncWithResponse:sender scanChild:NO];
+        }
+    }
+
+    if (_strFolderId == NULL && !SyncManager.shared.isSyncing) {
+        [self handleSynchronizeBegin];
+        [SyncManager.shared startSyncWithResponse:sender scanChild:YES];
     }
 
     [self validateResponse:sender forKeyName:RoadbooksKey forObject:self showError:YES];
@@ -280,77 +345,53 @@
                 }];
 }
 
-- (void)clickedRoadbooks
+#pragma mark - Button Click Events
+
+- (IBAction)btnSettingsClicked:(id)sender
 {
+    SettingsVC* vc = loadViewController(StoryBoard_Settings, kIDSettingsVC);
+    vc.delegate = self;
+    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [nav setNavigationBarHidden:YES animated:NO];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
-#pragma mark -
-
-- (void)setUpTextField:(UITextField*)textField
+- (IBAction)btnShareClicked:(id)sender
 {
-    textField.placeholder = @"Enter your email address here";
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.keyboardType = UIKeyboardTypeEmailAddress;
-    textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.tintColor = RGB(85, 85, 85);
-    [textField addTarget:self
-                  action:@selector(textFieldTextDidChanged:)
-        forControlEvents:UIControlEventEditingChanged | UIControlEventEditingDidEnd];
+    [self.view endEditing:YES];
 
-    if (!toolbar) {
-        toolbar = [[UIToolbar alloc] init];
-        toolbar.tintColor = [UIColor blackColor];
-        [toolbar sizeToFit];
-    }
+    RoadbooksCell* cell = (RoadbooksCell*)[self getCellForClassName:NSStringFromClass([RoadbooksCell class]) withSender:sender];
+    NSIndexPath* idPath = [_tblRoadbooks indexPathForCell:cell];
 
-    textField.inputAccessoryView = toolbar;
-}
+    NSString* strId;
 
-- (void)textFieldTextDidChanged:(UITextField*)sender
-{
-    UIAlertController* alertController = (UIAlertController*)self.presentedViewController;
-    UIAlertAction* btnReset = alertController.actions.lastObject;
-    if (alertController) {
-        btnReset.enabled = [sender.text isValidEmail];
-    }
+    if (idPath.section == MyRoadbooksSectionRoadbooks) {
+        Routes* objRoadbook = [arrRoadBooks objectAtIndex:idPath.row];
 
-    if (arrEmails) {
-        if (arrEmails.count > 0) {
-            NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", sender.text];
-            NSArray* results = [arrEmails filteredArrayUsingPredicate:predicate];
-
-            NSMutableArray<NSString*>* arrSuggestions = [[NSMutableArray alloc] initWithCapacity:2];
-            [arrSuggestions addObjectsFromArray:results];
-
-            NSMutableArray<UIBarButtonItem*>* arrItems = [[NSMutableArray alloc] init];
-
-            for (int i = 0; i < arrSuggestions.count; i++) {
-                [arrItems addObject:[[UIBarButtonItem alloc] initWithTitle:arrSuggestions[i] style:UIBarButtonItemStylePlain target:self action:@selector(clickedOnToolBar:)]];
-                if (arrItems.count == 2)
-                    break;
-            }
-
-            toolbar.items = arrItems;
+        if (objRoadbook.editable) {
+            strId = [NSString stringWithFormat:@"%ld", (long)objRoadbook.routesIdentifier];
+        } else {
+            [AlertManager alert:@"This route can not be shared" title:NULL imageName:@"ic_error"];
+            return;
         }
+    } else {
+        Folders* objFolder = [arrFolders objectAtIndex:idPath.row];
+        strId = [NSString stringWithFormat:@"%d", (int)objFolder.foldersIdentifier];
     }
-}
 
-- (IBAction)clickedOnToolBar:(UIBarButtonItem*)sender
-{
-    NSString* strEmail = sender.title;
-
-    if (self.presentedViewController) {
-        id obj = self.presentedViewController;
-
-        if ([obj isKindOfClass:[UIAlertController class]]) {
-            UIAlertController* alert = (UIAlertController*)obj;
-            if (alert.textFields.count > 0) {
-                alert.textFields.firstObject.text = strEmail;
-                UIAlertAction* btnReset = alert.actions.lastObject;
-                btnReset.enabled = [alert.textFields.firstObject.text isValidEmail];
-            }
-        }
-    }
+    [AlertManager input:@"User will receive invitation email to download Rally Roadbook Reader mobile app"
+                  title:@"Share Roadbook"
+                  extra:@"Roadbook will be in users \"Shared With Me\" folder on App"
+            suggestions:arrEmails
+            placeHolder:NULL
+                  image:@"ic_email_w"
+               negative:NULL
+               positive:@"Send"
+              confirmed:^(NSString* _Nullable email) {
+                  [AlertManager dismiss];
+                  [self.view endEditing:YES];
+                  [self share:strId for:(MyRoadbooksSection)idPath.section withEmailID:email];
+              }];
 }
 
 - (void)share:(NSString *)strR_Id for:(MyRoadbooksSection)section withEmailID:(NSString *)strEmail
@@ -400,7 +441,7 @@
                            showLoader:YES];
 }
 
-- (IBAction)handleShareResponse:(id)sender
+- (void)handleShareResponse:(id)sender
 {
     NSDictionary* dic = [sender responseDict];
 
@@ -409,55 +450,6 @@
     } else {
         [AlertManager alert:@"" title:@"Sharing has failed\nYou must be online to share a Roadbook" imageName:@"ic_error"];
     }
-}
-
-#pragma mark - Button Click Events
-
-- (IBAction)btnSettingsClicked:(id)sender
-{
-    SettingsVC* vc = loadViewController(StoryBoard_Settings, kIDSettingsVC);
-    vc.delegate = self;
-    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    [nav setNavigationBarHidden:YES animated:NO];
-    [self presentViewController:nav animated:YES completion:nil];
-}
-
-- (IBAction)btnShareClicked:(id)sender
-{
-    [self.view endEditing:YES];
-
-    RoadbooksCell* cell = (RoadbooksCell*)[self getCellForClassName:NSStringFromClass([RoadbooksCell class]) withSender:sender];
-    NSIndexPath* idPath = [_tblRoadbooks indexPathForCell:cell];
-
-    NSString* strId;
-
-    if (idPath.section == MyRoadbooksSectionRoadbooks) {
-        Routes* objRoadbook = [arrRoadBooks objectAtIndex:idPath.row];
-
-        if (objRoadbook.editable) {
-            strId = [NSString stringWithFormat:@"%ld", (long)objRoadbook.routesIdentifier];
-        } else {
-            [AlertManager alert:@"This route can not be shared" title:NULL imageName:@"ic_error"];
-            return;
-        }
-    } else {
-        Folders* objFolder = [arrFolders objectAtIndex:idPath.row];
-        strId = [NSString stringWithFormat:@"%d", (int)objFolder.foldersIdentifier];
-    }
-
-    [AlertManager input:@"User will receive invitation email to download Rally Roadbook Reader mobile app"
-                  title:@"Share Roadbook"
-                  extra:@"Roadbook will be in users \"Shared With Me\" folder on App"
-            suggestions:arrEmails
-            placeHolder:NULL
-                  image:@"ic_email_w"
-               negative:NULL
-               positive:@"Send"
-              confirmed:^(NSString* _Nullable email) {
-                  [AlertManager dismiss];
-                  [self.view endEditing:YES];
-                  [self share:strId for:(MyRoadbooksSection)idPath.section withEmailID:email];
-              }];
 }
 
 #pragma mark - UITableView Delegate Methods

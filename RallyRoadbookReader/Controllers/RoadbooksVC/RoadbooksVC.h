@@ -15,6 +15,10 @@ typedef enum {
 
 @interface RoadbooksVC : BaseVC
 
+@property (weak, nonatomic) IBOutlet UILabel* syncLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *syncLabelHeight;
+@property (weak, nonatomic) IBOutlet UITableView* tblRoadbooks;
+
 @property (strong, nonatomic) NSMutableArray* arrEmails;
 @property (strong, nonatomic) NSMutableArray* arrFolders;
 @property (strong, nonatomic) NSMutableArray* arrRoadBooks;
@@ -22,6 +26,5 @@ typedef enum {
 @property (nonatomic) BOOL isShareFolder;
 @property (strong, nonatomic) NSString* strFolderId;
 @property (strong, nonatomic) NSString* strRoadbookPageName;
-@property (weak, nonatomic) IBOutlet UITableView* tblRoadbooks;
 
 @end
