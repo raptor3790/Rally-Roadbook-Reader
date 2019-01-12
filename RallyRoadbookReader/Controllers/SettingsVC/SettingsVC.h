@@ -25,7 +25,7 @@ typedef enum
     UserConfigTypeTime,
     UserConfigTypeCAP,
     UserConfigTypeAlert,
-//    UserConfigTypeTutorial,
+    UserConfigTypeRotate,
     UserConfigTypeLogout
 }UserConfigType;
 

@@ -12,21 +12,21 @@
 // Comment/uncomment out NSLog to enable/disable logging
 #define JPSLog(fmt, ...) //NSLog(fmt, __VA_ARGS__)
 
-static NSString *const sessionVolumeKeyPath = @"outputVolume";
-static void *sessionContext                 = &sessionContext;
-static CGFloat maxVolume                    = 0.90999f;
-static CGFloat minVolume                    = 0.13001f;
+static NSString* const sessionVolumeKeyPath = @"outputVolume";
+static void* sessionContext = &sessionContext;
+static CGFloat maxVolume = 0.90999f;
+static CGFloat minVolume = 0.13001f;
 
 @interface JPSVolumeButtonHandler ()
 
-@property (nonatomic, assign) CGFloat          initialVolume;
-@property (nonatomic, strong) AVAudioSession * session;
-@property (nonatomic, strong) MPVolumeView   * volumeView;
-@property (nonatomic, assign) BOOL             appIsActive;
-@property (nonatomic, assign) BOOL             isStarted;
-@property (nonatomic, assign) BOOL             disableSystemVolumeHandler;
-@property (nonatomic, assign) BOOL             isAdjustingInitialVolume;
-@property (nonatomic, assign) BOOL             exactJumpsOnly;
+@property (nonatomic, assign) CGFloat initialVolume;
+@property (nonatomic, strong) AVAudioSession* session;
+@property (nonatomic, strong) MPVolumeView* volumeView;
+@property (nonatomic, assign) BOOL appIsActive;
+@property (nonatomic, assign) BOOL isStarted;
+@property (nonatomic, assign) BOOL disableSystemVolumeHandler;
+@property (nonatomic, assign) BOOL isAdjustingInitialVolume;
+@property (nonatomic, assign) BOOL exactJumpsOnly;
 
 @end
 
@@ -37,9 +37,8 @@ static CGFloat minVolume                    = 0.13001f;
 - (id)init
 {
     self = [super init];
-    
-    if (self)
-    {
+
+    if (self) {
         _appIsActive = YES;
         _sessionCategory = AVAudioSessionCategoryPlayback;
         _sessionOptions = AVAudioSessionCategoryOptionMixWithOthers;
@@ -47,20 +46,20 @@ static CGFloat minVolume                    = 0.13001f;
         _volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(MAXFLOAT, MAXFLOAT, 0, 0)];
 
         [[UIApplication sharedApplication].windows.firstObject addSubview:_volumeView];
-        
+
         _volumeView.hidden = YES;
 
         _exactJumpsOnly = NO;
     }
-    
+
     return self;
 }
 
 - (void)dealloc
 {
     [self stopHandler];
-    
-    MPVolumeView *volumeView = self.volumeView;
+
+    MPVolumeView* volumeView = self.volumeView;
     dispatch_async(dispatch_get_main_queue(), ^{
         [volumeView removeFromSuperview];
     });
@@ -69,7 +68,7 @@ static CGFloat minVolume                    = 0.13001f;
 - (void)startHandler:(BOOL)disableSystemVolumeHandler
 {
     [self setupSession];
-    
+
     self.volumeView.hidden = NO; // Start visible to prevent changes made during setup from showing default volume
     self.disableSystemVolumeHandler = disableSystemVolumeHandler;
 
@@ -79,50 +78,48 @@ static CGFloat minVolume                    = 0.13001f;
 
 - (void)stopHandler
 {
-    if (!self.isStarted)
-    {
+    if (!self.isStarted) {
         // Prevent stop process when already stop
         return;
     }
-    
+
     self.isStarted = NO;
-    
+
     self.volumeView.hidden = YES;
     // https://github.com/jpsim/JPSVolumeButtonHandler/issues/11
     // http://nshipster.com/key-value-observing/#safe-unsubscribe-with-@try-/-@catch
     @try {
         [self.session removeObserver:self forKeyPath:sessionVolumeKeyPath];
     }
-    @catch (NSException * __unused exception) {
+    @catch (NSException* __unused exception) {
     }
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSNotificationCenter.defaultCenter removeObserver:self];
 }
 
-- (void)setupSession {
-    if (self.isStarted){
+- (void)setupSession
+{
+    if (self.isStarted) {
         // Prevent setup twice
         return;
     }
-    
+
     self.isStarted = YES;
 
-    NSError *error = nil;
+    NSError* error = nil;
     self.session = [AVAudioSession sharedInstance];
     // this must be done before calling setCategory or else the initial volume is reset
     [self setInitialVolume];
-//    [self.session setCategory:_sessionCategory
-//                  withOptions:_sessionOptions
-//                        error:&error];
-    if (error)
-    {
+    //    [self.session setCategory:_sessionCategory
+    //                  withOptions:_sessionOptions
+    //                        error:&error];
+    if (error) {
         NSLog(@"%@", error);
         return;
     }
-    
+
     [self.session setActive:YES error:&error];
-    
-    if (error)
-    {
+
+    if (error) {
         NSLog(@"%@", error);
         return;
     }
@@ -135,56 +132,45 @@ static CGFloat minVolume                    = 0.13001f;
 
     // Audio session is interrupted when you send the app to the background,
     // and needs to be set to active again when it goes to app goes back to the foreground
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(audioSessionInterrupted:)
-                                                 name:AVAudioSessionInterruptionNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidChangeActive:)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidChangeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(audioSessionInterrupted:) name:AVAudioSessionInterruptionNotification object:NULL];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidChangeActive:) name:UIApplicationWillResignActiveNotification object:NULL];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidChangeActive:) name:UIApplicationDidBecomeActiveNotification object:NULL];
 
     self.volumeView.hidden = !self.disableSystemVolumeHandler;
 }
 
-- (void) useExactJumpsOnly:(BOOL)enabled{
+- (void)useExactJumpsOnly:(BOOL)enabled
+{
     _exactJumpsOnly = enabled;
 }
 
-- (void)audioSessionInterrupted:(NSNotification*)notification {
-    NSDictionary *interuptionDict = notification.userInfo;
+- (void)audioSessionInterrupted:(NSNotification*)notification
+{
+    NSDictionary* interuptionDict = notification.userInfo;
     NSInteger interuptionType = [[interuptionDict valueForKey:AVAudioSessionInterruptionTypeKey] integerValue];
     switch (interuptionType) {
-        case AVAudioSessionInterruptionTypeBegan:
-            JPSLog(@"Audio Session Interruption case started.", nil);
-            break;
-        case AVAudioSessionInterruptionTypeEnded:
-        {
-            JPSLog(@"Audio Session Interruption case ended.", nil);
-            NSError *error = nil;
-            [self.session setActive:YES error:&error];
-            if (error) {
-                NSLog(@"%@", error);
-            }
-            break;
+    case AVAudioSessionInterruptionTypeBegan:
+        JPSLog(@"Audio Session Interruption case started.", nil);
+        break;
+    case AVAudioSessionInterruptionTypeEnded: {
+        JPSLog(@"Audio Session Interruption case ended.", nil);
+        NSError* error = nil;
+        [self.session setActive:YES error:&error];
+        if (error) {
+            NSLog(@"%@", error);
         }
-        default:
-            JPSLog(@"Audio Session Interruption Notification case default.", nil);
-            break;
+        break;
+    }
+    default:
+        JPSLog(@"Audio Session Interruption Notification case default.", nil);
+        break;
     }
 }
 
 - (void)setInitialVolume
 {
     _initialVolume = self.session.outputVolume;
-    if (self.initialVolume > maxVolume)
-    {
+    if (self.initialVolume > maxVolume) {
         self.initialVolume = maxVolume;
         self.isAdjustingInitialVolume = YES;
         [self setSystemVolume:self.initialVolume];
@@ -195,7 +181,8 @@ static CGFloat minVolume                    = 0.13001f;
     }
 }
 
-- (void)applicationDidChangeActive:(NSNotification *)notification {
+- (void)applicationDidChangeActive:(NSNotification*)notification
+{
     self.appIsActive = [notification.name isEqualToString:UIApplicationDidBecomeActiveNotification];
     if (self.appIsActive && self.isStarted) {
         [self setInitialVolume];
@@ -204,8 +191,9 @@ static CGFloat minVolume                    = 0.13001f;
 
 #pragma mark - Convenience
 
-+ (instancetype)volumeButtonHandlerWithUpBlock:(JPSVolumeButtonBlock)upBlock downBlock:(JPSVolumeButtonBlock)downBlock {
-    JPSVolumeButtonHandler *instance = [[JPSVolumeButtonHandler alloc] init];
++ (instancetype)volumeButtonHandlerWithUpBlock:(JPSVolumeButtonBlock)upBlock downBlock:(JPSVolumeButtonBlock)downBlock
+{
+    JPSVolumeButtonHandler* instance = [[JPSVolumeButtonHandler alloc] init];
     if (instance) {
         instance.upBlock = upBlock;
         instance.downBlock = downBlock;
@@ -215,16 +203,17 @@ static CGFloat minVolume                    = 0.13001f;
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context
+{
     if (context == sessionContext) {
         if (!self.appIsActive) {
             // Probably control center, skip blocks
             return;
         }
-        
+
         CGFloat newVolume = [change[NSKeyValueChangeNewKey] floatValue];
         CGFloat oldVolume = [change[NSKeyValueChangeOldKey] floatValue];
-        
+
         if (newVolume < minVolume) {
             [self setSystemVolume:minVolume];
             newVolume = minVolume;
@@ -241,25 +230,24 @@ static CGFloat minVolume                    = 0.13001f;
             self.isAdjustingInitialVolume = NO;
         }
 
-        CGFloat difference = fabs(newVolume-oldVolume);
+        CGFloat difference = fabs(newVolume - oldVolume);
 
-        JPSLog(@"Old Vol:%f New Vol:%f Difference = %f", (double)oldVolume, (double)newVolume, (double) difference);
+        JPSLog(@"Old Vol:%f New Vol:%f Difference = %f", (double)oldVolume, (double)newVolume, (double)difference);
 
-        if (_exactJumpsOnly && difference < .062 && (newVolume == 1. || newVolume == 0))
-        {
+        if (_exactJumpsOnly && difference < .062 && (newVolume == 1. || newVolume == 0)) {
             JPSLog(@"Using a non-standard Jump of %f (%f-%f) which is less than the .0625 because a press of the volume button resulted in hitting min or max volume", difference, oldVolume, newVolume);
-        }
-        else if (_exactJumpsOnly && (difference > .063 || difference < .062))
-        {
+        } else if (_exactJumpsOnly && (difference > .063 || difference < .062)) {
             JPSLog(@"Ignoring non-standard Jump of %f (%f-%f), which is not the .0625 a press of the actually volume button would have resulted in.", difference, oldVolume, newVolume);
             [self setInitialVolume];
             return;
         }
-        
+
         if (newVolume > oldVolume) {
-            if (self.upBlock) self.upBlock();
+            if (self.upBlock)
+                self.upBlock();
         } else {
-            if (self.downBlock) self.downBlock();
+            if (self.downBlock)
+                self.downBlock();
         }
 
         if (!self.disableSystemVolumeHandler) {
@@ -276,7 +264,8 @@ static CGFloat minVolume                    = 0.13001f;
 
 #pragma mark - System Volume
 
-- (void)setSystemVolume:(CGFloat)volume {
+- (void)setSystemVolume:(CGFloat)volume
+{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSLog(@"%f", volume);

@@ -7,6 +7,7 @@
 //
 
 #import "RoadbooksVC.h"
+#import "NavigationVC.h"
 #import "RouteVC.h"
 #import "SettingsVC.h"
 #import "RoadbooksCell.h"
@@ -18,7 +19,7 @@
 @import GoogleSignIn;
 
 @interface RoadbooksVC () <UITableViewDataSource, UITableViewDelegate, SettingsVCDelegate> {
-    User* objUser;
+    UserConfig* objUserConfig;
     BOOL isLightView;
     UIToolbar* toolbar;
     id synchronizingObserver;
@@ -54,8 +55,6 @@
     UIBarButtonItem* btnDrawer = [[UIBarButtonItem alloc] initWithImage:Set_Local_Image(@"menu") style:UIBarButtonItemStylePlain target:self action:@selector(btnSettingsClicked:)];
     self.navigationItem.rightBarButtonItem = btnDrawer;
 
-    objUser = GET_USER_OBJ;
-
     [self fetchRoadbooks];
     [self getMyRoadBooksWithLoader:NO];
 
@@ -75,11 +74,7 @@
 {
     [super viewWillAppear:animated];
 
-    UserConfig* objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
-
-    if (objUserConfig == nil) {
-        objUserConfig = [self getDefaultUserConfiguration];
-    }
+    objUserConfig = [BaseVC getUserConfiguration];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
@@ -133,16 +128,21 @@
         self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     }
 
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleSynchronizeEnd:) name:SyncManager.stateSynchronized object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleSynchronizing:) name:SyncManager.stateSynchronizing object:nil];
+    if (!SyncManager.shared.isSyncing) {
+        self.syncLabelHeight.constant = 0.0f;
+        [self.view layoutIfNeeded];
+    }
+
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleSynchronizeEnd:) name:SyncManager.stateSynchronized object:NULL];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleSynchronizing:) name:SyncManager.stateSynchronizing object:NULL];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
-    [NSNotificationCenter.defaultCenter removeObserver:self name:SyncManager.stateSynchronized object:nil];
-    [NSNotificationCenter.defaultCenter removeObserver:self name:SyncManager.stateSynchronizing object:nil];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:SyncManager.stateSynchronized object:NULL];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:SyncManager.stateSynchronizing object:NULL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -213,12 +213,13 @@
 
 - (void)getMyRoadBooksWithLoader:(BOOL)showLoader
 {
-    NSString* strAppendURL = URLGetMyFolders;
+    CLLocationCoordinate2D coordinate =  AppContext.locationManager.locationManager.location.coordinate;
+    double lat = coordinate.latitude;
+    double lon = coordinate.longitude;
+    NSString* strAppendURL = [NSString stringWithFormat:@"%@?from=reader&latitude=%lf&longitude=%lf", URLGetMyFolders, lat, lon];
 
     if (_strFolderId) {
-        strAppendURL = [strAppendURL stringByAppendingString:[NSString stringWithFormat:@"?from=reader&folder_id=%@", _strFolderId]];
-    } else {
-        strAppendURL = [strAppendURL stringByAppendingString:@"?from=reader"];
+        strAppendURL = [strAppendURL stringByAppendingString:[NSString stringWithFormat:@"&folder_id=%@", _strFolderId]];
     }
 
     [[WebServiceConnector alloc] init:strAppendURL
@@ -290,6 +291,7 @@
                                                                      sortDescriptor:[NSSortDescriptor sortDescriptorWithKey:@"updatedAt" ascending:NO]
                                                                           forEntity:NSStringFromClass([CDRoutes class])]];
 
+    User* objUser = GET_USER_OBJ;
     BOOL userRole = [objUser.role isEqualToString:@"user"];
 
     arrRoadBooks = [[NSMutableArray alloc] init];
@@ -351,7 +353,7 @@
 {
     SettingsVC* vc = loadViewController(StoryBoard_Settings, kIDSettingsVC);
     vc.delegate = self;
-    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    NavigationVC* nav = [[NavigationVC alloc] initWithRootViewController:vc];
     [nav setNavigationBarHidden:YES animated:NO];
     [self presentViewController:nav animated:YES completion:nil];
 }
@@ -546,16 +548,7 @@
         NSInteger distance = 0;
         NSString* strUnit = @"";
 
-        Config* objConfig;
-
-        if (objUser.config == nil) {
-            objConfig.unit = @"Kilometers";
-        } else {
-            NSDictionary* jsonDict = [RallyNavigatorConstants convertJsonStringToObject:objUser.config];
-            objConfig = [[Config alloc] initWithDictionary:jsonDict];
-        }
-
-        if ([objConfig.unit isEqualToString:@"Kilometers"]) {
+        if (objUserConfig.distanceUnit == DistanceUnitsTypeKilometers) {
             strUnit = @"km";
 
             if ([objRoadbook.units isEqualToString:@"kilometers"]) {

@@ -11,12 +11,12 @@
 
 @interface UserConfig : NSObject <NSCoding>
 
+@property (nonatomic, assign) BOOL highlightPdf;
 @property (nonatomic, assign) BOOL isShowTime;
 @property (nonatomic, assign) BOOL isShowSpeed;
 @property (nonatomic, assign) BOOL isShowCap;
 @property (nonatomic, assign) BOOL isShowAlert;
-@property (nonatomic, assign) BOOL isShowTutorial;
-@property (nonatomic, assign) BOOL highlightPdf;
+@property (nonatomic, assign) BOOL isEnableRotate;
 @property (nonatomic, assign) double cal;
 @property (nonatomic, assign) ThemePreference themePreference;
 @property (nonatomic, assign) PdfFormat pdfFormat;

@@ -7,6 +7,7 @@
 //
 
 #import "Constant.h"
+#import "NavigationVC.h"
 #import "RouteVC.h"
 #import "SettingsVC.h"
 #import "RouteCell.h"
@@ -58,18 +59,6 @@
 
 @synthesize remoteCommandDataSource;
 
-- (UIInterfaceOrientationMask)getOrientation
-{
-    User* objUser = GET_USER_OBJ;
-    BOOL isUserRole = [objUser.role isEqualToString:@"user"];
-
-    if (iPhoneDevice && isUserRole) {
-        return UIInterfaceOrientationMaskPortrait;
-    } else {
-        return UIInterfaceOrientationMaskAll;
-    }
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -80,19 +69,11 @@
 
     ResetCount = 0;
 
-    AppContext.locationManager = [LocationManager sharedManager];
     AppContext.locationManager.delegate = self;
-
     AppContext.assetManager.delegate = self;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleRemoteCommandNextTrackNotification:)
-                                                 name:@"nextTrackNotification"
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleRemoteCommandPreviousTrackNotification:)
-                                                 name:@"previousTrackNotification"
-                                               object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleRemoteCommandNextTrackNotification:) name:@"nextTrackNotification" object:NULL];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleRemoteCommandPreviousTrackNotification:) name:@"previousTrackNotification" object:NULL];
 
     volumeButtonHandler = [JPSVolumeButtonHandler
         volumeButtonHandlerWithUpBlock:^{
@@ -102,8 +83,6 @@
             [self handleTapDigital:@"down"];
         }];
     [volumeButtonHandler startHandler:YES];
-    //    volumeButtonHandler.sessionOptions =
-    //    AVAudioSessionCategoryOptionAllowBluetooth/*|AVAudioSessionCategoryOptionMixWithOthers*/;
 
     filterWaypointsPredicate = [NSPredicate predicateWithBlock:^BOOL(Waypoints* objWayPoint, NSDictionary<NSString*, id>* _Nullable bindings) {
         return objWayPoint.show;
@@ -118,11 +97,7 @@
                                                                  action:@selector(btnSettingsClicked:)];
     self.navigationItem.rightBarButtonItem = btnDrawer;
 
-    objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
-
-    if (objUserConfig == nil) {
-        objUserConfig = [self getDefaultUserConfiguration];
-    }
+    objUserConfig = [BaseVC getUserConfiguration];
 
     _currentPdfFormat = objUserConfig.pdfFormat;
     _isHighlight = objUserConfig.highlightPdf;
@@ -133,10 +108,12 @@
         [self displayCAPHeading];
     }
 
+    objUserConfig.distanceUnit = [_objRoute.units isEqualToString:@"kilometers"] ? DistanceUnitsTypeKilometers : DistanceUnitsTypeMiles;
+    [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
+    
     [self manageUI];
 
     User* objUser = GET_USER_OBJ;
-
     BOOL isUserRole = [objUser.role isEqualToString:@"user"];
     NSString* defaultRally = [NSString stringWithFormat:@"%@ - UPGRADED User View", kDefaultRallyName];
     NSString* defaultCross = [NSString stringWithFormat:@"%@ - UPGRADED User View", kDefaultCrossCountryName];
@@ -146,7 +123,6 @@
         [self setupPdfView];
     } else {
         _tblRoadbook.hidden = NO;
-        _containerView.backgroundColor = UIColor.whiteColor;
         [self fetchRouteDetails];
         [self callWebServiceToGetRoute];
     }
@@ -155,28 +131,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.view layoutIfNeeded];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(orientationChanged:)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
-    //    [[NSNotificationCenter defaultCenter]addObserver:self
-    //    selector:@selector(handleRouteChange:)
-    //    name:AVAudioSessionRouteChangeNotification object:[AVAudioSession
-    //    sharedInstance]];
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //    selector:@selector(volumeDidChange:)
-    //    name:@"AVSystemController_SystemVolumeDidChangeNotification"
-    //    object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:NULL];
 
-    objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
-
-    if (objUserConfig == nil) {
-        objUserConfig = [self getDefaultUserConfiguration];
-    }
+    objUserConfig = [BaseVC getUserConfiguration];
 
     switch (objUserConfig.distanceUnit) {
     case DistanceUnitsTypeMiles:
@@ -213,13 +172,34 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [super viewDidAppear:animated];
-//
-//    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-//    [self becomeFirstResponder];
-//}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [NSNotificationCenter.defaultCenter removeObserver:self name:UIDeviceOrientationDidChangeNotification object:NULL];
+
+    if (self.isMovingFromParentViewController) {
+        [volumeButtonHandler setUpBlock:nil];
+        [volumeButtonHandler setDownBlock:nil];
+        [volumeButtonHandler stopHandler];
+    }
+}
+
+- (UIInterfaceOrientationMask)getOrientation
+{
+    User* objUser = GET_USER_OBJ;
+    BOOL isUserRole = [objUser.role isEqualToString:@"user"];
+
+    UserConfig* config = [BaseVC getUserConfiguration];
+
+    if (iPhoneDevice && isUserRole) {
+        return UIInterfaceOrientationMaskPortrait;
+    } else if (iPadDevice && !config.isEnableRotate) {
+        return UIInterfaceOrientationMaskPortrait;
+    } else {
+        return UIInterfaceOrientationMaskAll;
+    }
+}
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -263,26 +243,6 @@
 
     _vWCapSuper.layer.cornerRadius = 10.0f;
     _vWCapSuper.clipsToBounds = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if ([self isMovingFromParentViewController]) {
-        //        [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
-        //        [self resignFirstResponder];
-        [super viewWillDisappear:animated];
-
-        // assetManager = nil;
-
-        [volumeButtonHandler setUpBlock:nil];
-        [volumeButtonHandler setDownBlock:nil];
-        [volumeButtonHandler stopHandler];
-
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -517,7 +477,7 @@
     }
 
     [self.view layoutIfNeeded];
-    
+
     _vwMiddleContainer.hidden = NO;
     _vwSpeed.hidden = NO;
     _vwTime.hidden = NO;
@@ -541,13 +501,13 @@
 
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) {
         _lblCAPHeading.text = @"Time of Day";
-        _heightVwSpeed.constant = 1000;//CGRectGetHeight(_vwOdometer.frame);
+        _heightVwSpeed.constant = 1000; //CGRectGetHeight(_vwOdometer.frame);
         _heightVwTime.constant = 0.0f;
     } else if (objUserConfig.isShowSpeed && !objUserConfig.isShowTime) {
-        _heightVwSpeed.constant = 1000;//CGRectGetHeight(_vwOdometer.frame);
+        _heightVwSpeed.constant = 1000; //CGRectGetHeight(_vwOdometer.frame);
         _heightVwTime.constant = 0.0f;
     } else if (!objUserConfig.isShowSpeed && objUserConfig.isShowTime) {
-        _heightVwTime.constant = 1000;//CGRectGetHeight(_vwMiddleContainer.frame);
+        _heightVwTime.constant = 1000; //CGRectGetHeight(_vwMiddleContainer.frame);
         _heightVwSpeed.constant = 0.0f;
     }
 
@@ -760,7 +720,7 @@
 {
     int viewCount = (objUserConfig.isShowCap + objUserConfig.isShowSpeed + objUserConfig.isShowTime) + 1;
     BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-    
+
     int screenWidth = SCREEN_WIDTH;
     if (viewCount == 2) {
         switch (screenWidth) {
@@ -873,8 +833,8 @@
     _containerView.layer.cornerRadius = 10.0f;
     _containerView.clipsToBounds = YES;
 
-    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-//    config.preferences.render
+    WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
+    //    config.preferences.render
     _pdfView = [[WKWebView alloc] initWithFrame:_containerView.bounds configuration:config];
     _pdfView.backgroundColor = UIColor.clearColor;
     _pdfView.scrollView.backgroundColor = UIColor.clearColor;
@@ -1036,7 +996,6 @@
                 }];
 }
 
-// Change by Harjeet - hka
 - (void)clickedRoadbooks
 {
     [AlertManager confirm:@""
@@ -1197,7 +1156,7 @@
     vc.delegate = self;
     vc.strRoadbookId = [NSString stringWithFormat:@"%ld", (long)[obj_Route.routeIdentifier doubleValue]];
     vc.Ododistance = _calibrate;
-    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    NavigationVC* nav = [[NavigationVC alloc] initWithRootViewController:vc];
     [nav setNavigationBarHidden:YES animated:NO];
     [self presentViewController:nav animated:YES completion:nil];
 }
@@ -1300,7 +1259,12 @@
         return;
     }
 
-    CGFloat step = ScrollCount > 20 ? 25 : 5;
+    CGFloat step = 5;
+    if (iPadDevice && ScrollCount > 80) {
+        step = 50;
+    } else if (ScrollCount > 20) {
+        step = 25;
+    }
     CGPoint point = CGPointMake(0, MAX(0, offset - step));
     [_tblRoadbook setContentOffset:point];
 }
@@ -1316,7 +1280,12 @@
         return;
     }
 
-    CGFloat step = ScrollCount > 20 ? 25 : 5;
+    CGFloat step = 5;
+    if (iPadDevice && ScrollCount > 80) {
+        step = 50;
+    } else if (ScrollCount > 20) {
+        step = 25;
+    }
     CGPoint point = CGPointMake(0, MIN(maxY, offset + step));
     [_tblRoadbook setContentOffset:point];
 }
@@ -1325,7 +1294,12 @@
 {
     ScrollCount++;
 
-    CGFloat step = ScrollCount > 20 ? 25 : 5;
+    CGFloat step = 5;
+    if (iPadDevice && ScrollCount > 80) {
+        step = 50;
+    } else if (ScrollCount > 20) {
+        step = 25;
+    }
     [self ScrollPDF2Up:YES step:step];
 }
 
@@ -1333,7 +1307,12 @@
 {
     ScrollCount++;
 
-    CGFloat step = ScrollCount > 20 ? 25 : 5;
+    CGFloat step = 5;
+    if (iPadDevice && ScrollCount > 80) {
+        step = 50;
+    } else if (ScrollCount > 20) {
+        step = 25;
+    }
     [self ScrollPDF2Up:NO step:step];
 }
 

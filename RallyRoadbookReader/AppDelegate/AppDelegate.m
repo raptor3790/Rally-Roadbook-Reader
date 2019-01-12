@@ -25,6 +25,7 @@
         [NSThread sleepForTimeInterval:2.0];
     }
 
+    _locationManager = LocationManager.sharedManager;
     _assetManager = [[AssetPlaybackManager alloc] init];
     _remoteCommandManager = [[RemoteCommandManager alloc] initWithAssetPlaybackManager:_assetManager];
     [_remoteCommandManager activatePlaybackCommands:YES];

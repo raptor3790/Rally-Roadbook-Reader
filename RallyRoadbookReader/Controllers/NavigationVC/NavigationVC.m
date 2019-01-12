@@ -22,14 +22,24 @@
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    BaseVC* vc = (BaseVC*)self.topViewController;
-    return [vc getOrientation];
+    id vc = self.topViewController;
+    if ([vc isKindOfClass:BaseVC.class]) {
+        BaseVC* baseVC = (BaseVC*)self.topViewController;
+        return [baseVC getOrientation];
+    } else {
+        return [BaseVC getUserConfiguration].isEnableRotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+    }
 }
 
 - (BOOL)shouldAutorotate
 {
-    BaseVC* vc = (BaseVC*)self.topViewController;
-    return [vc getOrientation] == UIInterfaceOrientationMaskAll;
+    id vc = self.topViewController;
+    if ([vc isKindOfClass:BaseVC.class]) {
+        BaseVC* baseVC = (BaseVC*)self.topViewController;
+        return [baseVC getOrientation] == UIInterfaceOrientationMaskAll;
+    } else {
+        return [BaseVC getUserConfiguration].isEnableRotate;
+    }
 }
 
 /*

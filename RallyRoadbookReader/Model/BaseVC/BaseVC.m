@@ -1,3 +1,5 @@
+
+
 //
 //  BaseVC.m
 //  RallyRoadbookReader
@@ -22,6 +24,22 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
++ (UserConfig*)getUserConfiguration
+{
+    UserConfig* objConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
+    if (objConfig == NULL) {
+        objConfig = [[UserConfig alloc] init];
+        objConfig.isShowCap = YES;
+        objConfig.isShowSpeed = YES;
+        objConfig.isShowTime = YES;
+        objConfig.isShowAlert = YES;
+        objConfig.isEnableRotate = NO;
+        objConfig.distanceUnit = DistanceUnitsTypeKilometers;
+        objConfig.cal = 0.00f;
+    }
+    return objConfig;
 }
 
 - (id _Nonnull)registerCell:(nullable id)cell
@@ -64,22 +82,14 @@
     }
 }
 
-- (UserConfig*)getDefaultUserConfiguration
-{
-    UserConfig* objConfig = [[UserConfig alloc] init];
-    objConfig.isShowCap = YES;
-    objConfig.isShowSpeed = YES;
-    objConfig.isShowTime = YES;
-    objConfig.isShowAlert = YES;
-    objConfig.isShowTutorial = YES;
-    objConfig.distanceUnit = DistanceUnitsTypeKilometers;
-    objConfig.cal = 0.00f;
-    return objConfig;
-}
-
 - (UIInterfaceOrientationMask)getOrientation
 {
-    return UIInterfaceOrientationMaskAll;
+    UserConfig* config = [BaseVC getUserConfiguration];
+    if (iPadDevice && !config.isEnableRotate) {
+        return UIInterfaceOrientationMaskPortrait;
+    } else {
+        return UIInterfaceOrientationMaskAll;
+    }
 }
 
 // GET CELL FROM THE BUTTON(SENDER)

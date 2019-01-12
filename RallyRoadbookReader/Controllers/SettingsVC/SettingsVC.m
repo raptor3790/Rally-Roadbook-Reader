@@ -37,7 +37,7 @@
     self.navigationItem.rightBarButtonItem = btnDismiss;
 
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = UIColor.blackColor;
 
     _tblSettings.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
@@ -49,11 +49,7 @@
         [arrEmails addObjectsFromArray:object];
     }
 
-    objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
-
-    if (objUserConfig == nil) {
-        objUserConfig = [self getDefaultUserConfiguration];
-    }
+    objUserConfig = [BaseVC getUserConfiguration];
 
     totalDistance = AppContext.cal;
 }
@@ -70,22 +66,18 @@
     switch (objUserConfig.themePreference) {
     case ThemePreferenceDark: {
         isLightView = false;
+        themeBackGroundColor = UIColor.blackColor;
+        themeTextColor = UIColor.lightGrayColor;
     } break;
 
     case ThemePreferenceLight: {
         isLightView = true;
+        themeBackGroundColor = UIColor.whiteColor;
+        themeTextColor = UIColor.blackColor;
     } break;
 
     default:
         break;
-    }
-
-    if (!isLightView) {
-        themeBackGroundColor = [UIColor blackColor];
-        themeTextColor = [UIColor lightGrayColor];
-    } else {
-        themeBackGroundColor = [UIColor whiteColor];
-        themeTextColor = [UIColor blackColor];
     }
 
     self.view.backgroundColor = themeBackGroundColor;
@@ -116,7 +108,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)btnSwitchClicked:(UISwitch*)sender
+- (void)btnSwitchClicked:(UISwitch*)sender
 {
     [self.view endEditing:YES];
 
@@ -124,7 +116,6 @@
     case UserConfigTypeSpeed: {
         if (objUserConfig.isShowSpeed) {
             NSInteger count = objUserConfig.isShowSpeed + objUserConfig.isShowTime + objUserConfig.isShowCap;
-
             if (count == 1) {
                 [sender setOn:YES];
                 return;
@@ -137,7 +128,6 @@
     case UserConfigTypeTime: {
         if (objUserConfig.isShowTime) {
             NSInteger count = objUserConfig.isShowSpeed + objUserConfig.isShowTime + objUserConfig.isShowCap;
-
             if (count == 1) {
                 [sender setOn:YES];
                 return;
@@ -150,7 +140,6 @@
     case UserConfigTypeCAP: {
         if (objUserConfig.isShowCap) {
             NSInteger count = objUserConfig.isShowSpeed + objUserConfig.isShowTime + objUserConfig.isShowCap;
-
             if (count == 1) {
                 [sender setOn:YES];
                 return;
@@ -164,11 +153,9 @@
         objUserConfig.isShowAlert = !objUserConfig.isShowAlert;
     } break;
 
-    //        case UserConfigTypeTutorial:
-    //        {
-    //            objUserConfig.isShowTutorial = !objUserConfig.isShowTutorial;
-    //        }
-    //            break;
+    case UserConfigTypeRotate: {
+        objUserConfig.isEnableRotate = !objUserConfig.isEnableRotate;
+    } break;
 
     default:
         break;
@@ -177,7 +164,7 @@
     [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
 }
 
-- (IBAction)btnChangeUnitClicked:(UIButton*)sender
+- (void)btnChangeUnitClicked:(UIButton*)sender
 {
     [self.view endEditing:YES];
 
@@ -191,7 +178,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     } break;
@@ -204,7 +191,7 @@
         objUserConfig.distanceUnit = DistanceUnitsTypeKilometers;
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     } break;
@@ -216,7 +203,7 @@
     [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
 }
 
-- (IBAction)btnChangeOdoUnitClicked:(UIButton*)sender
+- (void)btnChangeOdoUnitClicked:(UIButton*)sender
 {
     [self.view endEditing:YES];
 
@@ -230,7 +217,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
 
@@ -250,7 +237,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
 
@@ -268,7 +255,7 @@
     [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
 }
 
-- (IBAction)btnChangePdfFormatClicked:(UIButton*)sender
+- (void)btnChangePdfFormatClicked:(UIButton*)sender
 {
     [self.view endEditing:YES];
 
@@ -282,7 +269,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     } break;
@@ -296,7 +283,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     } break;
@@ -308,7 +295,7 @@
     [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
 }
 
-- (IBAction)btnChangeHighlightPreferenceClicked:(UIButton*)sender
+- (void)btnChangeHighlightPreferenceClicked:(UIButton*)sender
 {
     [self.view endEditing:YES];
 
@@ -321,7 +308,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     } else {
@@ -333,7 +320,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     }
@@ -341,7 +328,7 @@
     [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
 }
 
-- (IBAction)btnChangeThemeClicked:(UIButton*)sender
+- (void)btnChangeThemeClicked:(UIButton*)sender
 {
     [self.view endEditing:YES];
 
@@ -355,7 +342,7 @@
         isLightView = false;
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
 
@@ -371,7 +358,7 @@
 
         SettingsCell* cell = (SettingsCell*)[self getCellForClassName:NSStringFromClass([SettingsCell class]) withSender:sender];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [sender setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [sender setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnMiles setTitleColor:self->themeTextColor forState:UIControlStateNormal];
         });
     } break;
@@ -381,109 +368,35 @@
     }
 
     if (!isLightView) {
-        themeBackGroundColor = [UIColor blackColor];
-        themeTextColor = [UIColor lightGrayColor];
+        themeBackGroundColor = UIColor.blackColor;
+        themeTextColor = UIColor.lightGrayColor;
     } else {
-        themeBackGroundColor = [UIColor whiteColor];
-        themeTextColor = [UIColor blackColor];
+        themeBackGroundColor = UIColor.whiteColor;
+        themeTextColor = UIColor.blackColor;
     }
     [self.tblSettings reloadData];
     [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
 
     if (isLightView) {
-        [self.view setBackgroundColor:[UIColor whiteColor]];
+        [self.view setBackgroundColor:UIColor.whiteColor];
     } else {
-        [self.view setBackgroundColor:[UIColor blackColor]];
+        [self.view setBackgroundColor:UIColor.blackColor];
     }
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (IBAction)btnLogoutClicked:(id)sender
+- (void)btnLogoutClicked:(id)sender
 {
     [self.view endEditing:YES];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self->_delegate respondsToSelector:@selector(clickedLogout)]) {
-            [self dismissViewControllerAnimated:YES
-                                     completion:^{
-                                         [self->_delegate clickedLogout];
-                                         if (self->_strRoadbookId) {
-                                             if ([self->_delegate respondsToSelector:@selector(clickedLogout)]) {
-                                                 [self->_delegate odoValueChanged:self->totalDistance];
-                                             }
-                                         }
-                                     }];
-        }
-    });
-}
-
-#pragma mark -
-
-- (void)setUpTextField:(UITextField*)textField
-{
-    textField.placeholder = @"Enter your email address here";
-    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    textField.keyboardType = UIKeyboardTypeEmailAddress;
-    textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.tintColor = RGB(85, 85, 85);
-    [textField addTarget:self
-                  action:@selector(textFieldTextDidChanged:)
-        forControlEvents:UIControlEventEditingChanged | UIControlEventEditingDidEnd];
-
-    if (!toolbar) {
-        toolbar = [[UIToolbar alloc] init];
-        toolbar.tintColor = [UIColor blackColor];
-        [toolbar sizeToFit];
-    }
-
-    textField.inputAccessoryView = toolbar;
-}
-
-- (void)textFieldTextDidChanged:(UITextField*)sender
-{
-    UIAlertController* alertController = (UIAlertController*)self.presentedViewController;
-    UIAlertAction* btnReset = alertController.actions.lastObject;
-    if (alertController) {
-        btnReset.enabled = [sender.text isValidEmail];
-    }
-
-    if (arrEmails) {
-        if (arrEmails.count > 0) {
-            NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", sender.text];
-            NSArray* results = [arrEmails filteredArrayUsingPredicate:predicate];
-
-            NSMutableArray<NSString*>* arrSuggestions = [[NSMutableArray alloc] initWithCapacity:2];
-            [arrSuggestions addObjectsFromArray:results];
-
-            NSMutableArray<UIBarButtonItem*>* arrItems = [[NSMutableArray alloc] init];
-
-            for (int i = 0; i < arrSuggestions.count; i++) {
-                [arrItems addObject:[[UIBarButtonItem alloc] initWithTitle:arrSuggestions[i] style:UIBarButtonItemStylePlain target:self action:@selector(clickedOnToolBar:)]];
-                if (arrItems.count == 2)
-                    break;
-            }
-
-            toolbar.items = arrItems;
-        }
-    }
-}
-
-- (IBAction)clickedOnToolBar:(UIBarButtonItem*)sender
-{
-    NSString* strEmail = sender.title;
-
-    if (self.presentedViewController) {
-        id obj = self.presentedViewController;
-
-        if ([obj isKindOfClass:[UIAlertController class]]) {
-            UIAlertController* alert = (UIAlertController*)obj;
-            if (alert.textFields.count > 0) {
-                alert.textFields.firstObject.text = strEmail;
-                UIAlertAction* btnReset = alert.actions.lastObject;
-                btnReset.enabled = [alert.textFields.firstObject.text isValidEmail];
-            }
-        }
-    }
+    [self dismissViewControllerAnimated:YES
+                             completion:^{
+                                 if ([self->_delegate respondsToSelector:@selector(clickedLogout)]) {
+                                     [self->_delegate clickedLogout];
+                                 }
+                                 if (self->_strRoadbookId && [self->_delegate respondsToSelector:@selector(odoValueChanged:)]) {
+                                     [self->_delegate odoValueChanged:self->totalDistance];
+                                 }
+                             }];
 }
 
 - (void)shareRoadbookForEmailID:(NSString*)strEmail
@@ -524,7 +437,7 @@
                            showLoader:YES];
 }
 
-- (IBAction)handleShareResponse:(id)sender
+- (void)handleShareResponse:(id)sender
 {
     NSDictionary* dic = [sender responseDict];
 
@@ -535,35 +448,13 @@
     }
 }
 
-- (IBAction)stepperChanged:(UIStepper*)sender
+- (void)stepperChanged:(UIStepper*)sender
 {
-
-    //printf("Stepper value :::::::: %f",sender.value);
-
     if (sender.value > stepperValue) {
-        //        if (objUserConfig.odometerUnit == OdometerUnitTenth)
-        //        {
-        totalDistance += 0.10f; //(objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.10f/0.621371 : 0.10f);
-        //        }
-        //        else
-        //        {
-        //            totalDistance += 0.01f;//(objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.01f/0.621371 : 0.01f);
-        //        }
+        totalDistance += 0.10f;
     } else {
-        //        if (objUserConfig.odometerUnit == OdometerUnitTenth)
-        //        {
-        totalDistance -= 0.10f; //(objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.10f/0.621371 : 0.10f);
-        //        }
-        //        else
-        //        {
-        //            totalDistance -= 0.01f;//(objUserConfig.distanceUnit == DistanceUnitsTypeMiles ? 0.01f/0.621371 : 0.01f);
-        //        }
+        totalDistance -= 0.10f;
     }
-
-    //    if (totalDistance <= 0)
-    //    {
-    //        totalDistance = 0.0f;
-    //    }
 
     stepperValue = sender.value;
     AppContext.cal = totalDistance;
@@ -589,52 +480,47 @@
             cell.lblOdoValue.text = [cell.lblOdoValue.text stringByReplacingCharactersInRange:range withString:@""];
         }
     }
-
-    //    [self.tblSettings beginUpdates];
-    //    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:UserConfigTypeCalibrate inSection:0];
-    //    NSArray *indexPaths = [[NSArray alloc] initWithObjects:indexPath, nil];
-    //    [self.tblSettings reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-    //    [self.tblSettings endUpdates];
 }
 
 #pragma mark - UITableView Delegate Methods
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 16;
+    return 17;
 }
 
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (indexPath.row == UserConfigTypeShareRoadbook && !_strRoadbookId) {
-        return 0.00f;
+        return 0;
     }
 
-    return UITableViewAutomaticDimension;
+    if (indexPath.row == UserConfigTypeRotate && iPhoneDevice) {
+        return 0;
+    }
+
+    return iPadDevice ? 70 : 50;
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    [self.view endEditing:YES];
+
     switch (indexPath.row) {
     case UserConfigNavigation: {
-        [self.view endEditing:YES];
-
-        if ([self->_delegate respondsToSelector:@selector(clickedRoadbooks)]) {
-            [self dismissViewControllerAnimated:YES
-                                     completion:^{
+        [self dismissViewControllerAnimated:YES
+                                 completion:^{
+                                     if ([self->_delegate respondsToSelector:@selector(clickedRoadbooks)]) {
                                          [self->_delegate clickedRoadbooks];
-                                     }];
-            if (self->_strRoadbookId) {
-                if ([self->_delegate respondsToSelector:@selector(clickedLogout)]) {
-                    [self->_delegate odoValueChanged:self->totalDistance];
-                }
-            }
-        }
+                                     }
+                                     if (self->_strRoadbookId && [self->_delegate respondsToSelector:@selector(odoValueChanged:)]) {
+                                         [self->_delegate odoValueChanged:self->totalDistance];
+                                     }
+                                 }];
+
     } break;
 
     case UserConfigTypeShareRoadbook: {
-        [self.view endEditing:YES];
-
         if (_strRoadbookId) {
             [AlertManager input:@"User will receive invitation email to download Rally Roadbook Reader mobile app"
                           title:@"Share Roadbook"
@@ -653,15 +539,11 @@
     } break;
 
     case UserConfigTypeMobileUse: {
-        [self.view endEditing:YES];
-
         HowToUseVC* vc = loadViewController(StoryBoard_Settings, kIDHowToUseVC);
         [self.navigationController pushViewController:vc animated:YES];
     } break;
 
     case UserConfigTypeShareApplication: {
-        [self.view endEditing:YES];
-
         NSString* strDetails = @"Join the Rally Revolution.\n\nRally Navigator - Rally Roadbook Reader\n\nLearn more at https://www.rallynavigator.com\n\nDownload Application: https://itunes.apple.com\n\niOS Mobile app Offers Complete Roadbook Rally Navigation Dash for iPad or iPhone: Roadbook, Adjustable Odometer and Compass Heading Display. Load a Roadbook and GO!\n\nRally Navigator Desktop Software Streamlines the Process of Creating Rally Navigation Roadbooks.\n\nDesign your Route, add Waypoint Details and Print FIM & FIA Specification Rally Roadbooks for Cross Country and Road Rally events.\n\nCreate. Share. Rally";
 
         NSArray* dataToShare = @[ strDetails ];
@@ -689,15 +571,15 @@
     case UserConfigSettings: {
         cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsNavigationCell"];
         cell.lblNavigationTitle.text = @"SETTINGS";
-        cell.lblNavigationTitle.textColor = [UIColor redColor];
+        cell.lblNavigationTitle.textColor = UIColor.redColor;
         if (SCREEN_WIDTH >= 768) {
             [cell.lblNavigationTitle setFont:[cell.lblNavigationTitle.font fontWithSize:32.0f]];
             [cell.btnCloseWindow setImage:[UIImage imageNamed:@"cross_x"] forState:UIControlStateNormal];
             cell.btnCloseWindow.contentEdgeInsets = UIEdgeInsetsZero;
         }
-        [cell.btnCloseWindow setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [cell.btnCloseWindow setTitleColor:UIColor.redColor forState:UIControlStateNormal];
         [cell.btnCloseWindow setHidden:false];
-        cell.redBordeer.backgroundColor = [UIColor redColor];
+        cell.redBordeer.backgroundColor = UIColor.redColor;
         cell.separatorInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.f, CGFLOAT_MAX);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -719,98 +601,6 @@
         return cell;
     } break;
 
-    case UserConfigTypeShareRoadbook: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUsageCell"];
-        cell.lblNavigationTitle.text = @"Share Active Roadbook";
-        if (SCREEN_WIDTH >= 768) {
-            [cell.lblNavigationTitle setFont:[cell.lblNavigationTitle.font fontWithSize:26.0f]];
-        }
-        cell.lblNavigationTitle.textColor = themeTextColor;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    } break;
-
-    case UserConfigTypeSpeed: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
-
-        cell.lblTitle.text = @"Display Speed";
-        cell.switchConfig.on = objUserConfig.isShowSpeed;
-        cell.lblTitle.textColor = themeTextColor;
-        if (SCREEN_WIDTH >= 768) {
-            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
-        }
-        if (isLightView) {
-            cell.switchConfig.thumbTintColor = [UIColor blackColor];
-        } else {
-            cell.switchConfig.thumbTintColor = [UIColor lightGrayColor];
-        }
-    } break;
-
-    case UserConfigTypeTime: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
-
-        cell.lblTitle.text = @"Display Time";
-        cell.switchConfig.on = objUserConfig.isShowTime;
-        if (SCREEN_WIDTH >= 768) {
-            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
-        }
-        cell.lblTitle.textColor = themeTextColor;
-        if (isLightView) {
-            cell.switchConfig.thumbTintColor = [UIColor blackColor];
-        } else {
-            cell.switchConfig.thumbTintColor = [UIColor lightGrayColor];
-        }
-    } break;
-
-    case UserConfigTypeCAP: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
-
-        cell.lblTitle.text = @"Display CAP Heading";
-        cell.switchConfig.on = objUserConfig.isShowCap;
-        if (SCREEN_WIDTH >= 768) {
-            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
-        }
-        cell.lblTitle.textColor = themeTextColor;
-        if (isLightView) {
-            cell.switchConfig.thumbTintColor = [UIColor blackColor];
-        } else {
-            cell.switchConfig.thumbTintColor = [UIColor lightGrayColor];
-        }
-    } break;
-
-    case UserConfigTypeAlert: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
-
-        cell.lblTitle.text = @"ODO Reset Alert";
-        cell.switchConfig.on = objUserConfig.isShowAlert;
-        if (SCREEN_WIDTH >= 768) {
-            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
-        }
-        cell.lblTitle.textColor = themeTextColor;
-        if (isLightView) {
-            cell.switchConfig.thumbTintColor = [UIColor blackColor];
-        } else {
-            cell.switchConfig.thumbTintColor = [UIColor lightGrayColor];
-        }
-    } break;
-
-    //        case UserConfigTypeTutorial:
-    //        {
-    //            cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
-    //
-    //            cell.lblTitle.text = @"Show Tutorial";
-    //            cell.switchConfig.on = objUserConfig.isShowTutorial;
-    //
-    //            cell.lblTitle.textColor = themeTextColor;
-    //            if (isLightView) {
-    //                cell.switchConfig.thumbTintColor = [UIColor blackColor];
-    //            }
-    //            else{
-    //                cell.switchConfig.thumbTintColor = [UIColor lightGrayColor];
-    //            }
-    //        }
-    //            break;
-
     case UserConfigTypeMobileUse: {
         cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUsageCell"];
         cell.lblNavigationTitle.text = @"Mobile App – How it Works";
@@ -822,65 +612,26 @@
         return cell;
     } break;
 
-    case UserConfigTypeHighlightPreference: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUnitCell"];
-
-        [cell.btnMiles setTitle:@"Auto Highlight" forState:UIControlStateNormal];
-        [cell.btnKilometers setTitle:@"No Highlight" forState:UIControlStateNormal];
-
+    case UserConfigTypeShareApplication: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUsageCell"];
+        cell.lblNavigationTitle.text = @"Share Rally Roadbook Reader App";
+        cell.lblNavigationTitle.textColor = themeTextColor;
         if (SCREEN_WIDTH >= 768) {
-            [cell.btnMiles.titleLabel setFont:[cell.btnMiles.titleLabel.font fontWithSize:26.0f]];
-            [cell.btnKilometers.titleLabel setFont:[cell.btnKilometers.titleLabel.font fontWithSize:26.0f]];
+            [cell.lblNavigationTitle setFont:[cell.lblNavigationTitle.font fontWithSize:26.0f]];
         }
-        if (objUserConfig.highlightPdf) {
-            [cell.btnMiles setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
-        } else {
-            [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-        }
-
-        cell.btnMiles.tag = 1;
-        cell.btnKilometers.tag = 0;
-
-        [cell.btnMiles removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
-        [cell.btnKilometers removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
-        [cell.btnMiles addTarget:self action:@selector(btnChangeHighlightPreferenceClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.btnKilometers addTarget:self action:@selector(btnChangeHighlightPreferenceClicked:) forControlEvents:UIControlEventTouchUpInside];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
     } break;
 
-    case UserConfigTypeTheme: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUnitCell"];
-
-        [cell.btnMiles setTitle:@"Dark View" forState:UIControlStateNormal];
-        [cell.btnKilometers setTitle:@"Light View" forState:UIControlStateNormal];
-
+    case UserConfigTypeShareRoadbook: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUsageCell"];
+        cell.lblNavigationTitle.text = @"Share Active Roadbook";
         if (SCREEN_WIDTH >= 768) {
-            [cell.btnMiles.titleLabel setFont:[cell.btnMiles.titleLabel.font fontWithSize:26.0f]];
-            [cell.btnKilometers.titleLabel setFont:[cell.btnKilometers.titleLabel.font fontWithSize:26.0f]];
+            [cell.lblNavigationTitle setFont:[cell.lblNavigationTitle.font fontWithSize:26.0f]];
         }
-        switch (objUserConfig.themePreference) {
-        case ThemePreferenceDark: {
-            [cell.btnMiles setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
-        } break;
-
-        case ThemePreferenceLight: {
-            [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-        } break;
-
-        default:
-            break;
-        }
-
-        cell.btnMiles.tag = ThemePreferenceDark;
-        cell.btnKilometers.tag = ThemePreferenceLight;
-
-        [cell.btnMiles removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
-        [cell.btnKilometers removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
-        [cell.btnMiles addTarget:self action:@selector(btnChangeThemeClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.btnKilometers addTarget:self action:@selector(btnChangeThemeClicked:) forControlEvents:UIControlEventTouchUpInside];
+        cell.lblNavigationTitle.textColor = themeTextColor;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
     } break;
 
     case UserConfigTypePDFFormat: {
@@ -895,13 +646,13 @@
         }
         switch (objUserConfig.pdfFormat) {
         case PdfFormatCrossCountry: {
-            [cell.btnMiles setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [cell.btnMiles setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
         } break;
 
         case PdfFormatRoadRally: {
             [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:UIColor.redColor forState:UIControlStateNormal];
         } break;
 
         default:
@@ -917,6 +668,33 @@
         [cell.btnKilometers addTarget:self action:@selector(btnChangePdfFormatClicked:) forControlEvents:UIControlEventTouchUpInside];
     } break;
 
+    case UserConfigTypeHighlightPreference: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUnitCell"];
+
+        [cell.btnMiles setTitle:@"Auto Highlight" forState:UIControlStateNormal];
+        [cell.btnKilometers setTitle:@"No Highlight" forState:UIControlStateNormal];
+
+        if (SCREEN_WIDTH >= 768) {
+            [cell.btnMiles.titleLabel setFont:[cell.btnMiles.titleLabel.font fontWithSize:26.0f]];
+            [cell.btnKilometers.titleLabel setFont:[cell.btnKilometers.titleLabel.font fontWithSize:26.0f]];
+        }
+        if (objUserConfig.highlightPdf) {
+            [cell.btnMiles setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
+        } else {
+            [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+        }
+
+        cell.btnMiles.tag = 1;
+        cell.btnKilometers.tag = 0;
+
+        [cell.btnMiles removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+        [cell.btnKilometers removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+        [cell.btnMiles addTarget:self action:@selector(btnChangeHighlightPreferenceClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.btnKilometers addTarget:self action:@selector(btnChangeHighlightPreferenceClicked:) forControlEvents:UIControlEventTouchUpInside];
+    } break;
+
     case UserConfigTypeDistanceUnit: {
         cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUnitCell"];
 
@@ -928,27 +706,20 @@
             [cell.btnKilometers.titleLabel setFont:[cell.btnKilometers.titleLabel.font fontWithSize:26.0f]];
         }
 
-        switch (objUserConfig.distanceUnit) {
-        case DistanceUnitsTypeKilometers: {
+        if (objUserConfig.distanceUnit == DistanceUnitsTypeKilometers) {
             [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-        } break;
-
-        case DistanceUnitsTypeMiles: {
-            [cell.btnMiles setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+        } else {
+            [cell.btnMiles setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
-        } break;
-
-        default:
-            break;
         }
 
         cell.btnMiles.tag = DistanceUnitsTypeMiles;
-        cell.btnKilometers.tag = DistanceUnitsTypeKilometers;
-
         [cell.btnMiles removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
-        [cell.btnKilometers removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
         [cell.btnMiles addTarget:self action:@selector(btnChangeUnitClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+        cell.btnKilometers.tag = DistanceUnitsTypeKilometers;
+        [cell.btnKilometers removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
         [cell.btnKilometers addTarget:self action:@selector(btnChangeUnitClicked:) forControlEvents:UIControlEventTouchUpInside];
     } break;
 
@@ -964,13 +735,13 @@
         }
         switch (objUserConfig.odometerUnit) {
         case OdometerUnitHundredth: {
-            [cell.btnMiles setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [cell.btnMiles setTitleColor:UIColor.redColor forState:UIControlStateNormal];
             [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
         } break;
 
         case OdometerUnitTenth: {
             [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
-            [cell.btnKilometers setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:UIColor.redColor forState:UIControlStateNormal];
         } break;
 
         default:
@@ -986,25 +757,40 @@
         [cell.btnKilometers addTarget:self action:@selector(btnChangeOdoUnitClicked:) forControlEvents:UIControlEventTouchUpInside];
     } break;
 
-    case UserConfigTypeShareApplication: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUsageCell"];
-        cell.lblNavigationTitle.text = @"Share Rally Roadbook Reader App";
-        cell.lblNavigationTitle.textColor = themeTextColor;
+    case UserConfigTypeTheme: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUnitCell"];
+
+        [cell.btnMiles setTitle:@"Dark View" forState:UIControlStateNormal];
+        [cell.btnKilometers setTitle:@"Light View" forState:UIControlStateNormal];
+
         if (SCREEN_WIDTH >= 768) {
-            [cell.lblNavigationTitle setFont:[cell.lblNavigationTitle.font fontWithSize:26.0f]];
+            [cell.btnMiles.titleLabel setFont:[cell.btnMiles.titleLabel.font fontWithSize:26.0f]];
+            [cell.btnKilometers.titleLabel setFont:[cell.btnKilometers.titleLabel.font fontWithSize:26.0f]];
         }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
+        switch (objUserConfig.themePreference) {
+        case ThemePreferenceDark: {
+            [cell.btnMiles setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:themeTextColor forState:UIControlStateNormal];
+        } break;
+
+        case ThemePreferenceLight: {
+            [cell.btnMiles setTitleColor:themeTextColor forState:UIControlStateNormal];
+            [cell.btnKilometers setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+        } break;
+
+        default:
+            break;
+        }
+
+        cell.btnMiles.tag = ThemePreferenceDark;
+        cell.btnKilometers.tag = ThemePreferenceLight;
+
+        [cell.btnMiles removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+        [cell.btnKilometers removeTarget:nil action:nil forControlEvents:UIControlEventTouchUpInside];
+        [cell.btnMiles addTarget:self action:@selector(btnChangeThemeClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.btnKilometers addTarget:self action:@selector(btnChangeThemeClicked:) forControlEvents:UIControlEventTouchUpInside];
     } break;
 
-    case UserConfigTypeLogout: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsLogoutCell"];
-
-        [cell.btnLogout addTarget:self action:@selector(btnLogoutClicked:) forControlEvents:UIControlEventTouchUpInside];
-        if (SCREEN_WIDTH >= 768) {
-            [cell.btnLogout.titleLabel setFont:[cell.btnLogout.titleLabel.font fontWithSize:26.0f]];
-        }
-    } break;
     case UserConfigTypeCalibrate: {
         cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCalibrationCell"];
 
@@ -1039,29 +825,103 @@
             unit = [self convertDistanceToMiles:unit];
         }
 
-        //            if (objUserConfig.odometerUnit == OdometerUnitHundredth)
-        //            {
-        //                NSString *strValue = [NSString stringWithFormat:unit >= 10 ? @"%.2f%%" : @"%.2f%%", unit];
-        //                cell.lblOdoValue.text = unit > 0 ? [@"+" stringByAppendingString:strValue]: strValue;
-        //            }
-        //            else
-        //            {
         NSString* strValue = [NSString stringWithFormat:unit < 10 ? @"%.1f%%" : unit < 100 ? @"%.1f%%" : @"%.1f%%", unit];
         cell.lblOdoValue.text = unit > 0 ? [@"+" stringByAppendingString:strValue] : strValue;
-        //            }
 
         NSRange range = [cell.lblOdoValue.text rangeOfString:@"^0+(?!\\.)" options:NSRegularExpressionSearch];
 
         if (range.length > 0) {
             cell.lblOdoValue.text = [cell.lblOdoValue.text stringByReplacingCharactersInRange:range withString:@""];
         }
-        //
+    } break;
 
-        //            if ([cell.lblOdoValue.text isEqualToString:@"0.0"])
-        //            {
-        //                cell.lblOdoValue.text = @"0.0";
-        //            }
+    case UserConfigTypeSpeed: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
 
+        cell.lblTitle.text = @"Display Speed";
+        cell.switchConfig.on = objUserConfig.isShowSpeed;
+        cell.lblTitle.textColor = themeTextColor;
+        if (SCREEN_WIDTH >= 768) {
+            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
+        }
+        if (isLightView) {
+            cell.switchConfig.thumbTintColor = UIColor.blackColor;
+        } else {
+            cell.switchConfig.thumbTintColor = UIColor.lightGrayColor;
+        }
+    } break;
+
+    case UserConfigTypeTime: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
+
+        cell.lblTitle.text = @"Display Time";
+        cell.switchConfig.on = objUserConfig.isShowTime;
+        if (SCREEN_WIDTH >= 768) {
+            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
+        }
+        cell.lblTitle.textColor = themeTextColor;
+        if (isLightView) {
+            cell.switchConfig.thumbTintColor = UIColor.blackColor;
+        } else {
+            cell.switchConfig.thumbTintColor = UIColor.lightGrayColor;
+        }
+    } break;
+
+    case UserConfigTypeCAP: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
+
+        cell.lblTitle.text = @"Display CAP Heading";
+        cell.switchConfig.on = objUserConfig.isShowCap;
+        if (SCREEN_WIDTH >= 768) {
+            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
+        }
+        cell.lblTitle.textColor = themeTextColor;
+        if (isLightView) {
+            cell.switchConfig.thumbTintColor = UIColor.blackColor;
+        } else {
+            cell.switchConfig.thumbTintColor = UIColor.lightGrayColor;
+        }
+    } break;
+
+    case UserConfigTypeAlert: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
+
+        cell.lblTitle.text = @"ODO Reset Alert";
+        cell.switchConfig.on = objUserConfig.isShowAlert;
+        if (SCREEN_WIDTH >= 768) {
+            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
+        }
+        cell.lblTitle.textColor = themeTextColor;
+        if (isLightView) {
+            cell.switchConfig.thumbTintColor = UIColor.blackColor;
+        } else {
+            cell.switchConfig.thumbTintColor = UIColor.lightGrayColor;
+        }
+    } break;
+
+    case UserConfigTypeRotate: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
+
+        cell.lblTitle.text = @"Rotate";
+        cell.switchConfig.on = objUserConfig.isEnableRotate;
+        if (SCREEN_WIDTH >= 768) {
+            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
+        }
+        cell.lblTitle.textColor = themeTextColor;
+        if (isLightView) {
+            cell.switchConfig.thumbTintColor = UIColor.blackColor;
+        } else {
+            cell.switchConfig.thumbTintColor = UIColor.lightGrayColor;
+        }
+    } break;
+
+    case UserConfigTypeLogout: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsLogoutCell"];
+
+        [cell.btnLogout addTarget:self action:@selector(btnLogoutClicked:) forControlEvents:UIControlEventTouchUpInside];
+        if (SCREEN_WIDTH >= 768) {
+            [cell.btnLogout.titleLabel setFont:[cell.btnLogout.titleLabel.font fontWithSize:26.0f]];
+        }
     } break;
 
     default:

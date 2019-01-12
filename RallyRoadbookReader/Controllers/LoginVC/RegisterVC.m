@@ -192,14 +192,7 @@
             objUser.config = @"{\"action\":\"{\\\"autoPhoto\\\":false,\\\"voiceToText\\\":true,\\\"takePicture\\\":true,\\\"voiceRecorder\\\":true,\\\"waypointOnly\\\":true,\\\"text\\\":true}\",\"unit\":\"Kilometers\",\"rotation\":{\"value\":\"1\"},\"sync\":\"2\",\"odo\":\"00.00\",\"autoCamera\":true,\"accuracy\":{\"minDistanceTrackpoint\":50,\"angle\":1,\"accuracy\":50,\"distance\":3}}";
         }
 
-        UserConfig* objConfig = [[UserConfig alloc] init];
-        objConfig.isShowCap = YES;
-        objConfig.isShowSpeed = YES;
-        objConfig.isShowTime = YES;
-        objConfig.isShowAlert = YES;
-        objConfig.isShowTutorial = YES;
-        objConfig.distanceUnit = DistanceUnitsTypeKilometers;
-        objConfig.cal = 0.00f;
+        UserConfig* objConfig = [BaseVC getUserConfiguration];
         [DefaultsValues setCustomObjToUserDefaults:objConfig ForKey:kUserConfiguration];
 
         [DefaultsValues setCustomObjToUserDefaults:objUser ForKey:kUserObject];

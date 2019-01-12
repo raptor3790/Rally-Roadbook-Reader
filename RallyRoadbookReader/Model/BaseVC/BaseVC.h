@@ -13,6 +13,8 @@
 
 typedef void (^RefreshBlock) (void);
 
++ (UserConfig*)getUserConfiguration;
+
 - (id _Nonnull)registerCell:(nullable id)cell
                 inTableView:(nullable UITableView *)tableView
                forClassName:(nonnull NSString *)className
@@ -24,8 +26,6 @@ typedef void (^RefreshBlock) (void);
                               showError:(BOOL)showError;
 
 - (void)showErrorInObject:(nullable id)object forDict:(NSDictionary * _Nullable)dicResponse;
-
-- (UserConfig * _Nullable)getDefaultUserConfiguration;
 
 - (UIView * _Nullable)getCellForClassName:(nonnull NSString *)classname
                                withSender:(nullable id)sender;

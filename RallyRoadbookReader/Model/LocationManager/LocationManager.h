@@ -20,9 +20,7 @@
 @interface LocationManager : NSObject <CLLocationManagerDelegate>
 
 @property (nonatomic, weak) id<LocationManagerDelegate> delegate;
-
 @property (assign, nonatomic) double currentCourse;
-
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
 + (id)sharedManager;

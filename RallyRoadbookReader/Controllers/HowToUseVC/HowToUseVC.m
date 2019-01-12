@@ -34,12 +34,7 @@
     
     [_webView loadRequest:[NSURLRequest requestWithURL:urlLink]];
     
-    objUserConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
-    
-    if (objUserConfig == nil)
-    {
-        objUserConfig = [self getDefaultUserConfiguration];
-    }
+    objUserConfig = [BaseVC getUserConfiguration];
 }
 
 - (void)viewWillAppear:(BOOL)animated
