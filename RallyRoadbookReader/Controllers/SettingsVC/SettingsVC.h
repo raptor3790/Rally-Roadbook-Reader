@@ -21,11 +21,11 @@ typedef enum
     UserConfigTypeOdoDistance,
     UserConfigTypeTheme,
     UserConfigTypeCalibrate,
+    UserConfigTypeRotateLock,
     UserConfigTypeSpeed,
     UserConfigTypeTime,
     UserConfigTypeCAP,
     UserConfigTypeAlert,
-    UserConfigTypeRotate,
     UserConfigTypeLogout
 }UserConfigType;
 

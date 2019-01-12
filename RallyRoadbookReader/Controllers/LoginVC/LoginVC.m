@@ -71,17 +71,17 @@
     _emailText.text = [_emailText.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
 
     if (_emailText.text.length == 0) {
-        [AlertManager alert:@"Please Enter Email Address" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Email Address" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if (![_emailText.text isValidEmail]) {
-        [AlertManager alert:@"Please Enter Valid Email Address" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Valid Email Address" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if (_passwordText.text.length == 0) {
-        [AlertManager alert:@"Please Enter Password" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Password" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
@@ -233,7 +233,7 @@
         BOOL isStatusFalse = [dicResponse objectForKey:SUCCESS_STATUS] && ![[dicResponse valueForKey:SUCCESS_STATUS] boolValue];
         if (isStatusFalse && [dicResponse objectForKey:ERROR_CODE]) {
             NSInteger errorCode = [[dicResponse valueForKey:ERROR_CODE] integerValue];
-            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error"];
+            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error" confirmed:NULL];
         }
     }
 }
@@ -276,13 +276,13 @@
     NSDictionary* dic = [sender responseDict];
 
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue]) {
-        [AlertManager alert:@"Check your email for the link to reset your password" title:@"Password Request Sent" imageName:@"ic_success"];
+        [AlertManager alert:@"Check your email for the link to reset your password" title:@"Password Request Sent" imageName:@"ic_success" confirmed:NULL];
     } else {
         NSDictionary* dicResponse = [sender responseDict];
         BOOL isStatusFalse = [dicResponse objectForKey:SUCCESS_STATUS] && ![[dicResponse valueForKey:SUCCESS_STATUS] boolValue];
         if (isStatusFalse && [dicResponse objectForKey:ERROR_CODE]) {
             NSInteger errorCode = [[dicResponse valueForKey:ERROR_CODE] integerValue];
-            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error"];
+            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error" confirmed:NULL];
         }
     }
 }

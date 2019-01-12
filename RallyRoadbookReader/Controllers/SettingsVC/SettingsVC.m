@@ -113,6 +113,10 @@
     [self.view endEditing:YES];
 
     switch (sender.tag) {
+    case UserConfigTypeRotateLock: {
+        objUserConfig.isScreenRotateLock = !objUserConfig.isScreenRotateLock;
+    } break;
+
     case UserConfigTypeSpeed: {
         if (objUserConfig.isShowSpeed) {
             NSInteger count = objUserConfig.isShowSpeed + objUserConfig.isShowTime + objUserConfig.isShowCap;
@@ -151,10 +155,6 @@
 
     case UserConfigTypeAlert: {
         objUserConfig.isShowAlert = !objUserConfig.isShowAlert;
-    } break;
-
-    case UserConfigTypeRotate: {
-        objUserConfig.isEnableRotate = !objUserConfig.isEnableRotate;
     } break;
 
     default:
@@ -442,9 +442,9 @@
     NSDictionary* dic = [sender responseDict];
 
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue]) {
-        [AlertManager alert:@"" title:@"Roadbook has been shared with user" imageName:@"ic_success"];
+        [AlertManager alert:@"" title:@"Roadbook has been shared with user" imageName:@"ic_success" confirmed:NULL];
     } else {
-        [AlertManager alert:@"" title:@"Sharing has failed\nYou must be online to share a Roadbook" imageName:@"ic_error"];
+        [AlertManager alert:@"" title:@"Sharing has failed\nYou must be online to share a Roadbook" imageName:@"ic_error" confirmed:NULL];
     }
 }
 
@@ -495,7 +495,7 @@
         return 0;
     }
 
-    if (indexPath.row == UserConfigTypeRotate && iPhoneDevice) {
+    if (indexPath.row == UserConfigTypeRotateLock && iPhoneDevice) {
         return 0;
     }
 
@@ -835,6 +835,22 @@
         }
     } break;
 
+    case UserConfigTypeRotateLock: {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
+
+        cell.lblTitle.text = @"Screen Rotate Lock";
+        cell.switchConfig.on = objUserConfig.isScreenRotateLock;
+        if (SCREEN_WIDTH >= 768) {
+            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
+        }
+        cell.lblTitle.textColor = themeTextColor;
+        if (isLightView) {
+            cell.switchConfig.thumbTintColor = UIColor.blackColor;
+        } else {
+            cell.switchConfig.thumbTintColor = UIColor.lightGrayColor;
+        }
+    } break;
+
     case UserConfigTypeSpeed: {
         cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
 
@@ -888,22 +904,6 @@
 
         cell.lblTitle.text = @"ODO Reset Alert";
         cell.switchConfig.on = objUserConfig.isShowAlert;
-        if (SCREEN_WIDTH >= 768) {
-            [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
-        }
-        cell.lblTitle.textColor = themeTextColor;
-        if (isLightView) {
-            cell.switchConfig.thumbTintColor = UIColor.blackColor;
-        } else {
-            cell.switchConfig.thumbTintColor = UIColor.lightGrayColor;
-        }
-    } break;
-
-    case UserConfigTypeRotate: {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsCell"];
-
-        cell.lblTitle.text = @"Rotate";
-        cell.switchConfig.on = objUserConfig.isEnableRotate;
         if (SCREEN_WIDTH >= 768) {
             [cell.lblTitle setFont:[cell.lblTitle.font fontWithSize:26.0f]];
         }

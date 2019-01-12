@@ -31,11 +31,11 @@
     UserConfig* objConfig = [DefaultsValues getCustomObjFromUserDefaults_ForKey:kUserConfiguration];
     if (objConfig == NULL) {
         objConfig = [[UserConfig alloc] init];
+        objConfig.isScreenRotateLock = YES;
         objConfig.isShowCap = YES;
         objConfig.isShowSpeed = YES;
         objConfig.isShowTime = YES;
         objConfig.isShowAlert = YES;
-        objConfig.isEnableRotate = NO;
         objConfig.distanceUnit = DistanceUnitsTypeKilometers;
         objConfig.cal = 0.00f;
     }
@@ -74,9 +74,7 @@
         if (![[dicResponse valueForKey:SUCCESS_STATUS] boolValue]) {
             if ([dicResponse objectForKey:ERROR_CODE]) {
                 NSInteger errorCode = [[dicResponse valueForKey:ERROR_CODE] integerValue];
-                [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode]
-                              title:@"Error"
-                          imageName:@"ic_error"];
+                [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error" confirmed:NULL];
             }
         }
     }
@@ -85,7 +83,7 @@
 - (UIInterfaceOrientationMask)getOrientation
 {
     UserConfig* config = [BaseVC getUserConfiguration];
-    if (iPadDevice && !config.isEnableRotate) {
+    if (iPadDevice && config.isScreenRotateLock) {
         return UIInterfaceOrientationMaskPortrait;
     } else {
         return UIInterfaceOrientationMaskAll;

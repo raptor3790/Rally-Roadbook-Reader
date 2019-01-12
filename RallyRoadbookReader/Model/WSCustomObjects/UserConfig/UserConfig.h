@@ -16,7 +16,7 @@
 @property (nonatomic, assign) BOOL isShowSpeed;
 @property (nonatomic, assign) BOOL isShowCap;
 @property (nonatomic, assign) BOOL isShowAlert;
-@property (nonatomic, assign) BOOL isEnableRotate;
+@property (nonatomic, assign) BOOL isScreenRotateLock;
 @property (nonatomic, assign) double cal;
 @property (nonatomic, assign) ThemePreference themePreference;
 @property (nonatomic, assign) PdfFormat pdfFormat;

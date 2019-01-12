@@ -194,7 +194,7 @@
 
     if (iPhoneDevice && isUserRole) {
         return UIInterfaceOrientationMaskPortrait;
-    } else if (iPadDevice && !config.isEnableRotate) {
+    } else if (iPadDevice && config.isScreenRotateLock) {
         return UIInterfaceOrientationMaskPortrait;
     } else {
         return UIInterfaceOrientationMaskAll;
@@ -899,7 +899,9 @@
     }
 
     if (remotePath.length == 0) {
-        [AlertManager alert:@"PDF is unavailable for selected PDF format" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"PDF is unavailable for selected PDF format" title:NULL imageName:@"ic_error" confirmed:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
     } else {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString* documentsDirectory = [paths objectAtIndex:0];
@@ -971,7 +973,9 @@
 - (void)webView:(WKWebView*)webView didFailNavigation:(WKNavigation*)navigation withError:(NSError*)error
 {
     [_activityIndicator stopAnimating];
-    [AlertManager alert:@"Failed to Load PDF file" title:NULL imageName:@"ic_error"];
+    [AlertManager alert:@"Failed to Load PDF file" title:NULL imageName:@"ic_error" confirmed:^{
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 - (void)webView:(WKWebView*)webView didCommitNavigation:(WKNavigation*)navigation

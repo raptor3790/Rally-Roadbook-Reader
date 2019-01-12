@@ -102,7 +102,7 @@ import SwiftEntryKit
         SwiftEntryKit.display(entry: contentView, using: attributes)
     }
 
-    public static func alert(_ message: String, title: String? = nil, imageName: String? = nil) {
+    public static func alert(_ message: String, title: String? = nil, imageName: String? = nil, confirmed: (() -> Void)?) {
         var image: EKProperty.ImageContent?
         if let imageName = imageName {
             image = EKProperty.ImageContent(imageName: imageName, size: CGSize(width: 25, height: 25), contentMode: .scaleAspectFit)
@@ -114,6 +114,7 @@ import SwiftEntryKit
 
         let okButtonLabel = EKProperty.LabelContent(text: "OK", style: .init(font: buttonFont, color: .white))
         let okButton = EKProperty.ButtonContent(label: okButtonLabel, backgroundColor: .clear, highlightedBackgroundColor: UIColor.white.withAlphaComponent(0.1)) {
+            confirmed?()
             SwiftEntryKit.dismiss()
         }
         let buttonsBarContent = EKProperty.ButtonBarContent(with: okButton, separatorColor: .red, expandAnimatedly: false)

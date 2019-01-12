@@ -27,6 +27,23 @@ import Digger
         DiggerManager.shared.logLevel = .none
         DiggerCache.cachesDirectory = "PDFs"
     }
+    
+    func startSync() {
+        guard !isSyncing, ReachabilityManager.isReachable() else { return }
+        
+        DiggerCache.cleanDownloadFiles()
+        DiggerCache.cleanDownloadTempFiles()
+        
+        scanChild = true
+        processingCount = 0
+        routes.removeAll()
+        requestUrls.removeAll()
+        isSyncing = true
+        
+        let url = "\(Server_URL)\(ServerPath)folders?from=reader&latitude=0&longitude=0"
+        requestUrls.append(url)
+        WebServiceConnector().init(url, withParameters: nil, with: self, with: #selector(handleResponse), for: ServiceTypeGET, showDisplayMsg: "", showLoader: false)
+    }
 
     func startSync(response: WebServiceConnector, scanChild: Bool) {
         guard !isSyncing, ReachabilityManager.isReachable() else {
@@ -67,8 +84,7 @@ import Digger
         if scanChild {
             json["Roadbooks"]["folders"].arrayValue.forEach {
                 if let id = $0["id"].int, id > 0, $0["folder_type"].stringValue != "default" {
-                    let url = "\(Server_URL)\(ServerPath)folders?from=reader&folder_id=\(id)"
-                    print(">>>!@#$%^&*()>>>>>>>>>> \(url)")
+                    let url = "\(Server_URL)\(ServerPath)folders?from=reader&latitude=0&longitude=0&folder_id=\(id)"
                     self.requestUrls.append(url)
                     WebServiceConnector().init(url, withParameters: nil, with: self, with: #selector(handleResponse), for: ServiceTypeGET, showDisplayMsg: "", showLoader: false)
                 }

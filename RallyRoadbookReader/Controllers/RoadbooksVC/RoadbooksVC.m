@@ -237,7 +237,7 @@
         [_tblRoadbooks.mj_header endRefreshing];
         if (!SyncManager.shared.isSyncing) {
             [self handleSynchronizeBegin];
-            [SyncManager.shared startSyncWithResponse:sender scanChild:NO];
+            [SyncManager.shared startSync];
         }
     }
 
@@ -373,7 +373,7 @@
         if (objRoadbook.editable) {
             strId = [NSString stringWithFormat:@"%ld", (long)objRoadbook.routesIdentifier];
         } else {
-            [AlertManager alert:@"This route can not be shared" title:NULL imageName:@"ic_error"];
+            [AlertManager alert:@"This route can not be shared" title:NULL imageName:@"ic_error" confirmed:NULL];
             return;
         }
     } else {
@@ -448,9 +448,9 @@
     NSDictionary* dic = [sender responseDict];
 
     if ([[dic valueForKey:SUCCESS_STATUS] boolValue]) {
-        [AlertManager alert:@"" title:@"Roadbook has been shared with user" imageName:@"ic_success"];
+        [AlertManager alert:@"" title:@"Roadbook has been shared with user" imageName:@"ic_success" confirmed:NULL];
     } else {
-        [AlertManager alert:@"" title:@"Sharing has failed\nYou must be online to share a Roadbook" imageName:@"ic_error"];
+        [AlertManager alert:@"" title:@"Sharing has failed\nYou must be online to share a Roadbook" imageName:@"ic_error" confirmed:NULL];
     }
 }
 

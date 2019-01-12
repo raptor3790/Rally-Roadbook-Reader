@@ -119,42 +119,42 @@
 - (BOOL)validateInput
 {
     if ([_emailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
-        [AlertManager alert:@"Please Enter Email Address" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Email Address" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if (![[_emailText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isValidEmail]) {
-        [AlertManager alert:@"Please Enter Valid Email Address" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Valid Email Address" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if ([_userNameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
-        [AlertManager alert:@"Please Enter User Name" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter User Name" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if (![[_userNameText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isValidName]) {
-        [AlertManager alert:@"Please Enter Valid User Name" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Valid User Name" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if ([_passwordText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
-        [AlertManager alert:@"Please Enter Password" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Password" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if (![_passwordText.text isValidPassword]) {
-        [AlertManager alert:@"Password Must Be Between 6-32 Characters" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Password Must Be Between 6-32 Characters" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if ([_confirmPasswordText.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
-        [AlertManager alert:@"Please Enter Confirm Password" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Please Enter Confirm Password" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
     if (![_passwordText.text isEqualToString:_confirmPasswordText.text]) {
-        [AlertManager alert:@"Password and Confirm Password must be same" title:NULL imageName:@"ic_error"];
+        [AlertManager alert:@"Password and Confirm Password must be same" title:NULL imageName:@"ic_error" confirmed:NULL];
         return NO;
     }
 
@@ -208,7 +208,7 @@
         BOOL isStatusFalse = [dicResponse objectForKey:SUCCESS_STATUS] && ![[dicResponse valueForKey:SUCCESS_STATUS] boolValue];
         if (isStatusFalse && [dicResponse objectForKey:ERROR_CODE]) {
             NSInteger errorCode = [[dicResponse valueForKey:ERROR_CODE] integerValue];
-            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error"];
+            [AlertManager alert:[RallyNavigatorConstants getErrorForErrorCode:errorCode] title:@"Error" imageName:@"ic_error" confirmed:NULL];
         }
     }
 }
