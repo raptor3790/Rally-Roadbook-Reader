@@ -551,8 +551,8 @@
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
                                                 <mask key="constraints">
-                                                    <exclude reference="lw4-9V-6CJ"/>
                                                     <include reference="Xba-ro-XyX"/>
+                                                    <exclude reference="lw4-9V-6CJ"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -667,8 +667,8 @@
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
                                                 <mask key="constraints">
-                                                    <exclude reference="qnw-J6-6zs"/>
                                                     <include reference="4AF-mv-iBC"/>
+                                                    <exclude reference="qnw-J6-6zs"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>

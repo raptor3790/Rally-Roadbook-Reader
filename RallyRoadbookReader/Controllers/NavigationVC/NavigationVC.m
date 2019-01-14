@@ -27,7 +27,7 @@
         BaseVC* baseVC = (BaseVC*)self.topViewController;
         return [baseVC getOrientation];
     } else {
-        return [BaseVC getUserConfiguration].isScreenRotateLock ? UIInterfaceOrientationMaskPortrait : UIInterfaceOrientationMaskAll;
+        return [BaseVC getUserConfiguration].isScreenRotateLock && iPadDevice ? UIInterfaceOrientationMaskPortrait : UIInterfaceOrientationMaskAll;
     }
 }
 
@@ -38,7 +38,7 @@
         BaseVC* baseVC = (BaseVC*)self.topViewController;
         return [baseVC getOrientation] == UIInterfaceOrientationMaskAll;
     } else {
-        return ![BaseVC getUserConfiguration].isScreenRotateLock;
+        return !([BaseVC getUserConfiguration].isScreenRotateLock && iPadDevice);
     }
 }
 
