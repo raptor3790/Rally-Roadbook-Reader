@@ -37,20 +37,4 @@
                        attributeName:(NSString*)attributeName
                                error:(NSError **)error;
 
-
-/*#pragma mark - Language CoreData methods
-+ (NSArray *) fetchAllLanguage:(NSString *) condition;
-+ (CoreDataLanguages *) fetchLanguageDetailsWhere:(NSString *) condition;
-+(NSInteger)getLanguageCount;
-+(BOOL)isVoiceAvailable:(NSString*)languageCode;
-+(BOOL)isVoiceType:(NSString*)condition male:(BOOL)isMale;
-
-
-#pragma mark - Translation CoreData methods
-+ (NSArray *) fetchAllTranslation:(NSString *)condition;
-+ (CoreDataTraslation *)saveNewTranslation:(NSDictionary *)dictionary;
-+(void)deleteTraslationwithCondition:(NSString *)condition;
-
-+(NSInteger)getRecordCount: (NSString *)entityname;*/
-
 @end

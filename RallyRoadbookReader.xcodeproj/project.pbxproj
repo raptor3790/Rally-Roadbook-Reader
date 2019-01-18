@@ -6,12 +6,32 @@
 	objectVersion = 48;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		66781D6F21F221CF00E65368 /* Mogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66781D7021F221CF00E65368 /* Build configuration list for PBXAggregateTarget "Mogenerator" */;
+			buildPhases = (
+				66781D7321F221DE00E65368 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Mogenerator;
+			productName = Mogenerator;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
+		1857CB7FB65D3AE28998F7D4 /* libPods-RallyRoadbookReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA8208F69D3CEF4484442A3 /* libPods-RallyRoadbookReader.a */; };
 		47E788BC21637CC1008E79DB /* HowToUseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E788BB21637CC1008E79DB /* HowToUseVC.m */; };
-		57424A7993A19F33E4704BF4 /* libPods-RallyRoadbookReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC42849C88ABD512568FD46 /* libPods-RallyRoadbookReader.a */; };
 		6614C61B21CB34CC00A8506D /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6614C61A21CB34CC00A8506D /* SyncManager.swift */; };
 		661FB75521C8A5C500194351 /* BaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 661FB75421C8A5C500194351 /* BaseVC.m */; };
 		66286B3E21D0C1AE0082DE40 /* russo_one.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66286B3D21D0C1AE0082DE40 /* russo_one.ttf */; };
+		6634E46A21F225F6002092C5 /* CDRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6634E45E21F225F5002092C5 /* CDRoutes.m */; };
+		6634E46B21F225F6002092C5 /* CDFolders.m in Sources */ = {isa = PBXBuildFile; fileRef = 6634E45F21F225F5002092C5 /* CDFolders.m */; };
+		6634E46C21F225F6002092C5 /* _CDFolders.m in Sources */ = {isa = PBXBuildFile; fileRef = 6634E46021F225F6002092C5 /* _CDFolders.m */; };
+		6634E46D21F225F6002092C5 /* _CDRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6634E46321F225F6002092C5 /* _CDRoutes.m */; };
+		6634E46E21F225F6002092C5 /* _CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6634E46421F225F6002092C5 /* _CDRoute.m */; };
+		6634E46F21F225F6002092C5 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6634E46721F225F6002092C5 /* CDRoute.m */; };
 		6653FC8721D12BF500925FE8 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6653FC8621D12BF500925FE8 /* AlertManager.swift */; };
 		6653FC8A21D1534000925FE8 /* FormMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6653FC8821D1532900925FE8 /* FormMessageView.swift */; };
 		665883F021CE1563000B52E9 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 665883EC21CE1562000B52E9 /* Roboto-Regular.ttf */; };
@@ -56,12 +76,6 @@
 		E44E252B2181A2020081DA70 /* CoreDataAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24A22181A2010081DA70 /* CoreDataAdaptor.m */; };
 		E44E252C2181A2020081DA70 /* CoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24A42181A2010081DA70 /* CoreDataHelper.m */; };
 		E44E252D2181A2020081DA70 /* NSManagedObject+CoreDataActive.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24A62181A2010081DA70 /* NSManagedObject+CoreDataActive.m */; };
-		E44E252E2181A2020081DA70 /* _CDFolders.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24A92181A2010081DA70 /* _CDFolders.m */; };
-		E44E252F2181A2020081DA70 /* _CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24AB2181A2010081DA70 /* _CDRoute.m */; };
-		E44E25302181A2020081DA70 /* _CDRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24AD2181A2010081DA70 /* _CDRoutes.m */; };
-		E44E25312181A2020081DA70 /* CDFolders.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24AF2181A2010081DA70 /* CDFolders.m */; };
-		E44E25322181A2020081DA70 /* CDRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24B12181A2010081DA70 /* CDRoute.m */; };
-		E44E25332181A2020081DA70 /* CDRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24B32181A2010081DA70 /* CDRoutes.m */; };
 		E44E253D2181A2020081DA70 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C02181A2010081DA70 /* LocationManager.m */; };
 		E44E253F2181A2020081DA70 /* RoadbooksCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E44E24C72181A2010081DA70 /* RoadbooksCell.m */; };
 		E44E25402181A2020081DA70 /* RoadbooksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E44E24C82181A2010081DA70 /* RoadbooksCell.xib */; };
@@ -109,10 +123,23 @@
 /* Begin PBXFileReference section */
 		47E788BA21637CC1008E79DB /* HowToUseVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HowToUseVC.h; sourceTree = "<group>"; };
 		47E788BB21637CC1008E79DB /* HowToUseVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HowToUseVC.m; sourceTree = "<group>"; };
+		5CA8208F69D3CEF4484442A3 /* libPods-RallyRoadbookReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RallyRoadbookReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6614C61A21CB34CC00A8506D /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
 		661FB75421C8A5C500194351 /* BaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseVC.m; sourceTree = "<group>"; };
 		661FB75621C8A63000194351 /* BaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseVC.h; sourceTree = "<group>"; };
 		66286B3D21D0C1AE0082DE40 /* russo_one.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = russo_one.ttf; sourceTree = "<group>"; };
+		6634E45E21F225F5002092C5 /* CDRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDRoutes.m; sourceTree = "<group>"; };
+		6634E45F21F225F5002092C5 /* CDFolders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFolders.m; sourceTree = "<group>"; };
+		6634E46021F225F6002092C5 /* _CDFolders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDFolders.m; sourceTree = "<group>"; };
+		6634E46121F225F6002092C5 /* _CDFolders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDFolders.h; sourceTree = "<group>"; };
+		6634E46221F225F6002092C5 /* _CDRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDRoutes.h; sourceTree = "<group>"; };
+		6634E46321F225F6002092C5 /* _CDRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDRoutes.m; sourceTree = "<group>"; };
+		6634E46421F225F6002092C5 /* _CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDRoute.m; sourceTree = "<group>"; };
+		6634E46521F225F6002092C5 /* CDFolders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDFolders.h; sourceTree = "<group>"; };
+		6634E46621F225F6002092C5 /* CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDRoute.h; sourceTree = "<group>"; };
+		6634E46721F225F6002092C5 /* CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDRoute.m; sourceTree = "<group>"; };
+		6634E46821F225F6002092C5 /* CDRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDRoutes.h; sourceTree = "<group>"; };
+		6634E46921F225F6002092C5 /* _CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDRoute.h; sourceTree = "<group>"; };
 		6653FC8621D12BF500925FE8 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		6653FC8821D1532900925FE8 /* FormMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormMessageView.swift; sourceTree = "<group>"; };
 		665883EC21CE1562000B52E9 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
@@ -124,8 +151,8 @@
 		66DC638D21CC687600BA124A /* DS-DIGII.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DS-DIGII.TTF"; sourceTree = "<group>"; };
 		66F132F121D078D900E225AE /* NavigationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavigationVC.h; sourceTree = "<group>"; };
 		66F132F221D078D900E225AE /* NavigationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavigationVC.m; sourceTree = "<group>"; };
-		6EC42849C88ABD512568FD46 /* libPods-RallyRoadbookReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RallyRoadbookReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8F49403900B7E34DF88D1BDC /* Pods-RallyRoadbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RallyRoadbookReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader.debug.xcconfig"; sourceTree = "<group>"; };
+		9AA3927D4CEBD2133C5456FC /* Pods-RallyRoadbookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RallyRoadbookReader.release.xcconfig"; path = "Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader.release.xcconfig"; sourceTree = "<group>"; };
+		C3F6619FC7413A0CD58895BB /* Pods-RallyRoadbookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RallyRoadbookReader.debug.xcconfig"; path = "Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader.debug.xcconfig"; sourceTree = "<group>"; };
 		E4023F01215B50EA000268E1 /* RoadbooksVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoadbooksVC.h; sourceTree = "<group>"; };
 		E4023F02215B50EA000268E1 /* RoadbooksVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoadbooksVC.m; sourceTree = "<group>"; };
 		E40619C721AFFA7600E84FD7 /* Song 2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Song 2.m4a"; sourceTree = "<group>"; };
@@ -179,18 +206,6 @@
 		E44E24A42181A2010081DA70 /* CoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataHelper.m; sourceTree = "<group>"; };
 		E44E24A52181A2010081DA70 /* NSManagedObject+CoreDataActive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+CoreDataActive.h"; sourceTree = "<group>"; };
 		E44E24A62181A2010081DA70 /* NSManagedObject+CoreDataActive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+CoreDataActive.m"; sourceTree = "<group>"; };
-		E44E24A82181A2010081DA70 /* _CDFolders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDFolders.h; sourceTree = "<group>"; };
-		E44E24A92181A2010081DA70 /* _CDFolders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDFolders.m; sourceTree = "<group>"; };
-		E44E24AA2181A2010081DA70 /* _CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDRoute.h; sourceTree = "<group>"; };
-		E44E24AB2181A2010081DA70 /* _CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDRoute.m; sourceTree = "<group>"; };
-		E44E24AC2181A2010081DA70 /* _CDRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDRoutes.h; sourceTree = "<group>"; };
-		E44E24AD2181A2010081DA70 /* _CDRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDRoutes.m; sourceTree = "<group>"; };
-		E44E24AE2181A2010081DA70 /* CDFolders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDFolders.h; sourceTree = "<group>"; };
-		E44E24AF2181A2010081DA70 /* CDFolders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDFolders.m; sourceTree = "<group>"; };
-		E44E24B02181A2010081DA70 /* CDRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDRoute.h; sourceTree = "<group>"; };
-		E44E24B12181A2010081DA70 /* CDRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDRoute.m; sourceTree = "<group>"; };
-		E44E24B22181A2010081DA70 /* CDRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDRoutes.h; sourceTree = "<group>"; };
-		E44E24B32181A2010081DA70 /* CDRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDRoutes.m; sourceTree = "<group>"; };
 		E44E24BF2181A2010081DA70 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		E44E24C02181A2010081DA70 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		E44E24C62181A2010081DA70 /* RoadbooksCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoadbooksCell.h; sourceTree = "<group>"; };
@@ -273,7 +288,6 @@
 		E493420B218448BB0087D3FC /* ScrollChange.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ScrollChange.mp3; sourceTree = "<group>"; };
 		E4F9072521A93D1D00C708FD /* JPSVolumeButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPSVolumeButtonHandler.h; sourceTree = "<group>"; };
 		E4F9072621A93D1D00C708FD /* JPSVolumeButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPSVolumeButtonHandler.m; sourceTree = "<group>"; };
-		F1069D806E631872B02FEB51 /* Pods-RallyRoadbookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RallyRoadbookReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,20 +295,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57424A7993A19F33E4704BF4 /* libPods-RallyRoadbookReader.a in Frameworks */,
+				1857CB7FB65D3AE28998F7D4 /* libPods-RallyRoadbookReader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		397BC6DC2D6990DFFB4055F5 /* Pods */ = {
+		36853D7F2756A70258A30D31 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8F49403900B7E34DF88D1BDC /* Pods-RallyRoadbookReader.debug.xcconfig */,
-				F1069D806E631872B02FEB51 /* Pods-RallyRoadbookReader.release.xcconfig */,
+				C3F6619FC7413A0CD58895BB /* Pods-RallyRoadbookReader.debug.xcconfig */,
+				9AA3927D4CEBD2133C5456FC /* Pods-RallyRoadbookReader.release.xcconfig */,
 			);
-			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		47E788B921637CA0008E79DB /* HowToUseVC */ = {
@@ -324,10 +338,10 @@
 			path = NavigationVC;
 			sourceTree = "<group>";
 		};
-		E12B3D966EC9B04D79427788 /* Frameworks */ = {
+		E22EC2F0F0657541CEBF8744 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6EC42849C88ABD512568FD46 /* libPods-RallyRoadbookReader.a */,
+				5CA8208F69D3CEF4484442A3 /* libPods-RallyRoadbookReader.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -346,8 +360,8 @@
 			children = (
 				E443112A21477E42002CD004 /* RallyRoadbookReader */,
 				E443112921477E42002CD004 /* Products */,
-				397BC6DC2D6990DFFB4055F5 /* Pods */,
-				E12B3D966EC9B04D79427788 /* Frameworks */,
+				36853D7F2756A70258A30D31 /* Pods */,
+				E22EC2F0F0657541CEBF8744 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -549,18 +563,18 @@
 		E44E24A72181A2010081DA70 /* CoredataObjectClasses */ = {
 			isa = PBXGroup;
 			children = (
-				E44E24A82181A2010081DA70 /* _CDFolders.h */,
-				E44E24A92181A2010081DA70 /* _CDFolders.m */,
-				E44E24AA2181A2010081DA70 /* _CDRoute.h */,
-				E44E24AB2181A2010081DA70 /* _CDRoute.m */,
-				E44E24AC2181A2010081DA70 /* _CDRoutes.h */,
-				E44E24AD2181A2010081DA70 /* _CDRoutes.m */,
-				E44E24AE2181A2010081DA70 /* CDFolders.h */,
-				E44E24AF2181A2010081DA70 /* CDFolders.m */,
-				E44E24B02181A2010081DA70 /* CDRoute.h */,
-				E44E24B12181A2010081DA70 /* CDRoute.m */,
-				E44E24B22181A2010081DA70 /* CDRoutes.h */,
-				E44E24B32181A2010081DA70 /* CDRoutes.m */,
+				6634E46121F225F6002092C5 /* _CDFolders.h */,
+				6634E46021F225F6002092C5 /* _CDFolders.m */,
+				6634E46921F225F6002092C5 /* _CDRoute.h */,
+				6634E46421F225F6002092C5 /* _CDRoute.m */,
+				6634E46221F225F6002092C5 /* _CDRoutes.h */,
+				6634E46321F225F6002092C5 /* _CDRoutes.m */,
+				6634E46521F225F6002092C5 /* CDFolders.h */,
+				6634E45F21F225F5002092C5 /* CDFolders.m */,
+				6634E46621F225F6002092C5 /* CDRoute.h */,
+				6634E46721F225F6002092C5 /* CDRoute.m */,
+				6634E46821F225F6002092C5 /* CDRoutes.h */,
+				6634E45E21F225F5002092C5 /* CDRoutes.m */,
 			);
 			path = CoredataObjectClasses;
 			sourceTree = "<group>";
@@ -812,12 +826,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E443113E21477E42002CD004 /* Build configuration list for PBXNativeTarget "RallyRoadbookReader" */;
 			buildPhases = (
-				7CA5A6262B19B3BB457ED5DB /* [CP] Check Pods Manifest.lock */,
+				A2C3C1C6AC2F2460BF317758 /* [CP] Check Pods Manifest.lock */,
 				E443112421477E42002CD004 /* Sources */,
 				E443112521477E42002CD004 /* Frameworks */,
 				E443112621477E42002CD004 /* Resources */,
-				C713DA4581100D81C146D7E4 /* [CP] Copy Pods Resources */,
 				E4151CB2214CD5E300CF7944 /* ShellScript */,
+				8C9EC05D7584AF892CC70AA7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -837,6 +851,10 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = C205;
 				TargetAttributes = {
+					66781D6F21F221CF00E65368 = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+					};
 					E443112721477E42002CD004 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 1000;
@@ -863,6 +881,7 @@
 			projectRoot = "";
 			targets = (
 				E443112721477E42002CD004 /* RallyRoadbookReader */,
+				66781D6F21F221CF00E65368 /* Mogenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -904,28 +923,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7CA5A6262B19B3BB457ED5DB /* [CP] Check Pods Manifest.lock */ = {
+		66781D7321F221DE00E65368 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+			inputFileListPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RallyRoadbookReader-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "mogenerator --model RallyRoadbookReader/RallyRoadbookReader.xcdatamodeld -output-dir RallyRoadbookReader/Model/CoredataClasses/CoredataObjectClasses\n";
 		};
-		C713DA4581100D81C146D7E4 /* [CP] Copy Pods Resources */ = {
+		8C9EC05D7584AF892CC70AA7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader-resources.sh",
@@ -934,6 +954,8 @@
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
@@ -942,6 +964,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RallyRoadbookReader/Pods-RallyRoadbookReader-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A2C3C1C6AC2F2460BF317758 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RallyRoadbookReader-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E4151CB2214CD5E300CF7944 /* ShellScript */ = {
@@ -964,9 +1008,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6634E46C21F225F6002092C5 /* _CDFolders.m in Sources */,
 				E44E255B2181A2020081DA70 /* RouteDetails.m in Sources */,
+				6634E46F21F225F6002092C5 /* CDRoute.m in Sources */,
 				E44E25422181A2020081DA70 /* SettingsCell.m in Sources */,
 				E44E25442181A2020081DA70 /* DefaultsValues.m in Sources */,
+				6634E46A21F225F6002092C5 /* CDRoutes.m in Sources */,
 				E44C56E821AEC33B000BAE5C /* AssetPlaybackManager.swift in Sources */,
 				E44E25412181A2020081DA70 /* RouteCell.m in Sources */,
 				661FB75521C8A5C500194351 /* BaseVC.m in Sources */,
@@ -987,13 +1034,11 @@
 				6614C61B21CB34CC00A8506D /* SyncManager.swift in Sources */,
 				E44E25502181A2020081DA70 /* Config.m in Sources */,
 				E44E251F2181A2020081DA70 /* AudioPlayer.m in Sources */,
-				E44E252E2181A2020081DA70 /* _CDFolders.m in Sources */,
 				E44E25542181A2020081DA70 /* Roadbooks.m in Sources */,
 				E44E25482181A2020081DA70 /* ObjMapper.m in Sources */,
 				E44C56EB21AEC33B000BAE5C /* RemoteCommandDataSource.swift in Sources */,
 				E416E5B62168880100A0F4A7 /* RallyRoadbookReader.xcdatamodeld in Sources */,
 				E44E255A2181A2020081DA70 /* GravelLine.m in Sources */,
-				E44E25302181A2020081DA70 /* _CDRoutes.m in Sources */,
 				E44E25552181A2020081DA70 /* Routes.m in Sources */,
 				E44E25292181A2020081DA70 /* NSString+Extensions.m in Sources */,
 				E4151CB7214F867D00CF7944 /* RegisterVC.m in Sources */,
@@ -1004,14 +1049,12 @@
 				E44E25572181A2020081DA70 /* Backgroundimage.m in Sources */,
 				E44E254D2181A2020081DA70 /* WebServiceResponse.m in Sources */,
 				E44C56E921AEC33B000BAE5C /* Asset.swift in Sources */,
-				E44E25332181A2020081DA70 /* CDRoutes.m in Sources */,
 				E44E252B2181A2020081DA70 /* CoreDataAdaptor.m in Sources */,
 				E44E252A2181A2020081DA70 /* RallyNavigatorConstants.m in Sources */,
 				E44E25522181A2020081DA70 /* Folders.m in Sources */,
 				E44E255F2181A2020081DA70 /* Td.m in Sources */,
 				E44E25432181A2020081DA70 /* UIAlertController+Blocks.m in Sources */,
 				E44E25612181A2020081DA70 /* Waypoints.m in Sources */,
-				E44E25322181A2020081DA70 /* CDRoute.m in Sources */,
 				E44E25632181A2020081DA70 /* User.m in Sources */,
 				E44E25622181A2020081DA70 /* AwsConfig.m in Sources */,
 				E44E25642181A2020081DA70 /* UserConfig.m in Sources */,
@@ -1020,19 +1063,20 @@
 				6653FC8721D12BF500925FE8 /* AlertManager.swift in Sources */,
 				E44E255D2181A2020081DA70 /* Startlocation.m in Sources */,
 				E4023F03215B50EA000268E1 /* RoadbooksVC.m in Sources */,
+				6634E46D21F225F6002092C5 /* _CDRoutes.m in Sources */,
 				E44E254C2181A2020081DA70 /* WebServiceDataAdaptor.m in Sources */,
+				6634E46E21F225F6002092C5 /* _CDRoute.m in Sources */,
 				E44E253D2181A2020081DA70 /* LocationManager.m in Sources */,
 				66F132F321D078D900E225AE /* NavigationVC.m in Sources */,
-				E44E252F2181A2020081DA70 /* _CDRoute.m in Sources */,
 				E44E25512181A2020081DA70 /* Rotation.m in Sources */,
 				E44E253F2181A2020081DA70 /* RoadbooksCell.m in Sources */,
 				E44E255C2181A2020081DA70 /* Settings.m in Sources */,
 				E44E25462181A2020081DA70 /* NSObject+Copyable.m in Sources */,
-				E44E25312181A2020081DA70 /* CDFolders.m in Sources */,
 				E44E25472181A2020081DA70 /* NSUserDefaults+SaveCustomObject.m in Sources */,
 				E44E25592181A2020081DA70 /* Endlocation.m in Sources */,
 				E44E25532181A2020081DA70 /* PaginationInfo.m in Sources */,
 				E44E25492181A2020081DA70 /* Reachability.m in Sources */,
+				6634E46B21F225F6002092C5 /* CDFolders.m in Sources */,
 				E44E25282181A2020081DA70 /* Function.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1040,6 +1084,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		66781D7121F221CF00E65368 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		66781D7221F221CF00E65368 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		E443113C21477E42002CD004 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1155,7 +1215,7 @@
 		};
 		E443113F21477E42002CD004 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F49403900B7E34DF88D1BDC /* Pods-RallyRoadbookReader.debug.xcconfig */;
+			baseConfigurationReference = C3F6619FC7413A0CD58895BB /* Pods-RallyRoadbookReader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1186,7 +1246,7 @@
 		};
 		E443114021477E42002CD004 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1069D806E631872B02FEB51 /* Pods-RallyRoadbookReader.release.xcconfig */;
+			baseConfigurationReference = 9AA3927D4CEBD2133C5456FC /* Pods-RallyRoadbookReader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1216,6 +1276,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		66781D7021F221CF00E65368 /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66781D7121F221CF00E65368 /* Debug */,
+				66781D7221F221CF00E65368 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E443112321477E42002CD004 /* Build configuration list for PBXProject "RallyRoadbookReader" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

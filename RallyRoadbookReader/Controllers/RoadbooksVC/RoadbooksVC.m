@@ -28,7 +28,7 @@
 @end
 
 @implementation RoadbooksVC
-@synthesize arrFolders, arrEmails, arrRoadBooks;
+@synthesize arrFolders, arrEmails, arrRoutes;
 
 - (void)viewDidLoad
 {
@@ -41,7 +41,7 @@
     }
 
     arrFolders = [[NSMutableArray alloc] init];
-    arrRoadBooks = [[NSMutableArray alloc] init];
+    arrRoutes = [[NSMutableArray alloc] init];
 
     id object = [DefaultsValues getObjectValueFromUserDefaults_ForKey:kUserSharedEmails];
     arrEmails = [[NSMutableArray alloc] init];
@@ -213,7 +213,7 @@
 
 - (void)getMyRoadBooksWithLoader:(BOOL)showLoader
 {
-    CLLocationCoordinate2D coordinate =  AppContext.locationManager.locationManager.location.coordinate;
+    CLLocationCoordinate2D coordinate = AppContext.locationManager.locationManager.location.coordinate;
     double lat = coordinate.latitude;
     double lon = coordinate.longitude;
     NSString* strAppendURL = [NSString stringWithFormat:@"%@?from=reader&latitude=%lf&longitude=%lf", URLGetMyFolders, lat, lon];
@@ -252,81 +252,81 @@
 
 - (void)fetchRoadbooks
 {
-    NSString* predicateFolder;
-
+    // Folders
+    NSString* whereParent;
     if (_strFolderId) {
-        predicateFolder = [NSString stringWithFormat:@"parentId = %@", _strFolderId];
+        whereParent = [NSString stringWithFormat:@"parentId = %@", _strFolderId];
     } else {
-        predicateFolder = @"parentId = 0";
+        whereParent = @"parentId = 0";
         _isShareFolder = NO;
     }
 
     NSMutableArray* arrSyncFolders =
-        [[NSMutableArray alloc] initWithArray:[CoreDataAdaptor fetchDataFromLocalDB:predicateFolder
+        [[NSMutableArray alloc] initWithArray:[CoreDataAdaptor fetchDataFromLocalDB:whereParent
                                                                      sortDescriptor:nil
                                                                           forEntity:NSStringFromClass([CDFolders class])]];
-
-    NSString* parentId;
-
-    if (_strFolderId) {
-        parentId = _strFolderId;
-    } else {
-        NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(CDFolders* objFolder, NSDictionary<NSString*, id>* _Nullable bindings) {
-            return [objFolder.folderType isEqualToString:@"default"];
-        }];
-
-        NSMutableArray* arrWayPoints = [[NSMutableArray alloc] init];
-        arrWayPoints = [[arrSyncFolders filteredArrayUsingPredicate:predicate] mutableCopy];
-
-        if (arrWayPoints.count > 0) {
-            CDFolders* objFolder = arrWayPoints[0];
-            parentId = [NSString stringWithFormat:@"%ld", (long)[objFolder.foldersIdentifier doubleValue]];
-        } else {
-            return;
-        }
-    }
-
-    NSMutableArray* arrSyncData =
-        [[NSMutableArray alloc] initWithArray:[CoreDataAdaptor fetchDataFromLocalDB:parentId ? [NSString stringWithFormat:@"folderId = %@", parentId] : parentId
-                                                                     sortDescriptor:[NSSortDescriptor sortDescriptorWithKey:@"updatedAt" ascending:NO]
-                                                                          forEntity:NSStringFromClass([CDRoutes class])]];
-
-    User* objUser = GET_USER_OBJ;
-    BOOL userRole = [objUser.role isEqualToString:@"user"];
-
-    arrRoadBooks = [[NSMutableArray alloc] init];
-    for (CDRoutes* route in arrSyncData) {
-
-        Routes* item = [[Routes alloc] initWithCDRoutes:route];
-        BOOL isDefault = [route.name isEqualToString:kDefaultRallyName] || [route.name isEqualToString:kDefaultCrossCountryName];
-
-        if (userRole && isDefault) {
-            item.name = [NSString stringWithFormat:@"%@ - FREE User View", route.name];
-            [arrRoadBooks addObject:item];
-
-            Routes* itemPdf = [[Routes alloc] initWithCDRoutes:route];
-            itemPdf.name = [NSString stringWithFormat:@"%@ - UPGRADED User View", route.name];
-            [arrRoadBooks addObject:itemPdf];
-        } else {
-            [arrRoadBooks addObject:item];
-        }
-    }
 
     NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(CDFolders* objFolder, NSDictionary<NSString*, id>* _Nullable bindings) {
         return ![objFolder.folderType isEqualToString:@"default"];
     }];
 
-    NSMutableArray* arrWayPoints = [[NSMutableArray alloc] init];
-    arrWayPoints = [[arrSyncFolders filteredArrayUsingPredicate:predicate] mutableCopy];
+    NSMutableArray* arrFilteredFolders = [[NSMutableArray alloc] init];
+    arrFilteredFolders = [[arrSyncFolders filteredArrayUsingPredicate:predicate] mutableCopy];
 
-    if (arrWayPoints.count == 0) {
-        arrWayPoints = [arrSyncFolders mutableCopy];
+    if (arrFilteredFolders.count == 0) {
+        arrFilteredFolders = [arrSyncFolders mutableCopy];
     }
 
     arrFolders = [[NSMutableArray alloc] init];
-    for (CDFolders* folder in arrWayPoints) {
+    for (CDFolders* folder in arrFilteredFolders) {
         Folders* item = [[Folders alloc] initWithCDFolders:folder];
         [arrFolders addObject:item];
+    }
+
+    // Routes
+    NSString* parentId = @"";
+    if (_strFolderId) {
+        parentId = _strFolderId;
+    } else if (arrSyncFolders) {
+        NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(CDFolders* objFolder, NSDictionary<NSString*, id>* _Nullable bindings) {
+            return [objFolder.folderType isEqualToString:@"default"];
+        }];
+
+        NSMutableArray* arrFiltered = [[NSMutableArray alloc] init];
+        arrFiltered = [[arrSyncFolders filteredArrayUsingPredicate:predicate] mutableCopy];
+
+        if (arrFiltered.count > 0) {
+            CDFolders* objFolder = arrFiltered.firstObject;
+            parentId = [NSString stringWithFormat:@"%ld", (long)[objFolder.foldersIdentifier doubleValue]];
+        }
+    }
+
+    if (parentId.length > 0) {
+        NSMutableArray* arrSyncRoutes =
+            [[NSMutableArray alloc] initWithArray:[CoreDataAdaptor fetchDataFromLocalDB:[NSString stringWithFormat:@"folderId = %@", parentId]
+                                                                         sortDescriptor:[NSSortDescriptor sortDescriptorWithKey:@"updatedAt" ascending:NO]
+                                                                              forEntity:NSStringFromClass([CDRoutes class])]];
+
+        User* objUser = GET_USER_OBJ;
+        BOOL userRole = [objUser.role isEqualToString:@"user"];
+
+        arrRoutes = [[NSMutableArray alloc] init];
+        for (CDRoutes* route in arrSyncRoutes) {
+
+            Routes* item = [[Routes alloc] initWithCDRoutes:route];
+            BOOL isDefault = [route.name isEqualToString:kDefaultRallyName] || [route.name isEqualToString:kDefaultCrossCountryName];
+
+            if (userRole && isDefault) {
+                item.name = [NSString stringWithFormat:@"%@ - FREE User View", route.name];
+                [arrRoutes addObject:item];
+
+                Routes* itemPdf = [[Routes alloc] initWithCDRoutes:route];
+                itemPdf.name = [NSString stringWithFormat:@"%@ - UPGRADED User View", route.name];
+                [arrRoutes addObject:itemPdf];
+            } else {
+                [arrRoutes addObject:item];
+            }
+        }
     }
 
     [_tblRoadbooks reloadData];
@@ -368,10 +368,10 @@
     NSString* strId;
 
     if (idPath.section == MyRoadbooksSectionRoadbooks) {
-        Routes* objRoadbook = [arrRoadBooks objectAtIndex:idPath.row];
+        Routes* route = [arrRoutes objectAtIndex:idPath.row];
 
-        if (objRoadbook.editable) {
-            strId = [NSString stringWithFormat:@"%ld", (long)objRoadbook.routesIdentifier];
+        if (route.editable) {
+            strId = [NSString stringWithFormat:@"%ld", (long)route.routesIdentifier];
         } else {
             [AlertManager alert:@"This route can not be shared" title:NULL imageName:@"ic_error" confirmed:NULL];
             return;
@@ -469,7 +469,7 @@
     } break;
 
     case MyRoadbooksSectionRoadbooks: {
-        return arrRoadBooks.count;
+        return arrRoutes.count;
     } break;
 
     default:
@@ -497,9 +497,8 @@
 
     case MyRoadbooksSectionRoadbooks: {
         RouteVC* vc = loadViewController(StoryBoard_Roadbooks, kIDRouteVC);
-        Routes* objRoadbook = arrRoadBooks[indexPath.row];
-        vc.objRoute = objRoadbook;
-        vc.strRouteName = objRoadbook.name;
+        Routes* route = arrRoutes[indexPath.row];
+        vc.objRoute = route;
         vc.navigationItem.hidesBackButton = YES;
         [self.navigationController pushViewController:vc animated:YES];
     } break;
@@ -542,31 +541,19 @@
     } break;
 
     case MyRoadbooksSectionRoadbooks: {
-        Routes* objRoadbook = [arrRoadBooks objectAtIndex:indexPath.row];
+        Routes* objRoadbook = [arrRoutes objectAtIndex:indexPath.row];
         cell.lblTitle.text = objRoadbook.name;
 
-        NSInteger distance = 0;
         NSString* strUnit = @"";
-
-        if (objUserConfig.distanceUnit == DistanceUnitsTypeKilometers) {
+        if ([objRoadbook.units isEqualToString:@"kilometers"]) {
             strUnit = @"km";
-
-            if ([objRoadbook.units isEqualToString:@"kilometers"]) {
-                distance = (NSInteger)ceilf(objRoadbook.length);
-            } else {
-                distance = (NSInteger)ceilf(objRoadbook.length / 0.62f);
-            }
         } else {
             strUnit = @"mi";
-
-            if ([objRoadbook.units isEqualToString:@"kilometers"]) {
-                distance = (NSInteger)ceilf(objRoadbook.length * 0.62f);
-            } else {
-                distance = (NSInteger)ceilf(objRoadbook.length);
-            }
         }
-
-        cell.lblDetails.text = [NSString stringWithFormat:@"%d Way Points | %d %@", (int)floorf(objRoadbook.waypointCount), (int)distance, strUnit];
+        cell.lblDetails.text = [NSString stringWithFormat:@"%d Way Points | %ld %@",
+                                         (int)floorf(objRoadbook.waypointCount),
+                                         (long)objRoadbook.length,
+                                         strUnit];
 
         NSString* strDate = [self convertDateFormatDate:objRoadbook.updatedAt];
         cell.lblDate.text = strDate;

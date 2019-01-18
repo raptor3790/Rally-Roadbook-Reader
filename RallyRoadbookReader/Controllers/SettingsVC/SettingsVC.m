@@ -491,15 +491,38 @@
 
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (indexPath.row == UserConfigTypeShareRoadbook && !_strRoadbookId) {
+    switch (indexPath.row) {
+    case UserConfigTypeShareRoadbook: {
+        if (_strRoadbookId == NULL) {
+            return 0;
+        }
+    } break;
+
+    case UserConfigTypePDFFormat: {
         return 0;
+    } break;
+
+    case UserConfigTypeDistanceUnit: {
+        if ([self.delegate respondsToSelector:@selector(showDistanceUnit)]) {
+            if (![self.delegate showDistanceUnit]) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } break;
+
+    case UserConfigTypeRotateLock: {
+        if (iPhoneDevice) {
+            return 0;
+        }
+    } break;
+
+    default:
+        break;
     }
 
-    if (indexPath.row == UserConfigTypeRotateLock && iPhoneDevice) {
-        return 0;
-    }
-
-    return iPadDevice ? 70 : 50;
+    return iPadDevice ? 60 : 50;
 }
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
@@ -726,8 +749,8 @@
     case UserConfigTypeOdoDistance: {
         cell = [tableView dequeueReusableCellWithIdentifier:@"idSettingsUnitCell"];
 
-        [cell.btnMiles setTitle:@"00.00" forState:UIControlStateNormal];
-        [cell.btnKilometers setTitle:@"000.0" forState:UIControlStateNormal];
+        [cell.btnMiles setTitle:@"0.00" forState:UIControlStateNormal];
+        [cell.btnKilometers setTitle:@"00.0" forState:UIControlStateNormal];
 
         if (SCREEN_WIDTH >= 768) {
             [cell.btnMiles.titleLabel setFont:[cell.btnMiles.titleLabel.font fontWithSize:26.0f]];

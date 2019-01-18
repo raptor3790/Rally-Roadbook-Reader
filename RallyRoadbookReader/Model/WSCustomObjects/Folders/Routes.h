@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString *roadRallyPdf;
 @property (nonatomic, strong) NSString *crossCountryHighlightPdf;
 @property (nonatomic, strong) NSString *highlightRoadRally;
+@property (nonatomic, strong) NSString *type;
 
 + (Routes *)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (double)routesIdentifierValue;
 - (void)setRoutesIdentifierValue:(double)value_;
 
+@property (nonatomic, strong, nullable) NSString* type;
+
 @property (nonatomic, strong, nullable) NSString* units;
 
 @property (nonatomic, strong, nullable) NSString* updatedAt;
@@ -131,6 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)pdf;
 + (NSString *)roadRallyPdf;
 + (NSString *)routesIdentifier;
++ (NSString *)type;
 + (NSString *)units;
 + (NSString *)updatedAt;
 + (NSString *)waypointCount;

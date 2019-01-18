@@ -21,7 +21,7 @@ typedef enum {
 
 @property (strong, nonatomic) NSMutableArray* arrEmails;
 @property (strong, nonatomic) NSMutableArray* arrFolders;
-@property (strong, nonatomic) NSMutableArray* arrRoadBooks;
+@property (strong, nonatomic) NSMutableArray* arrRoutes;
 
 @property (nonatomic) BOOL isShareFolder;
 @property (strong, nonatomic) NSString* strFolderId;

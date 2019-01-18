@@ -148,6 +148,8 @@
 	[self setPrimitiveRoutesIdentifier:@(value_)];
 }
 
+@dynamic type;
+
 @dynamic units;
 
 @dynamic updatedAt;
@@ -201,6 +203,9 @@
 }
 + (NSString *)routesIdentifier {
 	return @"routesIdentifier";
+}
++ (NSString *)type {
+	return @"type";
 }
 + (NSString *)units {
 	return @"units";

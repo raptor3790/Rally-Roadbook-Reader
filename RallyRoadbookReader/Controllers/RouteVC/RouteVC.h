@@ -16,9 +16,7 @@
 
 @property (assign, nonatomic) double calibrate;
 @property (weak, nonatomic) Routes *objRoute;
-@property (nonatomic, assign) PdfFormat currentPdfFormat;
 @property (assign, nonatomic) BOOL isHighlight;
-@property (strong, nonatomic) NSString *strRouteName;
 
 @property (weak, nonatomic) IBOutlet UIImageView *settingImage;
 
@@ -36,9 +34,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblSpeed;
 @property (weak, nonatomic) IBOutlet UILabel *lblTime;
 
-@property (weak, nonatomic) IBOutlet UIView *headerView;
-@property (weak, nonatomic) IBOutlet UIView *separatorView;
+@property (weak, nonatomic) IBOutlet UIStackView *headerView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UIView *borderView;
 @property (weak, nonatomic) IBOutlet UIView *containerViewUp;
 @property (weak, nonatomic) IBOutlet UIView *containerViewDown;
 @property (strong, nonatomic) WKWebView *pdfView;
@@ -51,25 +49,20 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightVwSpeed;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightVwTime;
-
 @property (weak, nonatomic) IBOutlet UIView *vWOdometerSuper;
-@property (weak, nonatomic) IBOutlet UIView *vWSpeedSuper;
-@property (weak, nonatomic) IBOutlet UIView *vWTimeSuper;
-@property (weak, nonatomic) IBOutlet UIView *vWCapSuper;
-@property (weak, nonatomic) IBOutlet UIView *vwMiddleContainer;
+@property (weak, nonatomic) IBOutlet UIView *vwSpeedSuper;
+@property (weak, nonatomic) IBOutlet UIView *vwTimeSuper;
+@property (weak, nonatomic) IBOutlet UIView *vwCapSuper;
+@property (weak, nonatomic) IBOutlet UIStackView *vwMiddleContainer;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTOD;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintWidthOdometer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTopDPH;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintTopTOD;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightTOD;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightDPH;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeaderHeight;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeaderRatio;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeaderCenter;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dphTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *todTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *todHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dphHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *middleViewWidth;
 
 @property (strong, nonatomic) RemoteCommandDataSource *remoteCommandDataSource;
 

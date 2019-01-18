@@ -33,9 +33,10 @@ typedef enum
 
 @optional
 
-- (void)clickedLogout;
 - (void)clickedRoadbooks;
+- (BOOL)showDistanceUnit;
 - (void)odoValueChanged: (double)distanceValue;
+- (void)clickedLogout;
 
 @end
 

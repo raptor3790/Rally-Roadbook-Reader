@@ -88,10 +88,10 @@
 #define RoadbooksKey @"Roadbooks"
 #define RoadbooksMsg @"Processing"
 
-#define RoadBooksClass @"Routes"
-#define RoadBooksEntity @"CDRoutes"
-#define RoadBooksKey @"routes"
-#define RoadBooksMsg @"Processing"
+#define RoutesClass @"Routes"
+#define RoutesEntity @"CDRoutes"
+#define RoutesKey @"routes"
+#define RoutesMsg @"Processing"
 
 #define RouteClass @"Route"
 #define RouteEntity @"CDRoute"

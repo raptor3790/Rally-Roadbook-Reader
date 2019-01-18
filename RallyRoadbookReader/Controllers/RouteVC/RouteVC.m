@@ -37,17 +37,16 @@
     NSString* strCurrentDateTime;
     NSMutableArray* arrAllLocations;
 
-    CDRoute* obj_Route;
     RouteDetails* objRouteDetails;
     UserConfig* objUserConfig;
 
-    NSTimer* ResetTimer;
+    NSTimer* resetTimer;
     NSTimer* ScrollTimer;
     NSTimer* UpdateSpeed;
-    int ResetCount;
+    int resetCount;
     int ScrollCount;
 
-    NSAttributedString* ResetLabel;
+    NSAttributedString* resetLabel;
 
     JPSVolumeButtonHandler* volumeButtonHandler;
 
@@ -65,9 +64,9 @@
 
     _calibrate = AppContext.cal;
 
-    self.title = _strRouteName;
+    self.title = _objRoute.name;
 
-    ResetCount = 0;
+    resetCount = 0;
 
     AppContext.locationManager.delegate = self;
     AppContext.assetManager.delegate = self;
@@ -99,9 +98,7 @@
 
     objUserConfig = [BaseVC getUserConfiguration];
 
-    _currentPdfFormat = objUserConfig.pdfFormat;
     _isHighlight = objUserConfig.highlightPdf;
-
     if (objUserConfig.isShowCap) {
         _lblCAPHeading.text = @"CAP HEADING";
         currentDegree = AppContext.locationManager.currentCourse;
@@ -110,8 +107,6 @@
 
     objUserConfig.distanceUnit = [_objRoute.units isEqualToString:@"kilometers"] ? DistanceUnitsTypeKilometers : DistanceUnitsTypeMiles;
     [DefaultsValues setCustomObjToUserDefaults:objUserConfig ForKey:kUserConfiguration];
-    
-    [self manageUI];
 
     User* objUser = GET_USER_OBJ;
     BOOL isUserRole = [objUser.role isEqualToString:@"user"];
@@ -157,8 +152,7 @@
     [self getCurrentDateTime];
 
     if (_tblRoadbook.isHidden) {
-        if (_currentPdfFormat != objUserConfig.pdfFormat || _isHighlight != objUserConfig.highlightPdf) {
-            _currentPdfFormat = objUserConfig.pdfFormat;
+        if (_isHighlight != objUserConfig.highlightPdf) {
             _isHighlight = objUserConfig.highlightPdf;
 
             [_pdfView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
@@ -235,14 +229,14 @@
     _vWOdometerSuper.layer.cornerRadius = 10.0f;
     _vWOdometerSuper.clipsToBounds = YES;
 
-    _vWSpeedSuper.layer.cornerRadius = 10.0f;
-    _vWSpeedSuper.clipsToBounds = YES;
+    _vwSpeedSuper.layer.cornerRadius = 10.0f;
+    _vwSpeedSuper.clipsToBounds = YES;
 
-    _vWTimeSuper.layer.cornerRadius = 10.0f;
-    _vWTimeSuper.clipsToBounds = YES;
+    _vwTimeSuper.layer.cornerRadius = 10.0f;
+    _vwTimeSuper.clipsToBounds = YES;
 
-    _vWCapSuper.layer.cornerRadius = 10.0f;
-    _vWCapSuper.clipsToBounds = YES;
+    _vwCapSuper.layer.cornerRadius = 10.0f;
+    _vwCapSuper.clipsToBounds = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -402,9 +396,8 @@
     NSArray* arrSyncedData = [[[CDRoute query] where:[NSPredicate predicateWithFormat:strRoadBookId]] all];
 
     if (arrSyncedData.count > 0) {
-        obj_Route = arrSyncedData.firstObject;
-
-        NSDictionary* jsonDict = [RallyNavigatorConstants convertJsonStringToObject:obj_Route.data];
+        CDRoute* route = arrSyncedData.firstObject;
+        NSDictionary* jsonDict = [RallyNavigatorConstants convertJsonStringToObject:route.data];
         objRouteDetails = [[RouteDetails alloc] initWithDictionary:jsonDict];
     }
 
@@ -413,162 +406,9 @@
 
 #pragma mark - Custom Methods
 
-- (void)adjustHeader
-{
-    NSUInteger totalDisplayUnits = 1;
-
-    totalDisplayUnits += (objUserConfig.isShowCap + objUserConfig.isShowTime + objUserConfig.isShowSpeed);
-
-    if (totalDisplayUnits < 4) {
-        if (totalDisplayUnits == 2) {
-            _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer with:0.5f];
-        } else {
-            _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer with:0.33333f];
-        }
-    } else {
-        _constraintWidthOdometer = [self changeMultiplier:_constraintWidthOdometer with:0.38f];
-    }
-
-    if (SCREEN_WIDTH >= 768) {
-        _constraintHeaderRatio = [self changeMultiplier:_constraintHeaderRatio with:0.19f];
-    } else {
-        _constraintHeaderRatio = [self changeMultiplier:_constraintHeaderRatio with:0.3f];
-    }
-
-    BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-    if (iPhoneDevice && landscape && ([self getOrientation] == UIInterfaceOrientationMaskAll)) {
-        _constraintHeaderCenter.constant = 20;
-        _constraintHeaderHeight.active = NO;
-        _separatorView.hidden = YES;
-        _containerView.hidden = YES;
-    } else {
-        _constraintHeaderCenter.constant = 0;
-        _constraintHeaderHeight.active = NO;
-        _constraintHeaderHeight = [NSLayoutConstraint constraintWithItem:_headerView
-                                                               attribute:NSLayoutAttributeHeight
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:NULL
-                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                              multiplier:1.0f
-                                                                constant:self.view.frame.size.width * (SCREEN_WIDTH >= 768 ? 0.19f : 0.3f)];
-        [NSLayoutConstraint activateConstraints:([NSArray arrayWithObjects:_constraintHeaderHeight, nil])];
-
-        _separatorView.hidden = NO;
-        _containerView.hidden = NO;
-    }
-
-    [self manageUI];
-
-    if (objUserConfig.isShowCap) {
-        _lblCAPHeading.text = @"CAP HEADING";
-        [self displayCAPHeading];
-
-        if (totalDisplayUnits < 4) {
-            _vwTime.layer.borderWidth = 5.0f;
-            _vwSpeed.layer.borderWidth = 5.0f;
-        } else {
-            _vwTime.layer.borderWidth = 2.5f;
-            _vwSpeed.layer.borderWidth = 2.5f;
-        }
-
-    } else {
-        _vwTime.layer.borderWidth = 5.0f;
-        _vwSpeed.layer.borderWidth = 5.0f;
-    }
-
-    [self.view layoutIfNeeded];
-
-    _vwMiddleContainer.hidden = NO;
-    _vwSpeed.hidden = NO;
-    _vwTime.hidden = NO;
-    _vwCAP.hidden = NO;
-
-    _vWTimeSuper.hidden = NO;
-    _vWCapSuper.hidden = NO;
-    _vWSpeedSuper.hidden = NO;
-    _vWOdometerSuper.hidden = NO;
-
-    _vwMiddleContainer.hidden = !(objUserConfig.isShowSpeed) && !(objUserConfig.isShowTime);
-    _vwSpeed.hidden = !(objUserConfig.isShowSpeed);
-    _vWSpeedSuper.hidden = !(objUserConfig.isShowSpeed);
-    _vwTime.hidden = (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) ? YES : !(objUserConfig.isShowTime);
-    _vWTimeSuper.hidden = (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) ? YES : !(objUserConfig.isShowTime);
-    _vwCAP.hidden = (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) ? NO : !(objUserConfig.isShowCap);
-    _vWCapSuper.hidden = (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) ? NO : !(objUserConfig.isShowCap);
-
-    _heightVwSpeed.constant = CGRectGetHeight(_vwMiddleContainer.frame) / 2 - 1.5f;
-    _heightVwTime.constant = CGRectGetHeight(_vwMiddleContainer.frame) / 2 - 1.5f;
-
-    if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) {
-        _lblCAPHeading.text = @"Time of Day";
-        _heightVwSpeed.constant = 1000; //CGRectGetHeight(_vwOdometer.frame);
-        _heightVwTime.constant = 0.0f;
-    } else if (objUserConfig.isShowSpeed && !objUserConfig.isShowTime) {
-        _heightVwSpeed.constant = 1000; //CGRectGetHeight(_vwOdometer.frame);
-        _heightVwTime.constant = 0.0f;
-    } else if (!objUserConfig.isShowSpeed && objUserConfig.isShowTime) {
-        _heightVwTime.constant = 1000; //CGRectGetHeight(_vwMiddleContainer.frame);
-        _heightVwSpeed.constant = 0.0f;
-    }
-
-    [self updateViewConstraints];
-    [self.view layoutIfNeeded];
-    [_vwMiddleContainer layoutIfNeeded];
-}
-
 - (double)convertDistanceToMiles:(double)unit
 {
     return unit * 0.621371;
-}
-
-- (void)displayAllUnits
-{
-    if (![ResetTimer isValid]) {
-        double unit = totalDistance + (totalDistance * _calibrate / 100);
-
-        if (objUserConfig.distanceUnit == DistanceUnitsTypeMiles) {
-            unit = [self convertDistanceToMiles:unit];
-        }
-
-        if (objUserConfig.odometerUnit == OdometerUnitHundredth) {
-            _lblDistance.text = [NSString stringWithFormat:unit >= 10 ? @"%.2f" : @"0%.2f", unit];
-        } else {
-            _lblDistance.text = [NSString stringWithFormat:unit < 10 ? @"00%.1f" : unit < 100 ? @"0%.1f" : @"%.1f", unit];
-        }
-
-        NSRange range = [_lblDistance.text rangeOfString:@"^0+(?!\\.)" options:NSRegularExpressionSearch];
-
-        if (range.length > 0) {
-            _lblDistance.text = [_lblDistance.text stringByReplacingCharactersInRange:range withString:@""];
-        }
-
-        //        if ([_lblDistance.text isEqualToString:@"0.0"]) {
-        //            _lblDistance.text = @"00.0";
-        //        }
-        //        range = [_lblDistance.text rangeOfString:@"(?<!\\.)0+$" options:NSRegularExpressionSearch];
-        //        if (range.length > 0) {
-        //            _lblDistance.text = [_lblDistance.text stringByReplacingCharactersInRange:range withString:@""];
-        //        }
-
-        if (isTopSpeedDisplaying) {
-            unit = topSpeed;
-        } else {
-            unit = currentSpeed;
-        }
-
-        if (objUserConfig.distanceUnit == DistanceUnitsTypeMiles) {
-            unit = [self convertDistanceToMiles:unit];
-        }
-
-        _lblSpeed.text = [NSString stringWithFormat:unit >= 10 ? @"%ld" : @"%ld", (long)unit];
-    }
-}
-
-- (void)displayCAPHeading
-{
-    NSInteger degree = (NSInteger)currentDegree < 0 ? 0 : currentDegree;
-    _lblDegree.text = [NSString stringWithFormat:degree < 10 ? @"00%ld°" : degree < 100 ? @"0%ld°" : @"%ld°", (long)degree];
-    _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
 }
 
 - (void)getCurrentDateTime
@@ -593,10 +433,10 @@
     strCurrentDateTime = [NSString stringWithFormat:@"%d:%.2d", (int)hour, (int)dateComponents.minute];
     if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) {
         _lblDegree.text = strCurrentDateTime;
-        _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:YES]];
+        _lblDegree.attributedText = [self styledText:_lblDegree.text size:[self adjustedFontSizeIsEdge:YES]];
     } else {
         _lblTime.text = strCurrentDateTime;
-        _lblTime.attributedText = [self StyleText:_lblTime.text size:[self NormalizedFontSizeIsEdge:NO IsDate:YES]];
+        _lblTime.attributedText = [self styledText:_lblTime.text size:[self adjustedFontSizeIsEdge:NO]];
     }
 
     [self performSelector:@selector(getCurrentDateTime) withObject:nil afterDelay:1];
@@ -634,54 +474,53 @@
     return [numberString stringByReplacingOccurrencesOfString:@"," withString:@""];
 }
 
-- (void)initateTimer
+- (void)resetDistance
 {
-    if (![ResetTimer isValid]) {
-        ResetTimer = [[NSTimer alloc] init];
+    if (![resetTimer isValid]) {
+        resetTimer = [[NSTimer alloc] init];
 
-        ResetLabel = [[NSAttributedString alloc] initWithString:_lblDistance.text];
-        ResetTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
+        resetLabel = [[NSAttributedString alloc] initWithString:_lblDistance.text];
+        resetTimer = [NSTimer scheduledTimerWithTimeInterval:0.3
                                                       target:self
-                                                    selector:@selector(AnimateTheText)
+                                                    selector:@selector(resettingDistance)
                                                     userInfo:nil
                                                      repeats:YES];
     }
 }
 
-- (void)AnimateTheText
+- (void)resettingDistance
 {
-    if (ResetCount >= ResetLabel.length * 2) {
-        //        _lblDistance.attributedText = ResetLabel;
-        ResetCount = 0;
-        _lblDistance.text = @"0.0";
+    if (resetCount >= resetLabel.length * 2) {
+        resetCount = 0;
+        _lblDistance.text = objUserConfig.odometerUnit == OdometerUnitHundredth ? @"0.00" : @"00.0";
         [self.view setUserInteractionEnabled:true];
-        [ResetTimer invalidate];
+        [resetTimer invalidate];
         return;
-    } else if ([_lblDistance.text characterAtIndex:ResetCount / 2] != '.') {
-        _lblDistance.attributedText = [self ChangeColorText];
+    } else if ([_lblDistance.text characterAtIndex:resetCount / 2] != '.') {
+        _lblDistance.attributedText = [self resettingDistanceText];
     } else {
-        ResetCount = ResetCount + 2;
-        _lblDistance.attributedText = [self ChangeColorText];
+        resetCount = resetCount + 2;
+        _lblDistance.attributedText = [self resettingDistanceText];
     }
-    ResetCount = ResetCount + 1;
+    resetCount = resetCount + 1;
 }
 
-- (NSAttributedString*)ChangeColorText
+- (NSAttributedString*)resettingDistanceText
 {
     NSMutableAttributedString* attributeText = [[NSMutableAttributedString alloc] initWithString:_lblDistance.text];
 
-    if (ResetCount % 2 == 0) {
-        [attributeText addAttribute:NSForegroundColorAttributeName value:[UIColor clearColor] range:NSMakeRange(ResetCount / 2, 1)];
+    if (resetCount % 2 == 0) {
+        [attributeText addAttribute:NSForegroundColorAttributeName value:[UIColor clearColor] range:NSMakeRange(resetCount / 2, 1)];
     } else {
         attributeText = [[NSMutableAttributedString alloc]
-            initWithString:[self string:_lblDistance.text ByReplacingACharacterAtIndex:ResetCount / 2 byCharacter:@"0"]];
-        [attributeText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(ResetCount / 2, 1)];
+            initWithString:[_lblDistance.text stringByReplacingCharactersInRange:NSMakeRange(resetCount / 2, 1) withString:@"0"]];
+        [attributeText addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(resetCount / 2, 1)];
     }
 
     return attributeText;
 }
 
-- (NSAttributedString*)StyleText:(NSString*)text size:(float)fontSize
+- (NSAttributedString*)styledText:(NSString*)text size:(float)fontSize
 {
     UIFont* digit = [UIFont fontWithName:@"DS-Digital-Italic" size:fontSize];
     UIFont* sep = [UIFont fontWithName:@"Digital-7Italic" size:(fontSize)];
@@ -695,28 +534,40 @@
     return attributeText;
 }
 
-- (NSString*)string:(NSString*)string ByReplacingACharacterAtIndex:(int)i byCharacter:(NSString*)StringContainingAChar
+- (NSLayoutConstraint*)updateConstraint:(NSLayoutConstraint*)oldConstraint priority:(UILayoutPriority)value
 {
-    return [string stringByReplacingCharactersInRange:NSMakeRange(i, 1) withString:StringContainingAChar];
-}
-
-- (NSLayoutConstraint*)changeMultiplier:(NSLayoutConstraint*)oldConstraint with:(CGFloat)NewMultiplier
-{
-    NSLayoutConstraint* NewConstraint = [NSLayoutConstraint constraintWithItem:oldConstraint.firstItem
+    NSLayoutConstraint* newConstraint = [NSLayoutConstraint constraintWithItem:oldConstraint.firstItem
                                                                      attribute:oldConstraint.firstAttribute
                                                                      relatedBy:oldConstraint.relation
                                                                         toItem:oldConstraint.secondItem
                                                                      attribute:oldConstraint.secondAttribute
-                                                                    multiplier:NewMultiplier
+                                                                    multiplier:oldConstraint.multiplier
                                                                       constant:oldConstraint.constant];
 
+    newConstraint.priority = value;
     [NSLayoutConstraint deactivateConstraints:([NSArray arrayWithObjects:oldConstraint, nil])];
-    [NSLayoutConstraint activateConstraints:([NSArray arrayWithObjects:NewConstraint, nil])];
+    [NSLayoutConstraint activateConstraints:([NSArray arrayWithObjects:newConstraint, nil])];
 
-    return NewConstraint;
+    return newConstraint;
 }
 
-- (float)NormalizedFontSizeIsEdge:(BOOL)isEdge IsDate:(BOOL)isDate
+- (NSLayoutConstraint*)updateConstraint:(NSLayoutConstraint*)oldConstraint constant:(CGFloat)value
+{
+    NSLayoutConstraint* newConstraint = [NSLayoutConstraint constraintWithItem:oldConstraint.firstItem
+                                                                     attribute:oldConstraint.firstAttribute
+                                                                     relatedBy:oldConstraint.relation
+                                                                        toItem:oldConstraint.secondItem
+                                                                     attribute:oldConstraint.secondAttribute
+                                                                    multiplier:oldConstraint.multiplier
+                                                                      constant:value];
+
+    [NSLayoutConstraint deactivateConstraints:([NSArray arrayWithObjects:oldConstraint, nil])];
+    [NSLayoutConstraint activateConstraints:([NSArray arrayWithObjects:newConstraint, nil])];
+
+    return newConstraint;
+}
+
+- (float)adjustedHeaderHeight
 {
     int viewCount = (objUserConfig.isShowCap + objUserConfig.isShowSpeed + objUserConfig.isShowTime) + 1;
     BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
@@ -725,49 +576,156 @@
     if (viewCount == 2) {
         switch (screenWidth) {
         case 320:
-            return landscape ? 126 : 58;
+            return landscape ? 148 : 94;
         case 375:
-            return landscape ? (SCREEN_HEIGHT == 812 ? 180 : 150) : 72;
+            return landscape ? (SCREEN_HEIGHT == 812 ? 190 : 170) : 110;
         case 414:
-            return landscape ? 176 : 90;
+            return landscape ? 180 : 114;
         default:
-            return landscape ? 176 : 120;
+            return landscape ? 240 : 186;
         }
     } else if (viewCount == 3) {
         switch (screenWidth) {
         case 320:
-            return landscape ? 88 : 42;
+            return landscape ? 110 : 74;
         case 375:
-            return landscape ? (SCREEN_HEIGHT == 812 ? 120 : 102) : (isDate ? 52 : 56);
+            return landscape ? (SCREEN_HEIGHT == 812 ? 132 : 120) : 84;
         case 414:
-            return landscape ? 114 : 58;
+            return landscape ? 132 : 86;
         default:
-            return landscape ? 165 : 115;
+            return landscape ? 170 : 138;
         }
     } else {
         switch (screenWidth) {
         case 320:
-            return landscape ? (isEdge ? 102 : 50) : (isEdge ? 52 : 20);
+            return landscape ? 130 : 90;
         case 375:
-            return landscape ? (SCREEN_HEIGHT == 812 ? (isEdge ? 142 : 80) : (isEdge ? 120 : 72)) : (isEdge ? 64 : 25);
+            return landscape ? 160 : 100;
         case 414:
-            return landscape ? (isEdge ? 136 : 74) : (isEdge ? 72 : 30);
+            return landscape ? 180 : 120;
         default:
-            return landscape ? (isEdge ? 170 : 65) : (isEdge ? 120 : 34);
+            return landscape ? 200 : 160;
         }
     }
+}
+
+- (float)adjustedFontSizeIsEdge:(BOOL)isEdge
+{
+    int viewCount = (objUserConfig.isShowCap + objUserConfig.isShowSpeed + objUserConfig.isShowTime) + 1;
+    BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+
+    int screenWidth = SCREEN_WIDTH;
+    if (viewCount == 2) {
+        switch (screenWidth) {
+        case 320:
+            return landscape ? 132 : 68;
+        case 375:
+            return landscape ? (SCREEN_HEIGHT == 812 ? 174 : 158) : 84;
+        case 414:
+            return landscape ? 176 : 94;
+        default:
+            return landscape ? 250 : 184;
+        }
+    } else if (viewCount == 3) {
+        switch (screenWidth) {
+        case 320:
+            return landscape ? 84 : 42;
+        case 375:
+            return landscape ? (SCREEN_HEIGHT == 812 ? 112 : 102) : 52;
+        case 414:
+            return landscape ? 114 : 58;
+        default:
+            return landscape ? 164 : 118;
+        }
+    } else {
+        switch (screenWidth) {
+        case 320:
+            return landscape ? (isEdge ? 96 : 40) : (isEdge ? 48 : 26);
+        case 375:
+            return landscape ? (SCREEN_HEIGHT == 812 ? (isEdge ? 126 : 54) : (isEdge ? 116 : 54)) : (isEdge ? 58 : 25);
+        case 414:
+            return landscape ? (isEdge ? 128 : 62) : (isEdge ? 66 : 34);
+        default:
+            return landscape ? (isEdge ? 184 : 68) : (isEdge ? 134 : 50);
+        }
+    }
+}
+
+#pragma mark - UI
+
+- (void)adjustHeader
+{
+    NSUInteger totalDisplayUnits = 1;
+
+    totalDisplayUnits += (objUserConfig.isShowCap + objUserConfig.isShowTime + objUserConfig.isShowSpeed);
+    if (totalDisplayUnits == 4) {
+        _middleViewWidth = [self updateConstraint:_middleViewWidth priority:UILayoutPriorityRequired];
+        _headerView.distribution = UIStackViewDistributionFill;
+        if (SCREEN_WIDTH == 320) {
+            _vwMiddleContainer.spacing = 2;
+        } else if (SCREEN_WIDTH == 375 || SCREEN_WIDTH == 414) {
+            _vwMiddleContainer.spacing = 4;
+        } else {
+            _vwMiddleContainer.spacing = 8;
+        }
+    } else {
+        _middleViewWidth = [self updateConstraint:_middleViewWidth priority:UILayoutPriorityDefaultLow];
+        _headerView.distribution = UIStackViewDistributionFillEqually;
+    }
+
+    BOOL landscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    if (iPhoneDevice && landscape && ([self getOrientation] == UIInterfaceOrientationMaskAll)) {
+        _containerView.hidden = YES;
+    } else {
+        _containerView.hidden = NO;
+    }
+
+    _headerHeight = [self updateConstraint:_headerHeight constant:[self adjustedHeaderHeight]];
+
+    [self manageUI];
+
+    if (objUserConfig.isShowCap) {
+        _lblCAPHeading.text = @"CAP HEADING";
+        [self displayCAPHeading];
+
+        if (totalDisplayUnits < 4) {
+            _vwTime.layer.borderWidth = 5.0f;
+            _vwSpeed.layer.borderWidth = 5.0f;
+        } else {
+            _vwTime.layer.borderWidth = 2.5f;
+            _vwSpeed.layer.borderWidth = 2.5f;
+        }
+
+    } else {
+        _vwTime.layer.borderWidth = 5.0f;
+        _vwSpeed.layer.borderWidth = 5.0f;
+    }
+
+    _vwMiddleContainer.hidden = !(objUserConfig.isShowSpeed) && !(objUserConfig.isShowTime);
+    _vwCapSuper.hidden = (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) ? NO : !(objUserConfig.isShowCap);
+
+    _vwSpeedSuper.hidden = NO;
+    _vwTimeSuper.hidden = NO;
+    if (objUserConfig.isShowSpeed && objUserConfig.isShowTime && !objUserConfig.isShowCap) {
+        _lblCAPHeading.text = @"Time of Day";
+        _vwTimeSuper.hidden = YES;
+    } else if (objUserConfig.isShowSpeed && !objUserConfig.isShowTime) {
+        _vwTimeSuper.hidden = YES;
+    } else if (!objUserConfig.isShowSpeed && objUserConfig.isShowTime) {
+        _vwSpeedSuper.hidden = YES;
+    }
+
+    [self.view layoutIfNeeded];
 }
 
 - (void)manageUI
 {
     int viewCount = (objUserConfig.isShowCap + objUserConfig.isShowSpeed + objUserConfig.isShowTime) + 1;
 
-    _lblDistance.font = [_lblDistance.font fontWithSize:[self NormalizedFontSizeIsEdge:YES IsDate:NO]];
-    _lblSpeed.font = [_lblSpeed.font fontWithSize:[self NormalizedFontSizeIsEdge:NO IsDate:NO]];
-    _lblTime.attributedText = [self StyleText:_lblTime.text size:[self NormalizedFontSizeIsEdge:NO IsDate:YES]];
-
-    BOOL degreeAsDate = !objUserConfig.isShowCap && objUserConfig.isShowTime && objUserConfig.isShowSpeed;
-    _lblDegree.attributedText = [self StyleText:_lblDegree.text size:[self NormalizedFontSizeIsEdge:YES IsDate:degreeAsDate]];
+    _lblDistance.font = [_lblDistance.font fontWithSize:[self adjustedFontSizeIsEdge:YES]];
+    _lblSpeed.font = [_lblSpeed.font fontWithSize:[self adjustedFontSizeIsEdge:NO]];
+    _lblTime.attributedText = [self styledText:_lblTime.text size:[self adjustedFontSizeIsEdge:NO]];
+    _lblDegree.attributedText = [self styledText:_lblDegree.text size:[self adjustedFontSizeIsEdge:YES]];
 
     float screenWidth = UIScreen.mainScreen.bounds.size.width;
     if (viewCount == 4) {
@@ -776,24 +734,24 @@
             _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:8];
             _labelTOD.font = [_labelTOD.font fontWithSize:6];
             _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:6];
-            _constraintHeightDPH.constant = 6;
-            _constraintHeightTOD.constant = 6;
+            _dphHeight.constant = 6;
+            _todHeight.constant = 6;
         } else if (screenWidth < 500) {
             _lblOdoDistanceUnit.font = [_lblOdoDistanceUnit.font fontWithSize:12];
             _lblCAPHeading.font = [_lblCAPHeading.font fontWithSize:12];
             _labelTOD.font = [_labelTOD.font fontWithSize:8];
             _lbldistancePerHour.font = [_lbldistancePerHour.font fontWithSize:8];
-            _constraintHeightDPH.constant = 8;
-            _constraintHeightTOD.constant = 8;
+            _dphHeight.constant = 8;
+            _todHeight.constant = 8;
         }
     }
 
-    _constraintTopDPH.constant = viewCount == 4 ? 2 : 5;
-    _constraintTopTOD.constant = viewCount == 4 ? 2 : 5;
+    _dphTop.constant = viewCount == 4 ? 2 : 5;
+    _todTop.constant = viewCount == 4 ? 2 : 5;
 
     if (viewCount < 4 || (viewCount == 4 && screenWidth >= 500)) {
-        _constraintHeightDPH.constant = 12;
-        _constraintHeightTOD.constant = 12;
+        _dphHeight.constant = 12;
+        _todHeight.constant = 12;
 
         float fontSize = screenWidth == 320 ? 8 : ((screenWidth == 375 && viewCount == 3 && objUserConfig.isShowCap) ? 10 : 12);
 
@@ -809,6 +767,42 @@
     } else {
         _settingImage.image = [UIImage imageNamed:@"menu"];
     }
+}
+
+- (void)displayAllUnits
+{
+    if (![resetTimer isValid]) {
+        double unit = totalDistance + (totalDistance * _calibrate / 100);
+
+        if (objUserConfig.distanceUnit == DistanceUnitsTypeMiles) {
+            unit = [self convertDistanceToMiles:unit];
+        }
+
+        if (objUserConfig.odometerUnit == OdometerUnitHundredth) {
+            _lblDistance.text = [NSString stringWithFormat:@"%.2f", unit];
+        } else {
+            _lblDistance.text = [NSString stringWithFormat:unit < 10 ? @"0%.1f" : @"%.1f", unit];
+        }
+
+        if (isTopSpeedDisplaying) {
+            unit = topSpeed;
+        } else {
+            unit = currentSpeed;
+        }
+
+        if (objUserConfig.distanceUnit == DistanceUnitsTypeMiles) {
+            unit = [self convertDistanceToMiles:unit];
+        }
+
+        _lblSpeed.text = [NSString stringWithFormat:unit >= 10 ? @"%ld" : @"%ld", (long)unit];
+    }
+}
+
+- (void)displayCAPHeading
+{
+    NSInteger degree = (NSInteger)currentDegree < 0 ? 0 : currentDegree;
+    _lblDegree.text = [NSString stringWithFormat:degree < 10 ? @"00%ld°" : degree < 100 ? @"0%ld°" : @"%ld°", (long)degree];
+    _lblDegree.attributedText = [self styledText:_lblDegree.text size:[self adjustedFontSizeIsEdge:YES]];
 }
 
 #pragma mark - Orientation Delegate Methods
@@ -830,17 +824,21 @@
 
 - (void)setupPdfView
 {
-    _containerView.layer.cornerRadius = 10.0f;
+    _containerView.layer.cornerRadius = 8.0f;
+    _containerView.backgroundColor = UIColor.whiteColor;
     _containerView.clipsToBounds = YES;
 
+    _borderView.layer.borderColor = [UIColor colorWithWhite:0.5 alpha:1].CGColor;
+    _borderView.layer.borderWidth = 8;
+
     WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
-    //    config.preferences.render
     _pdfView = [[WKWebView alloc] initWithFrame:_containerView.bounds configuration:config];
+    _pdfView.clipsToBounds = YES;
+    _pdfView.opaque = NO;
     _pdfView.backgroundColor = UIColor.clearColor;
     _pdfView.scrollView.backgroundColor = UIColor.clearColor;
-    _pdfView.clipsToBounds = YES;
-    _pdfView.navigationDelegate = self;
     _pdfView.scrollView.delegate = self;
+    _pdfView.navigationDelegate = self;
 
     [_containerView addSubview:_pdfView];
     [_containerView sendSubviewToBack:_pdfView];
@@ -870,7 +868,7 @@
                                                               toItem:_containerView
                                                            attribute:NSLayoutAttributeTop
                                                           multiplier:1.0f
-                                                            constant:10.0f];
+                                                            constant:0.0f];
     // Bottom
     NSLayoutConstraint* bottom = [NSLayoutConstraint constraintWithItem:_pdfView
                                                               attribute:NSLayoutAttributeBottom
@@ -878,7 +876,7 @@
                                                                  toItem:_containerView
                                                               attribute:NSLayoutAttributeBottom
                                                              multiplier:1.0f
-                                                               constant:-10.0f];
+                                                               constant:0.0f];
 
     [_containerView addConstraint:leading];
     [_containerView addConstraint:trailing];
@@ -893,15 +891,18 @@
     NSString* remotePath;
 
     if (objUserConfig.highlightPdf) {
-        remotePath = objUserConfig.pdfFormat == PdfFormatCrossCountry ? _objRoute.crossCountryHighlightPdf : _objRoute.highlightRoadRally;
+        remotePath = [_objRoute.type isEqualToString:@"cross_country"] ? _objRoute.crossCountryHighlightPdf : _objRoute.highlightRoadRally;
     } else {
-        remotePath = objUserConfig.pdfFormat == PdfFormatRoadRally ? _objRoute.roadRallyPdf : _objRoute.pdf;
+        remotePath = [_objRoute.type isEqualToString:@"road_rally"] ? _objRoute.roadRallyPdf : _objRoute.pdf;
     }
 
     if (remotePath.length == 0) {
-        [AlertManager alert:@"PDF is unavailable for selected PDF format" title:NULL imageName:@"ic_error" confirmed:^{
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
+        [AlertManager alert:@"PDF is unavailable for selected PDF format"
+                      title:NULL
+                  imageName:@"ic_error"
+                  confirmed:^{
+                      [self.navigationController popViewControllerAnimated:YES];
+                  }];
     } else {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString* documentsDirectory = [paths objectAtIndex:0];
@@ -936,22 +937,15 @@
     }
 }
 
-- (void)hidePDFPageLabel
+- (void)hidePDFPageLabel:(UIView*)view
 {
-    for (UIView* webSubView in [_pdfView subviews]) {
-        if (![webSubView isKindOfClass:[UIView class]]) {
-            continue;
-        }
+    if ([view isKindOfClass:NSClassFromString(@"PDFPageLabelView")] || [view isKindOfClass:NSClassFromString(@"WKPDFPageNumberIndicator")]) {
+        view.hidden = YES;
+        return;
+    }
 
-        for (UIView* superSubView in webSubView.subviews) {
-            if ([superSubView isKindOfClass:NSClassFromString(@"PDFPageLabelView")]) {
-                [superSubView setHidden:true];
-            }
-
-            if ([superSubView isKindOfClass:NSClassFromString(@"WKPDFPageNumberIndicator")]) {
-                [superSubView setHidden:true];
-            }
-        }
+    for (UIView* child in view.subviews) {
+        [self hidePDFPageLabel:child];
     }
 }
 
@@ -966,16 +960,19 @@
 
 - (void)webView:(WKWebView*)webView didFinishNavigation:(WKNavigation*)navigation
 {
-    [self hidePDFPageLabel];
+    [self hidePDFPageLabel:webView];
     [_activityIndicator stopAnimating];
 }
 
 - (void)webView:(WKWebView*)webView didFailNavigation:(WKNavigation*)navigation withError:(NSError*)error
 {
     [_activityIndicator stopAnimating];
-    [AlertManager alert:@"Failed to Load PDF file" title:NULL imageName:@"ic_error" confirmed:^{
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
+    [AlertManager alert:@"Failed to Load PDF file"
+                  title:NULL
+              imageName:@"ic_error"
+              confirmed:^{
+                  [self.navigationController popViewControllerAnimated:YES];
+              }];
 }
 
 - (void)webView:(WKWebView*)webView didCommitNavigation:(WKNavigation*)navigation
@@ -986,19 +983,6 @@
 }
 
 #pragma mark - Setting Delegate Methods
-
-- (void)clickedLogout
-{
-    [AlertManager confirm:@"Are you sure you want to log out?"
-                    title:@"Confirm Logout"
-                 negative:@"Cancel"
-                 positive:@"Yes"
-                confirmed:^{
-                    [[GIDSignIn sharedInstance] signOut];
-                    [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                }];
-}
 
 - (void)clickedRoadbooks
 {
@@ -1016,6 +1000,28 @@
     AppContext.cal = distanceValue;
     _calibrate = distanceValue;
     [self displayAllUnits];
+}
+
+- (BOOL)showDistanceUnit
+{
+    User* objUser = GET_USER_OBJ;
+    BOOL isUserRole = [objUser.role isEqualToString:@"user"];
+    BOOL isLandscape = UIScreen.mainScreen.bounds.size.width > UIScreen.mainScreen.bounds.size.height;
+
+    return !isUserRole && iPhoneDevice && isLandscape;
+}
+
+- (void)clickedLogout
+{
+    [AlertManager confirm:@"Are you sure you want to log out?"
+                    title:@"Confirm Logout"
+                 negative:@"Cancel"
+                 positive:@"Yes"
+                confirmed:^{
+                    [[GIDSignIn sharedInstance] signOut];
+                    [DefaultsValues setBooleanValueToUserDefaults:NO ForKey:kLogIn];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }];
 }
 
 #pragma mark - Button Click Events
@@ -1105,13 +1111,13 @@
                     confirmed:^{
                         self->totalDistance = 0.0f;
                         [[AudioPlayer sharedManager] createAudioPlayer:@"Reset":@"wav"];
-                        [self initateTimer];
+                        [self resetDistance];
                     }];
     } else {
         totalDistance = 0.0f;
         [[AudioPlayer sharedManager] createAudioPlayer:@"Reset":@"wav"];
         [self.view setUserInteractionEnabled:false];
-        [self initateTimer];
+        [self resetDistance];
     }
 }
 
@@ -1158,7 +1164,7 @@
 {
     SettingsVC* vc = loadViewController(StoryBoard_Settings, kIDSettingsVC);
     vc.delegate = self;
-    vc.strRoadbookId = [NSString stringWithFormat:@"%ld", (long)[obj_Route.routeIdentifier doubleValue]];
+    vc.strRoadbookId = [NSString stringWithFormat:@"%ld", (long)_objRoute.routesIdentifier];
     vc.Ododistance = _calibrate;
     NavigationVC* nav = [[NavigationVC alloc] initWithRootViewController:vc];
     [nav setNavigationBarHidden:YES animated:NO];
@@ -1322,7 +1328,7 @@
 
 - (void)ScrollPDF2Up:(BOOL)isUp step:(CGFloat)step
 {
-    [self hidePDFPageLabel];
+    [self hidePDFPageLabel:_pdfView];
 
     CGFloat offset = _pdfView.scrollView.contentOffset.y;
     CGFloat maxY = _pdfView.scrollView.contentSize.height - _pdfView.frame.size.height;
